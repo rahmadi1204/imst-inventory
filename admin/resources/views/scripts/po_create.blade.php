@@ -32,9 +32,7 @@
 
     });
     $('#value_product, #unit_price').keyup(function() {
-        $('.mata-uang').mask('0.000.000.000', {
-            reverse: true
-        });
+
         let jumlah = $("#value_product").val();
         let harga = $("#unit_price").val();
         let total = parseInt(jumlah) * parseInt(harga);

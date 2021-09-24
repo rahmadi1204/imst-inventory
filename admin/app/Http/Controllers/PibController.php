@@ -30,10 +30,13 @@ class PibController extends Controller
             // ->join('pib_products', 'pib_products.no_approval', '=', 'pibs.no_approval')
             ->get();
         // dd($data);
-        return view(
-            'master_data.pib.pib_index',
-            compact('data')
-        );
+        return view('master_data.pib.pib_index', [
+            'data' => $data,
+            'title' => "Data PIB",
+            'transaksiOpen' => 'menu-open',
+            'transaksiActive' => 'active',
+            'pibActive' => 'active',
+        ]);
     }
 
     public function create()
@@ -47,6 +50,10 @@ class PibController extends Controller
             'unit' => $unit,
             'importir' => $importir,
             'typeProduct' => $typeProduct,
+            'title' => "Data PIB",
+            'transaksiOpen' => 'menu-open',
+            'transaksiActive' => 'active',
+            'pibActive' => 'active',
         ]);
     }
 

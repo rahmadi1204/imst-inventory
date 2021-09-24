@@ -82,4 +82,92 @@
         $("#address_owner").val(address);
 
     });
+    $('#bm_paid, #bm_kite_paid , #bmt_paid, #cukai_paid, #ppn_paid, #ppnbm_paid, #pph_paid').keyup(function() {
+
+        let bm_paid = $("#bm_paid").val();
+        let bm_kite_paid = $("#bm_kite_paid").val();
+        let bmt_paid = $("#bmt_paid").val();
+        let cukai_paid = $("#cukai_paid").val();
+        let ppn_paid = $("#ppn_paid").val();
+        let ppnbm_paid = $("#ppnbm_paid").val();
+        let pph_paid = $("#pph_paid").val();
+        let total_paid = parseInt(bm_paid) + parseInt(bm_kite_paid) + parseInt(bmt_paid) + parseInt(
+                cukai_paid) + parseInt(ppn_paid) +
+            parseInt(ppnbm_paid) + parseInt(pph_paid);
+        $('#total_paid').val(total_paid);
+    });
+
+    $('#bm_borne, #bm_kite_borne , #bmt_borne, #cukai_borne, #ppn_borne, #ppnbm_borne, #pph_borne').keyup(function() {
+
+        let bm_borne = $("#bm_borne").val();
+        let bm_kite_borne = $("#bm_kite_borne").val();
+        let bmt_borne = $("#bmt_borne").val();
+        let cukai_borne = $("#cukai_borne").val();
+        let ppn_borne = $("#ppn_borne").val();
+        let ppnbm_borne = $("#ppnbm_borne").val();
+        let pph_borne = $("#pph_borne").val();
+        let total_borne = parseInt(bm_borne) + parseInt(bm_kite_borne) + parseInt(bmt_borne) + parseInt(
+                cukai_borne) + parseInt(ppn_borne) +
+            parseInt(ppnbm_borne) + parseInt(pph_borne);
+        $('#total_borne').val(total_borne);
+    });
+    $('#bm_delay, #bm_kite_delay , #bmt_delay, #cukai_delay, #ppn_delay, #ppnbm_delay, #pph_delay').keyup(function() {
+
+        let bm_delay = $("#bm_delay").val();
+        let bm_kite_delay = $("#bm_kite_delay").val();
+        let bmt_delay = $("#bmt_delay").val();
+        let cukai_delay = $("#cukai_delay").val();
+        let ppn_delay = $("#ppn_delay").val();
+        let ppnbm_delay = $("#ppnbm_delay").val();
+        let pph_delay = $("#pph_delay").val();
+        let total_delay = parseInt(bm_delay) + parseInt(bm_kite_delay) + parseInt(bmt_delay) + parseInt(
+                cukai_delay) + parseInt(ppn_delay) +
+            parseInt(ppnbm_delay) + parseInt(pph_delay);
+        $('#total_delay').val(total_delay);
+    });
+    $('#bm_taxfree, #bm_kite_taxfree , #bmt_taxfree, #cukai_taxfree, #ppn_taxfree, #ppnbm_taxfree, #pph_taxfree').keyup(
+        function() {
+
+            let bm_taxfree = $("#bm_taxfree").val();
+            let bm_kite_taxfree = $("#bm_kite_taxfree").val();
+            let bmt_taxfree = $("#bmt_taxfree").val();
+            let cukai_taxfree = $("#cukai_taxfree").val();
+            let ppn_taxfree = $("#ppn_taxfree").val();
+            let ppnbm_taxfree = $("#ppnbm_taxfree").val();
+            let pph_taxfree = $("#pph_taxfree").val();
+            let total_taxfree = parseInt(bm_taxfree) + parseInt(bm_kite_taxfree) + parseInt(bmt_taxfree) + parseInt(
+                    cukai_taxfree) + parseInt(ppn_taxfree) +
+                parseInt(ppnbm_taxfree) + parseInt(pph_taxfree);
+            $('#total_taxfree').val(total_taxfree);
+        });
+    $('#bm_free, #bm_kite_free , #bmt_free, #cukai_free, #ppn_free, #ppnbm_free, #pph_free').keyup(
+        function() {
+
+            let bm_free = $("#bm_free").val();
+            let bm_kite_free = $("#bm_kite_free").val();
+            let bmt_free = $("#bmt_free").val();
+            let cukai_free = $("#cukai_free").val();
+            let ppn_free = $("#ppn_free").val();
+            let ppnbm_free = $("#ppnbm_free").val();
+            let pph_free = $("#pph_free").val();
+            let total_free = parseInt(bm_free) + parseInt(bm_kite_free) + parseInt(bmt_free) + parseInt(
+                    cukai_free) + parseInt(ppn_free) +
+                parseInt(ppnbm_free) + parseInt(pph_free);
+            $('#total_free').val(total_free);
+        });
+    $('#bm_paidoff, #bm_kite_paidoff , #bmt_paidoff, #cukai_paidoff, #ppn_paidoff, #ppnbm_paidoff, #pph_paidoff').keyup(
+        function() {
+
+            let bm_paidoff = $("#bm_paidoff").val();
+            let bm_kite_paidoff = $("#bm_kite_paidoff").val();
+            let bmt_paidoff = $("#bmt_paidoff").val();
+            let cukai_paidoff = $("#cukai_paidoff").val();
+            let ppn_paidoff = $("#ppn_paidoff").val();
+            let ppnbm_paidoff = $("#ppnbm_paidoff").val();
+            let pph_paidoff = $("#pph_paidoff").val();
+            let total_paidoff = parseInt(bm_paidoff) + parseInt(bm_kite_paidoff) + parseInt(bmt_paidoff) + parseInt(
+                    cukai_paidoff) + parseInt(ppn_paidoff) +
+                parseInt(ppnbm_paidoff) + parseInt(pph_paidoff);
+            $('#total_paidoff').val(total_paidoff);
+        });
 </script>

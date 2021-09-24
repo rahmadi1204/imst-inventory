@@ -142,7 +142,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('ncr_vendor') }}" class="nav-link {{ $NcrvendorActive ?? '' }}">
+                                <a href="{{ route('pib') }}" class="nav-link {{ $pibActive ?? '' }}">
                                     <i class="nav-icon fa fa-plus-square text-dark"></i>
                                     <p>
                                         Input Data PIB
