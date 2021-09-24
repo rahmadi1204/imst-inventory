@@ -643,7 +643,7 @@
                                                     <input name="value" type="text" class="form-control" id="value">
                                                 </div>
                                                 <div class="form-group col">
-                                                    <label for="insurance">Asuraansi LN/DN</label>
+                                                    <label for="insurance">Asuransi LN/DN</label>
                                                     <input name="insurance" type="text" class="form-control"
                                                         id="insurance">
                                                 </div>
@@ -694,6 +694,8 @@
                                             <div class="row">
                                                 <div class="form-group col">
                                                     <label for="type_product">Tipe Produk</label>
+                                                    {{-- <input type="text" class="form-control" name="type_product"
+                                                        id="type_product" readonly> --}}
                                                     <select name="type_product" id="type_product" class="form-control">
                                                         <option selected disabled>Pilih</option>
                                                         @foreach ($typeProduct as $item)
@@ -731,9 +733,7 @@
                                             <table class="table table-bordered" id="productAddRemove">
                                                 <tr>
                                                     <th>Pos Tarif Produk</th>
-                                                    <th>Uraian Jenis Barang, Merek, Tipe, Spesifikasi Wajib</th>
-                                                    <th>Kode Produk</th>
-                                                    <th>Nama Produk</th>
+                                                    <th colspan="4">Uraian Jenis Barang, Merek, Tipe, Spesifikasi Wajib</th>
                                                     <th>Jumlah Produk</th>
                                                     <th>Satuan Produk</th>
                                                     <th>Berat Bersih Produk</th>
@@ -744,12 +744,22 @@
                                                 <tr>
                                                     <td><input type="text" name="pos_product[0]" class="form-control" />
                                                     </td>
-                                                    <td><input type="text" name="detail_product[0]"
-                                                            class="form-control" />
+                                                    <td colspan="2">
+                                                        <select name="code_product[0]" id="code_product0"
+                                                            class="form-control">
+                                                            <option value="" selected disabled>Pilih</option>
+                                                            @foreach ($product as $item)
+                                                                <option value="{{ $item->code_product }}"
+                                                                    type="{{ $item->type_product }}"
+                                                                    name="{{ $item->name_product }}">
+                                                                    {{ $item->code_product }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </td>
-                                                    <td><input type="text" name="code_product[0]" class="form-control" />
-                                                    </td>
-                                                    <td><input type="text" name="name_product[0]" class="form-control" />
+                                                    <td colspan="2">
+                                                        <input type="text" name="name_product[0]" id="name_product0"
+                                                            class="form-control" readonly>
                                                     </td>
                                                     <td><input type="number" name="qty_product[0]"
                                                             class="form-control" />

@@ -20,13 +20,13 @@
         ++j;
         $("#productAddRemove").append('<tr><td><input type="text" name="pos_product[' +
             j +
-            ']" class="form-control" /><td><input type="text" name="detail_product[' +
+            ']" class="form-control" /><td colspan="2"><select name="code_product[' + j +
+            ']" id="code_product' +
             j +
-            ']" class="form-control" /></td></td><td><input type="text" name="code_product[' +
+            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td colspan="2"><input type="text" name="name_product[' +
             j +
-            ']" class="form-control" /></td><td><input type="text" name="name_product[' +
-            j +
-            ']" class="form-control" /><td><input type="text" name="qty_product[' +
+            ']" class="form-control" id="name_product' + j +
+            '"  readonly/></td><td><input type="text" name="qty_product[' +
             j +
             ']" class="form-control" /></td><td><select name="unit_product[' + j +
             ']" class="form-control"><option selected disabled>Pilih</option>@foreach ($unit as $item) <option value="{{ $item->unit }}">{{ $item->unit }}</option>@endforeach</select></td><td><div class="input-group"><input type = "text" name = "netto_product[' +
@@ -38,12 +38,26 @@
             j +
             ']" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-product"><i class="fa fa-trash"></i></button></td></tr>'
         );
+        $("#code_product" + j).change(function() {
+            let code = $(this).val();
+            let name = $('#code_product' + j + ' option:selected').attr("name");
+
+            $("#name_product" + j).val(name);
+
+        });
     });
     $(document).on('click', '.remove-input-product', function() {
         $(this).parents('tr').remove();
     });
 </script>
 <script>
+    $("#code_product" + 0).change(function() {
+        let code = $(this).val();
+        let name = $('#code_product' + 0 + ' option:selected').attr("name");
+
+        $("#name_product" + 0).val(name);
+
+    });
     $('#name_shipper').change(function() {
         let code = $(this).val();
         let name = $('#name_shipper option:selected').text();

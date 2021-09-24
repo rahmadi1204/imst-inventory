@@ -16,6 +16,7 @@ use App\Models\Data\Product;
 use App\Models\PibContainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Master\MasterProduct;
 
 class PibController extends Controller
 {
@@ -44,11 +45,13 @@ class PibController extends Controller
         $seller = Supplier::all();
         $importir = Importir::all();
         $typeProduct = TypeProduct::all();
+        $product = MasterProduct::all();
         $unit = Unit::all();
         return view('master_data.pib.pib_create', [
             'seller' => $seller,
             'unit' => $unit,
             'importir' => $importir,
+            'product' => $product,
             'typeProduct' => $typeProduct,
             'title' => "Data PIB",
             'transaksiOpen' => 'menu-open',
