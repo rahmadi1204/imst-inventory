@@ -33,7 +33,6 @@
             "responsive": true,
         });
         $('#tableSearch2').DataTable({
-
             "paging": true,
             "lengthChange": false,
             "ordering": true,

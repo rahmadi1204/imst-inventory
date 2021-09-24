@@ -185,6 +185,7 @@
     <script src="{{ asset('/templates/admin') }}/dist/js/demo.js"></script>
     @include('scripts.delete_modal')
     @include('scripts.form_jquery')
+    @include('scripts.datatable')
     @yield('scripts')
     <x-alert></x-alert>
 </body>

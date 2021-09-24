@@ -47,73 +47,6 @@
                 <!-- /.card -->
             </div>
         </div>
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Barang PO</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="tableSearch" class="table table-bordered table-hover">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>No</th>
-                                <th>No PO Vendor</th>
-                                <th>Tanggal</th>
-                                <th>Kode Barang</th>
-                                <th>Nama Barang</th>
-                                <th>Deskripsi</th>
-                                <th>Latest</th>
-                                <th>Kuantitas</th>
-                                <th>Satuan Harga</th>
-                                <th>Mata Uang</th>
-                                <th>Jumlah</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                                $total = 0;
-                            @endphp
-                            @foreach ($data as $item)
-                                <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $item->no_po }}</td>
-                                    <td>{{ $item->date_po }}</td>
-                                    <td>{{ $item->code_product }}</td>
-                                    <td>{{ $item->name_product }}</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>{{ $item->latest }}</td>
-                                    <td>{{ $item->value_product }}</td>
-                                    <td>{{ $item->unit_price }}</td>
-                                    <td>{{ $item->currency }}</td>
-                                    <td>{{ $item->total_amount }}</td>
-                                    <td>
-                                        {{-- <a href="{{ route('po.edit', $item->id) }}" class="btn btn-success">
-                                            <i class="fa fa-edit"></i>
-                                        </a> --}}
-                                        <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                            data-target="#modal-delete-user" data-id="{{ $item->code_product }}"
-                                            data-name="{{ $item->name_product }} Dari PO {{ $item->no_po }}"><i
-                                                class="fa fa-trash"></i>
-                                        </div>
-                                        @php
-                                            $total += $item->total_amount;
-                                        @endphp
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <td colspan="10" class="text-center">JUMLAH</td>
-                            <td>{{ $total }}</td>
-                            <td></td>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
         </div>
     </section>
     {{-- Create Modal --}}
@@ -183,6 +116,5 @@
             document.getElementById("terbilang-output").value = terbilang(input).replace(/  +/g, ' ');
         }
     </script>
-    @include('scripts.datatable')
     @include('scripts.po_create')
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Po;
 use App\Models\Pib;
 use App\Models\PibDevy;
 use App\Models\PibLoad;
@@ -13,10 +14,13 @@ use App\Models\PibInvoice;
 use App\Models\PibProduct;
 use App\Models\TypeProduct;
 use App\Models\Data\Product;
+use App\Models\HistoryProduct;
 use App\Models\PibContainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
+use App\Models\RecivedProduct;
+use App\Models\StockProduct;
 
 class PibController extends Controller
 {
@@ -62,9 +66,10 @@ class PibController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
+        dd($request);
         $pib = $request->validate([
             'type_document_pabean' => 'required',
+            'no_po' => 'required',
             'office_pabean' => 'required',
             'no_approval' => 'required',
             'no_register' => 'required',
@@ -97,6 +102,9 @@ class PibController extends Controller
         $storeInvoice = $this->addInvoice($request);
         $storeContainer = $this->addContainer($request);
         $storeProduct = $this->addProduct($request);
+        $historyProduct = $this->addHistory($request);
+        $stockProduct = $this->addStock($request);
+        $recivedProduct = $this->addRecived($request);
         return redirect()->route('pib');
     }
 
@@ -230,6 +238,75 @@ class PibController extends Controller
         }
         return $add;
     }
+    public function addHistory($request)
+    {
+        $history = $request->validate([
+            'code_product' => 'required',
+            'name_product' => 'required',
+            'date_product' => 'required',
+            'type_history' => 'required',
+            'from' => 'required',
+            'to' => 'required',
+            'qty_product' => 'required',
+        ]);
+        $count = count($history['code_product']);
+        for ($i = 0; $i < $count; $i++) {
+            $add = HistoryProduct::insert([
+                'code_product' => $request->code_product[$i],
+                'name_product' =>  $request->name_product[$i],
+                'date_product' =>  $request->date_product,
+                'type_history' =>  1,
+                'from' =>  $request->name_shipper,
+                'to' =>  $request->name_importir,
+                'qty_product' =>  $request->qty_product[$i],
+                'created_at' => now(),
+            ]);
+        }
+        return $add;
+    }
+    public function addRecived($request)
+    {
+        $recived = $request->validate([
+            'no_po' => 'required',
+            'code_product' => 'required',
+            'name_product' => 'required',
+            'qty_product' => 'required',
+        ]);
+
+        $cek = RecivedProduct::where('no_po', $request->no_po)->select('code_product', 'qty_po')->get();
+        if ($cek != "[]") {
+            $count = count($recived['code_product']);
+            for ($i = 0; $i < $count; $i++) {
+                $add = RecivedProduct::where('no_po', $request->no_po)
+                    ->where('code_product', $request->code_product)->update([
+                        'qty_pib' =>  $request->qty_product[$i],
+                        'created_at' => now(),
+                        'qty_less' => $cek['qty_po'] - $request->qty_product,
+                    ]);
+            }
+        }
+        return $add;
+    }
+    public function addStock($request)
+    {
+        $stock = $request->validate([
+            'code_product' => 'required',
+            'name_product' => 'required',
+            'type_product' => 'required',
+            'qty_product' => 'required',
+        ]);
+        $count = count($stock['code_product']);
+        for ($i = 0; $i < $count; $i++) {
+            $add = StockProduct::insert([
+                'code_product' => $request->code_product[$i],
+                'name_product' =>  $request->name_product[$i],
+                'type_product' =>  $request->type_product,
+                'qty_product' =>  $request->qty_product[$i],
+                'created_at' => now(),
+            ]);
+        }
+        return $add;
+    }
     public function addProduct($request)
     {
         $product = $request->validate([
@@ -259,7 +336,7 @@ class PibController extends Controller
                 'date_product' => $request->date_product,
                 'pos_product' => $request->pos_product[$i],
                 'code_product' => $request->code_product[$i],
-                'type_product' => $request->type_product,
+                'type_product' => $request->type_product[$i],
                 'name_product' => $request->name_product[$i],
                 'brand_product' => $request->brand_product[$i],
                 'spec_product' => $request->spec_product[$i],

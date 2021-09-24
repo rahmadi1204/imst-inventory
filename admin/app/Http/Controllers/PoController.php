@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\Data\Product;
-use App\Models\Master\MasterProduct;
 use App\Models\Po;
+use App\Models\Customer;
 use App\Models\Supplier;
-use App\Models\TypeProduct;
 use App\Models\Warehouse;
+use App\Models\TypeProduct;
+use App\Models\Data\Product;
 use Illuminate\Http\Request;
+use App\Models\RecivedProduct;
+use App\Models\Master\MasterProduct;
 
 class PoController extends Controller
 {
@@ -67,6 +68,26 @@ class PoController extends Controller
             'latest' => 'required',
         ]);
         $po = Po::insert($attr);
+        $poProduct = $this->addProduct($request);
         return redirect()->back();
+    }
+    public function addRecived($request)
+    {
+        $recived = $request->validate([
+            'no_po' => 'required',
+            'code_product' => 'required',
+            'name_product' => 'required',
+            'qty_product' => 'required',
+        ]);
+        $count = count($recived['code_product']);
+        for ($i = 0; $i < $count; $i++) {
+            $add = RecivedProduct::insert([
+                'no_po' => $request->no_po,
+                'qty_po' =>  $request->qty_product[$i],
+                'created_at' => now(),
+            ]);
+        }
+
+        return $add;
     }
 }

@@ -89,11 +89,69 @@
             </select>
         </div>
     </div>
-    <div class="row">
+    <table id="productAddRemove" class="table table-bordered table-hover table-responsive">
+        <tr>
+            <th style="width: 10%">Kode Barang</th>
+            <th style="width: 14%">Tipe Barang</th>
+            <th style="width: 14%">Nama Barang</th>
+            <th style="width: 10%">Deskripsi</th>
+            <th style="width: 8%">Latestk</th>
+            <th style="width: 9%">Jumlah Barang</th>
+            <th style="width: 15%">Harga Barang</th>
+            <th style="width: 15%">Jumlah Total</th>
+            <th style="width: 5%"></th>
+        </tr>
+        <tr>
+            <td>
+                <select name="code_product[0]" id="code_product0" class="form-control">
+                    <option value="" selected disabled>Pilih</option>
+                    @foreach ($product as $item)
+                        <option value="{{ $item->code_product }}" type="{{ $item->type_product }}"
+                            name="{{ $item->name_product }}">
+                            {{ $item->code_product }}
+                        </option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <input type="text" class="form-control" name="type_product[0]" id="type_product0" readonly>
+            </td>
+            <td>
+                <input type="text" name="name_product[0]" id="name_product0" class="form-control" readonly>
+            </td>
+            <td>
+                <input type="text" name="description[0]" id="description0" class="form-control">
+            </td>
+            <td>
+                <input type="text" name="latest[0]" id="latest0" class="form-control">
+            </td>
+            <td><input type="number" name="qty_product[0]" id="qty_product0" class="form-control" />
+            </td>
+            <td>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text curr">IDR</span>
+                    </div>
+                    <input name="unit_price[0]" type="number" class="form-control" id="unit_price0"
+                        value="{{ $po->unit_price ?? old('unit_price') }}" required>
+                </div>
+            </td>
+            <td>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text curr">IDR</span>
+                    </div>
+                    <input name="total_amount[0]" type="number" class="form-control mata-uang" id="total_amount0"
+                        value="{{ $po->total_amount ?? old('total_amount') }}" required readonly>
+                </div>
+            </td>
+            <td><button type="button" name="add" id="dynamic-pr" class="btn btn-outline-primary"><i
+                        class="fa fa-plus"></i></button></td>
+        </tr>
+    </table>
+    {{-- <div class="row">
         <div class="form-group col">
             <label for="code_product">Kode Barang</label>
-            {{-- <input type="text" name="code_product" id="code_product" class="form-control"
-                value="{{ $po->code_product ?? old('product_name') }}"> --}}
             <select name="code_product" id="code_product" class="form-control custom-select">
                 <option selected disabled>Pilih</option>
                 @foreach ($product as $item)
@@ -165,6 +223,6 @@
                     value="{{ $po->total_amount ?? old('total_amount') }}" required readonly>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 <!-- /.card-body -->

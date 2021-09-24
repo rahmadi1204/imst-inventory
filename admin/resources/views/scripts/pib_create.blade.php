@@ -20,10 +20,13 @@
         ++j;
         $("#productAddRemove").append('<tr><td><input type="text" name="pos_product[' +
             j +
-            ']" class="form-control" /><td colspan="2"><select name="code_product[' + j +
+            ']" class="form-control" /><td><select name="code_product[' + j +
             ']" id="code_product' +
             j +
-            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td colspan="2"><input type="text" name="name_product[' +
+            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><input type="text" name="type_product[' +
+            j +
+            ']" class="form-control" id="type_product' + j +
+            '"  readonly/></td><td><input type="text" name="name_product[' +
             j +
             ']" class="form-control" id="name_product' + j +
             '"  readonly/></td><td><input type="text" name="qty_product[' +
@@ -41,8 +44,10 @@
         $("#code_product" + j).change(function() {
             let code = $(this).val();
             let name = $('#code_product' + j + ' option:selected').attr("name");
+            let type = $('#code_product' + j + ' option:selected').attr("type");
 
             $("#name_product" + j).val(name);
+            $("#type_product" + j).val(type);
 
         });
     });
@@ -54,10 +59,13 @@
     $("#code_product" + 0).change(function() {
         let code = $(this).val();
         let name = $('#code_product' + 0 + ' option:selected').attr("name");
+        let type = $('#code_product' + 0 + ' option:selected').attr("type");
 
         $("#name_product" + 0).val(name);
+        $("#type_product" + 0).val(type);
 
     });
+
     $('#name_shipper').change(function() {
         let code = $(this).val();
         let name = $('#name_shipper option:selected').text();
@@ -184,4 +192,11 @@
                 parseInt(ppnbm_paidoff) + parseInt(pph_paidoff);
             $('#total_paidoff').val(total_paidoff);
         });
+    $('#ndpbm, #value').keyup(function() {
+
+        let jumlah = $("#ndpbm").val();
+        let harga = $("#value").val();
+        let total = parseInt(jumlah) * parseInt(harga);
+        $('#pabean_value').val(total);
+    });
 </script>

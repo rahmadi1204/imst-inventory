@@ -73,5 +73,5 @@
 
 @endsection
 @section('scripts')
-    @include('scripts.datatable')
+
 @endsection
