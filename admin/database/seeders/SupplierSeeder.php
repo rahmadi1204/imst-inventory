@@ -15,10 +15,17 @@ class SupplierSeeder extends Seeder
     public function run()
     {
         DB::table('suppliers')->insert([
-            'code_supplier' => '1',
-            'name_supplier' => 'JIANGSU TEDRAIL',
-            'address_supplier' => 'NO.8 GANG AO ROAD, ZHANGJIAGANG',
-            'date' => now(),
+            [
+                'code_supplier' => 'JT',
+                'name_supplier' => 'JIANGSU TEDRAIL',
+                'address_supplier' => 'NO.8 GANG AO ROAD, ZHANGJIAGANG',
+                'date' => now(),
+            ], [
+                'code_supplier' => 'WC',
+                'name_supplier' => 'WABTEC CORPORATION',
+                'address_supplier' => 'FBO STANDART',
+                'date' => now(),
+            ]
         ]);
     }
 }

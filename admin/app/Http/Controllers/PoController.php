@@ -5,18 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Po;
 use App\Models\Customer;
 use App\Models\Supplier;
+use App\Models\PoProduct;
 use App\Models\Warehouse;
 use App\Models\TypeProduct;
 use App\Models\Data\Product;
+use App\Models\HistoryProduct;
 use Illuminate\Http\Request;
 use App\Models\RecivedProduct;
+use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
 
 class PoController extends Controller
 {
     function index()
     {
-        $data = Po::all()->unique('no_po');
+        $data = DB::table('pos')
+            ->join('po_products', 'po_products.no_po', '=', 'pos.no_po')
+            ->get();
         return view('master_data.po.po_index', [
             'data' => $data,
             'title' => 'Data Pre Order',
@@ -54,6 +59,7 @@ class PoController extends Controller
             'vendor_name' => 'required',
             'vendor_address' => 'required',
             'send_address' => 'required',
+            'address_warehouse' => 'required',
             'no_po' => 'required',
             'project' => 'required',
             'date_po' => 'required',
@@ -61,33 +67,50 @@ class PoController extends Controller
             'name_product' => 'required',
             'type_product' => 'required',
             'description' => 'required',
-            'value_product' => 'required',
+            'qty_product' => 'required',
             'unit_price' => 'required',
             'currency' => 'required',
             'total_amount' => 'required',
+            'total_amount_po' => 'nullable',
             'latest' => 'required',
         ]);
-        $po = Po::insert($attr);
-        $poProduct = $this->addProduct($request);
-        return redirect()->back();
-    }
-    public function addRecived($request)
-    {
-        $recived = $request->validate([
-            'no_po' => 'required',
-            'code_product' => 'required',
-            'name_product' => 'required',
-            'qty_product' => 'required',
-        ]);
-        $count = count($recived['code_product']);
+        // dd($attr);
+        $count = count($request->code_product);
+        $amount = 0;
         for ($i = 0; $i < $count; $i++) {
-            $add = RecivedProduct::insert([
+            $poProduct =  PoProduct::insert([
                 'no_po' => $request->no_po,
-                'qty_po' =>  $request->qty_product[$i],
+                'code_product' => $request->code_product[$i],
+                'type_product' => $request->type_product[$i],
+                'name_product' => $request->name_product[$i],
+                'description' => $request->description[$i],
+                'latest' => $request->latest[$i],
+                'qty_product' => $request->qty_product[$i],
+                'qty_less' => $request->qty_product[$i],
+                'unit_price' => $request->unit_price[$i],
+                'total_amount' => $request->total_amount[$i],
                 'created_at' => now(),
             ]);
+            $amount = $request->total_amount[$i];
+            $amount++;
         }
-
-        return $add;
+        // dd($amount);
+        if ($poProduct) {
+            Po::insert([
+                'no_po' => $request->no_po,
+                'project' => $request->project,
+                'date_po' => $request->date_po,
+                'vendor_name' => $request->vendor_name,
+                'vendor_address' => $request->vendor_address,
+                'send_address' => $request->send_address,
+                'address_warehouse' => $request->address_warehouse,
+                'currency' => $request->currency,
+                'total_amount_po' => $amount,
+                'created_at' => now(),
+            ]);
+            return redirect()->route('po')->with('Ok', 'Data Tersimpan');
+        } else {
+            return redirect()->back()->with('Fail', 'Data Tidak Tersimpan');
+        }
     }
 }

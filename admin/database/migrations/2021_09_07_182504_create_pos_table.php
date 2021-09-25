@@ -21,15 +21,9 @@ class CreatePosTable extends Migration
             $table->string('vendor_name');
             $table->string('vendor_address');
             $table->string('send_address');
-            $table->string('code_product');
-            $table->string('type_product');
-            $table->string('name_product');
-            $table->string('description');
-            $table->integer('value_product');
-            $table->integer('unit_price');
+            $table->string('address_warehouse');
             $table->string('currency');
-            $table->integer('total_amount');
-            $table->string('latest');
+            $table->integer('total_amount_po');
             $table->timestamps();
         });
     }

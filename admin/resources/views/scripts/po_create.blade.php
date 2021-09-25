@@ -53,14 +53,24 @@
             '"  readonly/></td><td><input type="text" name="name_product[' +
             j +
             ']" class="form-control" id="name_product' + j +
-            '"  readonly/></td><td><input type="text" name="description[0]" id="description' +
+            '"  readonly/></td><td><input type="text" name="description[' +
             j +
-            '" class="form-control"></td><td><input type="text" name="latest[0]" id="latest' + j +
-            '" class="form-control"></td> <td><input type="number" name="qty_product[0]" id="qty_product' +
+            ']" id="description' +
             j +
-            '" class="form-control" /></td><td><div class="input-group"><div class="input-group-prepend"><span class="input-group-text curr">IDR</span></div><input name="unit_price[0]" type="number" class="form-control" id="unit_price' +
+            '" class="form-control"></td><td><input type="text" name="latest[' +
             j +
-            '"value="{{ $po->unit_price ?? old('unit_price') }}" required></div></td><td><div class="input-group" ><div class="input-group-prepend" ><span class = "input-group-text curr" > IDR </span></div> <input name = "total_amount[0]"type = "number"class = "form-control mata-uang"id = "total_amount' +
+            ']" id="latest' + j +
+            '" class="form-control"></td> <td><input type="number" name="qty_product[' +
+            j +
+            ']" id="qty_product' +
+            j +
+            '" class="form-control" /></td><td><div class="input-group"><div class="input-group-prepend"><span class="input-group-text curr">IDR</span></div><input name="unit_price[' +
+            j +
+            ']" type="number" class="form-control" id="unit_price' +
+            j +
+            '"value="{{ $po->unit_price ?? old('unit_price') }}" required></div></td><td><div class="input-group" ><div class="input-group-prepend" ><span class = "input-group-text curr" > IDR </span></div> <input name = "total_amount[' +
+            j +
+            ']"type = "number"class = "form-control mata-uang"id = "total_amount' +
             j +
             '"value="{{ $po->total_amount ?? old('total_amount') }}"required readonly ></div> </td><td><button type="button" class="btn btn-outline-danger remove-input-product"><i class="fa fa-trash"></i></button></td > < /tr>'
         );

@@ -27,8 +27,8 @@
         </div>
         <div class="form-group col">
             <label for="vendor_address">Alamat Vendor</label>
-            <input name="vendor_address" type="text" class="form-control" value="{{ $po->no_po ?? old('no_po') }}"
-                id="vendor_address" required readonly>
+            <input name="vendor_address" type="text" class="form-control"
+                value="{{ $po->vendor_address ?? old('vendor_address') }}" id="vendor_address" required readonly>
         </div>
         <div class="form-group col">
             <label for="send_address">Tujuan / Lokasi</label>
@@ -67,14 +67,14 @@
         </div>
         <div class="form-group col">
             <label for="project">Project</label>
-            <input name="project" type="text" class="form-control" value="{{ $po->no_pib ?? old('project') }}"
+            <input name="project" type="text" class="form-control" value="{{ $po->project ?? old('project') }}"
                 required>
         </div>
         <div class="form-group col">
             <label for="date_po">Tanggal:</label>
             <div class="input-group date" id="datePO" data-target-input="nearest">
                 <input name="date_po" type="text" class="form-control datetimepicker-input" data-target="#datePO"
-                    required value="{{ $po->date ?? old('date_po') }} " />
+                    required value="{{ $po->date_po ?? old('date_po') }} " />
                 <div class="input-group-append" data-target="#datePO" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>

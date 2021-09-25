@@ -32,10 +32,12 @@
                                         <th>Kode Barang</th>
                                         <th>Deskripsi</th>
                                         <th>Kuantitas</th>
-                                        <th>Satuan Harga</th>
+                                        <th>Kekurangan</th>
                                         <th>Mata Uang</th>
+                                        <th>Satuan Harga</th>
                                         <th>Jumlah</th>
                                         <th>Latest</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -54,11 +56,22 @@
                                             <td>{{ $item->send_address }}</td>
                                             <td>{{ $item->code_product }}</td>
                                             <td>{{ $item->description }}</td>
-                                            <td>{{ $item->value_product }}</td>
-                                            <td>{{ $item->unit_price }}</td>
+                                            <td>{{ number_format($item->qty_product) }}</td>
+                                            <td>{{ number_format($item->qty_less) }}</td>
                                             <td>{{ $item->currency }}</td>
-                                            <td>{{ $item->total_amount }}</td>
+                                            <td>{{ number_format($item->unit_price, 0, ',', '.') }} </td>
+                                            <td>{{ number_format($item->total_amount) }}</td>
                                             <td>{{ $item->latest }}</td>
+                                            <td>
+                                                @if ($item->qty_less == 0)
+                                                    <span class="btn btn-success">
+                                                        Selesai
+                                                    @else
+                                                        <span class="btn btn-warning">
+                                                            Kurang
+                                                @endif
+                                                </span>
+                                            </td>
                                             <td>
                                                 <a href="{{ route('po.edit', $item->id) }}" class="btn btn-success">
                                                     <i class="fa fa-edit"></i>

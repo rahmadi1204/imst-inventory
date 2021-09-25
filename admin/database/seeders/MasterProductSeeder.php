@@ -15,7 +15,7 @@ class MasterProductSeeder extends Seeder
     public function run()
     {
         DB::table('master_products')->insert([
-            'code_product' => 'A1',
+            'code_product' => 'BB-W',
             'type_product' => 'Bahan Baku',
             'name_product' => 'Wheel',
             'status_product' => 'Aktif',
