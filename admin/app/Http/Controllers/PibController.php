@@ -94,21 +94,62 @@ class PibController extends Controller
             'name_ppjk' => 'required',
             'npwp_ppjk' => 'required',
             'np_ppjk' => 'required',
-            'created_at' => now(),
+            'qty_container' => 'null',
+            'qty_pabean' => 'null',
+            'qty_type_product' => 'null',
+            'created_at' => 'null',
         ]);
+        $qtyContainer = count($request->no_container);
+        $qtyProduct = count($request->code_product);
         $pib['no_approval'] = str_replace('-', '', $request->no_approval);
         $pib['npwp_ppjk'] = str_replace('.', '', $request->npwp_ppjk);
         $npppjk = str_replace(' ', '', $request->np_ppjk);
         $pib['np_ppjk'] = str_replace('-', '', $npppjk);
+        $pib['qty_container'] = $qtyContainer;
+        $pib['qty_type_product'] = $qtyProduct;
+        $pib['created_at'] = now();
         $storePib =  Pib::insert($pib);
-        $storeDevies = $this->addDevies($request);
-        $storeLoad = $this->addLoad($request);
-        $storeInvoice = $this->addInvoice($request);
-        $storeContainer = $this->addContainer($request);
-        $storeProduct = $this->addProduct($request);
-        $historyProduct = $this->addHistory($request);
-        $stockProduct = $this->addStock($request);
-        $recivedProduct = $this->addRecived($request);
+        if ($storePib) {
+            $storeDevies = $this->addDevies($request);
+            if ($storeDevies) {
+                $storeLoad = $this->addLoad($request);
+                if ($storeLoad) {
+                    $storeInvoice = $this->addInvoice($request);
+                    if ($storeInvoice) {
+                        $storeContainer = $this->addContainer($request);
+                        if ($storeContainer) {
+                            $storeProduct = $this->addProduct($request);
+                            if ($storeProduct) {
+                                $historyProduct = $this->addHistory($request);
+                                if ($historyProduct) {
+                                    $stockProduct = $this->addStock($request);
+                                    if ($stockProduct) {
+                                        $recivedProduct = $this->addRecived($request);
+                                        if ($recivedProduct) {
+                                            return redirect()->route('pib')->with('Ok', 'Data Tersimpan');
+                                        } else {
+                                            Pib::where('no_approval', $request->no_approval)->delete();
+                                            PibDevy::where('no_approval', $request->no_approval)->delete();
+                                            PibLoad::where('no_approval', $request->no_approval)->delete();
+                                            PibInvoice::where('no_approval', $request->no_approval)->delete();
+                                            PibContainer::where('no_approval', $request->no_approval)->delete();
+                                        }
+                                    } else {
+                                        dd('data stok gagal');
+                                    }
+                                } else {
+                                    dd('data history gagal');
+                                }
+                            } else {
+                                dd('data produk gagal');
+                            }
+                        }
+                    }
+                }
+            } else {
+                Pib::where('no_approval', $request->no_approval)->delete();
+            }
+        }
         return redirect()->route('pib');
     }
 
@@ -125,8 +166,10 @@ class PibController extends Controller
             'load_transit' => 'required',
             'load_destination' => 'required',
             'date_estimate' => 'required',
+            'created_at' => 'null',
         ]);
         $load['no_approval'] = str_replace('-', '', $request->no_approval);
+        $load['created_at'] = now();
         $add = PibLoad::insert($load);
         return $add;
     }
@@ -155,6 +198,7 @@ class PibController extends Controller
             'insurance' => 'required',
             'freight' => 'required',
             'pabean_value' => 'required',
+            'created_at' => 'null'
         ]);
         $invoice['invoice'] = str_replace('-', '', $request->invoice);
         $invoice['no_approval'] = str_replace('-', '', $request->no_approval);
@@ -211,8 +255,10 @@ class PibController extends Controller
             'total_taxfree' => 'required',
             'total_free' => 'required',
             'total_paidoff' => 'required',
+            'created_at' => 'null',
         ]);
         $devies['no_approval'] = str_replace('-', '', $request->no_approval);
+        $devies['created_at'] = now();
         $addDevies = PibDevy::insert($devies);
         return $addDevies;
     }
@@ -320,7 +366,6 @@ class PibController extends Controller
             'code_product' => 'required',
             'type_product' => 'required',
             'name_product' => 'required',
-            'detail_product' => 'required',
             'country_product' => 'required',
             'qty_product' => 'required',
             'unit_product' => 'required',

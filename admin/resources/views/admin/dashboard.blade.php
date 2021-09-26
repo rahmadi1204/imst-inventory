@@ -73,7 +73,7 @@
             <!-- Main row -->
             <div class="row">
                 <!-- Left col -->
-                <section class="col-lg-7 connectedSortable">
+                {{-- <section class="col-lg-7 connectedSortable">
                     <!-- Custom tabs (Charts with tabs)-->
                     <div class="card">
                         <div class="card-header">
@@ -243,10 +243,10 @@
                         </div>
                     </div>
                     <!-- /.card -->
-                </section>
+                </section> --}}
                 <!-- /.Left col -->
                 <!-- right col (We are only adding the ID to make the widgets sortable)-->
-                <section class="col-lg-5 connectedSortable">
+                {{-- <section class="col-lg-5 connectedSortable">
 
                     <!-- Map card -->
                     <div class="card bg-gradient-primary">
@@ -293,7 +293,7 @@
                         </div>
                     </div>
                     <!-- /.card -->
-                </section>
+                </section> --}}
                 <!-- right col -->
             </div>
             <!-- /.row (main row) -->
