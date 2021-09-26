@@ -68,6 +68,14 @@
                                                 <span class="bs-stepper-label">Data Produk</span>
                                             </button>
                                         </div>
+                                        <div class="line"></div>
+                                        <div class="step" data-target="#step6-part">
+                                            <button type="button" class="step-trigger" role="tab"
+                                                aria-controls="step6-part" id="step6-part-trigger">
+                                                <span class="bs-stepper-circle">6</span>
+                                                <span class="bs-stepper-label">Data Pungutan</span>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="bs-stepper-content">
 
@@ -77,6 +85,7 @@
                                         @include('components.pib_form3')
                                         @include('components.pib_form4')
                                         @include('components.pib_form5')
+                                        @include('components.pib_form6')
 
                                     </div>
                                 </div>

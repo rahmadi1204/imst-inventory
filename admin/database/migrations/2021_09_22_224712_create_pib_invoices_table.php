@@ -16,7 +16,6 @@ class CreatePibInvoicesTable extends Migration
         Schema::create('pib_invoices', function (Blueprint $table) {
             $table->id();
             $table->string('no_approval');
-            $table->string('no_register');
             $table->string('invoice');
             $table->date('date_invoice');
             $table->string('transaction');

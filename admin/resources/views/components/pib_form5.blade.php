@@ -99,6 +99,7 @@
                         class="fa fa-plus"></i></button></td>
         </tr>
     </table>
+    <div class="btn btn-primary" onclick="stepper.next()">Next</div>
     <div class="btn btn-secondary" onclick="stepper.previous()">Kembali</div>
-    <button type="submit" class="btn btn-success">Simpan</button>
+
 </div>

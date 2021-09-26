@@ -55,7 +55,7 @@ class PoController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        $attr = $request->validate([
+        $request->validate([
             'vendor_name' => 'required',
             'vendor_address' => 'required',
             'send_address' => 'required',
@@ -74,29 +74,31 @@ class PoController extends Controller
             'total_amount_po' => 'nullable',
             'latest' => 'required',
         ]);
-        // dd($attr);
+
+        DB::beginTransaction();
+
         $count = count($request->code_product);
         $amount = 0;
-        for ($i = 0; $i < $count; $i++) {
-            $poProduct =  PoProduct::insert([
-                'no_po' => $request->no_po,
-                'code_product' => $request->code_product[$i],
-                'type_product' => $request->type_product[$i],
-                'name_product' => $request->name_product[$i],
-                'description' => $request->description[$i],
-                'latest' => $request->latest[$i],
-                'qty_product' => $request->qty_product[$i],
-                'qty_less' => $request->qty_product[$i],
-                'unit_price' => $request->unit_price[$i],
-                'total_amount' => $request->total_amount[$i],
-                'created_at' => now(),
-            ]);
-            $amount = $request->total_amount[$i];
-            $amount++;
-        }
-        // dd($amount);
-        if ($poProduct) {
-            Po::insert([
+        try {
+            for ($i = 0; $i < $count; $i++) {
+                PoProduct::insert([
+                    'no_po' => $request->no_po,
+                    'code_product' => $request->code_product[$i],
+                    'type_product' => $request->type_product[$i],
+                    'name_product' => $request->name_product[$i],
+                    'description' => $request->description[$i],
+                    'latest' => $request->latest[$i],
+                    'qty_product' => $request->qty_product[$i],
+                    'qty_less' => $request->qty_product[$i],
+                    'unit_price' => $request->unit_price[$i],
+                    'total_amount' => $request->total_amount[$i],
+                    'created_at' => now(),
+                ]);
+                $amount = $request->total_amount[$i];
+                $amount++;
+            }
+
+            $po =  Po::insert([
                 'no_po' => $request->no_po,
                 'project' => $request->project,
                 'date_po' => $request->date_po,
@@ -108,9 +110,14 @@ class PoController extends Controller
                 'total_amount_po' => $amount,
                 'created_at' => now(),
             ]);
-            return redirect()->route('po')->with('Ok', 'Data Tersimpan');
-        } else {
-            return redirect()->back()->with('Fail', 'Data Tidak Tersimpan');
+
+            DB::commit();
+
+            return redirect()->route('po')->with('Ok', 'Data Disimpan');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return redirect()->route('po')->with('Fail', 'Data Tidak Disimpan');
         }
     }
 }

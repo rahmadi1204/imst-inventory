@@ -20,11 +20,10 @@ class CreatePibLoadsTable extends Migration
             $table->date('date_register');
             $table->string('way_transport');
             $table->string('name_transport');
-            $table->string('transaction');
+            $table->date('date_estimate');
             $table->string('load_place');
             $table->string('load_transit');
             $table->string('load_destination');
-            $table->date('date_estimate');
             $table->timestamps();
         });
     }
