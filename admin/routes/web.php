@@ -16,6 +16,8 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\NcrCustomerController;
 use App\Http\Controllers\Data\FinishedController;
 use App\Http\Controllers\Data\AuxiliaryController;
+use App\Http\Controllers\Data\DataProductController;
+use App\Http\Controllers\Data\HistoryProductController;
 use App\Http\Controllers\Data\MasterProductController;
 
 
@@ -51,6 +53,22 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/products/master/update/{raw:id}', [MasterProductController::class, 'edit'])->name('master.edit');
         Route::post('/products/master/update/{raw:id}', [MasterProductController::class, 'update'])->name('master.update');
         Route::post('/products/master/delete', [MasterProductController::class, 'destroy'])->name('master.destroy');
+
+        #data produk
+        Route::get('/products/data', [DataProductController::class, 'index'])->name('data');
+        Route::get('/products/data/add', [DataProductController::class, 'create'])->name('data.create');
+        Route::post('/products/data/add', [DataProductController::class, 'store'])->name('data.store');
+        Route::get('/products/data/update/{raw:id}', [DataProductController::class, 'edit'])->name('data.edit');
+        Route::post('/products/data/update/{raw:id}', [DataProductController::class, 'update'])->name('data.update');
+        Route::post('/products/data/delete', [DataProductController::class, 'destroy'])->name('data.destroy');
+
+        #history produk
+        Route::get('/products/history', [HistoryProductController::class, 'index'])->name('history');
+        Route::get('/products/history/add', [HistoryProductController::class, 'create'])->name('history.create');
+        Route::post('/products/history/add', [HistoryProductController::class, 'store'])->name('history.store');
+        Route::get('/products/history/update/{raw:id}', [HistoryProductController::class, 'edit'])->name('history.edit');
+        Route::post('/products/history/update/{raw:id}', [HistoryProductController::class, 'update'])->name('history.update');
+        Route::post('/products/history/delete', [HistoryProductController::class, 'destroy'])->name('history.destroy');
 
         #supplier
         Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');

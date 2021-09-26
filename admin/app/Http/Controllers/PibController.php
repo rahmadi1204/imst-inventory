@@ -83,11 +83,10 @@ class PibController extends Controller
 
 
             DB::commit();
-            // dd('ok');
             return redirect()->route('pib.create')->withInput()->with('Ok', ' Data Tersimpan');
         } catch (\Throwable $th) {
             //throw $th;
-            // dd('gagal');
+            dd('gagal');
             return redirect()->route('pib.create')->withInput()->with('Fail', ' Data Tidak Tersimpan');
         }
     }
@@ -159,12 +158,12 @@ class PibController extends Controller
             'sub' => 'nullable',
             'facility' => 'nullable',
             'dump' => 'nullable',
-            'valuta' => 'required',
-            'ndpbm' => 'required',
-            'value' => 'required',
-            'insurance' => 'required',
-            'freight' => 'required',
-            'pabean_value' => 'required',
+            'valuta' => 'nullable',
+            'ndpbm' => 'nullable',
+            'value' => 'nullable',
+            'insurance' => 'nullable',
+            'freight' => 'nullable',
+            'pabean_value' => 'nullable',
         ]);
         $pib['invoice'] = str_replace('-', '', $request->invoice);
         $pib['no_approval'] = str_replace('-', '', $request->no_approval);
@@ -331,7 +330,7 @@ class PibController extends Controller
         for ($i = 0; $i < $count; $i++) {
             $old[$i] = PoProduct::where('code_product', $request->code_product[$i])
                 ->where('no_po', $request->no_po)
-                ->value('qty_product');
+                ->value('qty_less');
             $qty[$i] = $old[$i] - $request->qty_product[$i];
             $add = PoProduct::where('code_product', $request->code_product[$i])
                 ->where('no_po', $request->no_po)

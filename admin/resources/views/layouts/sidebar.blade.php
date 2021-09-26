@@ -83,13 +83,14 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="" class="nav-link {{ $dataActive ?? '' }}">
+                                        <a href="{{ route('data') }}" class="nav-link {{ $dataActive ?? '' }}">
                                             <i class="fa fa-caret-right nav-icon"></i>
                                             <p>Data Barang</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="" class="nav-link" {{ $historyActive ?? '' }}>
+                                        <a href="{{ route('history') }}" class="nav-link"
+                                            {{ $historyActive ?? '' }}>
                                             <i class="fa fa-caret-right nav-icon"></i>
                                             <p>History Barang</p>
                                         </a>
