@@ -21,28 +21,28 @@
 
         //Date picker
         $('#registerDate').datetimepicker({
-            format: 'Y-M-d'
+            format: 'Y-M-D'
         });
         $('#estimateDate').datetimepicker({
-            format: 'Y-M-d'
+            format: 'Y-M-D'
         });
         $('#invoiceDate').datetimepicker({
-            format: 'Y-M-d'
+            format: 'Y-M-D'
         });
         $('#transactionDate').datetimepicker({
-            format: 'Y-M-d'
+            format: 'Y-M-D'
         });
         $('#houseblDate').datetimepicker({
-            format: 'Y-M-d'
+            format: 'Y-M-D'
         });
         $('#masterblDate').datetimepicker({
-            format: 'Y-M-d'
+            format: 'Y-M-D'
         });
         $('#bc11Date').datetimepicker({
-            format: 'Y-M-d'
+            format: 'Y-M-D'
         });
         $('#productDate').datetimepicker({
-            format: 'Y-M-d'
+            format: 'Y-M-D'
         });
 
         //Date and time picker

@@ -18,6 +18,7 @@ class CreatePibsTable extends Migration
             $table->string('type_document_pabean')->nullable();
             $table->string('office_pabean')->nullable();
             $table->string('no_approval')->unique();
+            $table->string('no_po')->nullable();
             $table->string('no_register')->nullable();
             $table->date('date_register')->nullable();
             $table->string('type_pib')->nullable();
@@ -36,6 +37,7 @@ class CreatePibsTable extends Migration
             $table->string('address_owner')->nullable();
             $table->string('name_ppjk')->nullable();
             $table->string('npwp_ppjk')->nullable();
+            $table->string('np_ppjk')->nullable();
             $table->integer('qty_container')->nullable();
             $table->integer('qty_type_product')->nullable();
             $table->integer('qty_bruto_product')->nullable();

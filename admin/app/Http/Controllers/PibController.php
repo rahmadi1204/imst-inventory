@@ -19,6 +19,7 @@ use App\Models\PibContainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
+use App\Models\PoProduct;
 use App\Models\RecivedProduct;
 use App\Models\StockProduct;
 
@@ -50,10 +51,12 @@ class PibController extends Controller
         $importir = Importir::all();
         $typeProduct = TypeProduct::all();
         $product = MasterProduct::all();
+        $po = Po::all();
         $unit = Unit::all();
         return view('master_data.pib.pib_create', [
             'seller' => $seller,
             'unit' => $unit,
+            'po' => $po,
             'importir' => $importir,
             'product' => $product,
             'typeProduct' => $typeProduct,
@@ -66,7 +69,7 @@ class PibController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         $pib = $request->validate([
             'type_document_pabean' => 'required',
             'no_po' => 'required',
@@ -89,7 +92,8 @@ class PibController extends Controller
             'name_owner' => 'required',
             'address_owner' => 'required',
             'name_ppjk' => 'required',
-            'address_ppjk' => 'required',
+            'npwp_ppjk' => 'required',
+            'np_ppjk' => 'required',
             'created_at' => now(),
         ]);
         $pib['no_approval'] = str_replace('-', '', $request->no_approval);
@@ -273,15 +277,14 @@ class PibController extends Controller
             'qty_product' => 'required',
         ]);
 
-        $cek = RecivedProduct::where('no_po', $request->no_po)->select('code_product', 'qty_po')->get();
+        $cek = PoProduct::where('no_po', $request->no_po)->select('code_product', 'qty_product')->get();
         if ($cek != "[]") {
             $count = count($recived['code_product']);
             for ($i = 0; $i < $count; $i++) {
-                $add = RecivedProduct::where('no_po', $request->no_po)
+                $add = PoProduct::where('no_po', $request->no_po)
                     ->where('code_product', $request->code_product)->update([
-                        'qty_pib' =>  $request->qty_product[$i],
                         'created_at' => now(),
-                        'qty_less' => $cek['qty_po'] - $request->qty_product,
+                        'qty_less' => $cek['qty_less'] - $request->qty_product,
                     ]);
             }
         }
