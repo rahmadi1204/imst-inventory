@@ -18,7 +18,7 @@ class CreateStockProductsTable extends Migration
             $table->string('code_product');
             $table->string('name_product');
             $table->string('type_product');
-            $table->integer('qty_product');
+            $table->bigInteger('qty_product');
             $table->timestamps();
         });
     }

@@ -15,13 +15,14 @@ class CreateHistoryProductsTable extends Migration
     {
         Schema::create('history_products', function (Blueprint $table) {
             $table->id();
+            $table->string('no_approval');
             $table->string('code_product');
             $table->string('name_product');
             $table->string('date_product');
-            $table->integer('type_history');
+            $table->bigInteger('type_history');
             $table->string('from');
             $table->string('to');
-            $table->integer('qty_product');
+            $table->bigInteger('qty_product');
             $table->timestamps();
         });
     }

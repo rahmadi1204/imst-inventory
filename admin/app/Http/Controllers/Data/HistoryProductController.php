@@ -17,7 +17,7 @@ class HistoryProductController extends Controller
             'data' => $data,
             'typeProduct' => $typeProduct,
             'no' => 1,
-            'title' => 'Master Data Barang',
+            'title' => 'History Data Barang',
             'menuOpen' => 'menu-open',
             'menuActive' => 'active',
             'barangOpen' => 'menu-open',

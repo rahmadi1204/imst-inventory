@@ -12,17 +12,19 @@
     </div> --}}
         <div class="form-group col">
             <label for="country_product">Negara Asal Produk</label>
-            <input name="country_product" type="text" class="form-control" id="country_product">
+            <input name="country_product" type="text" class="form-control" id="country_product"
+                value="{{ $pib->country_product ?? old('country_product') }}">
         </div>
         <div class="form-group col">
             <label for="type_pabean">Tipe Pabean</label>
-            <input name="type_pabean" type="text" class="form-control" id="type_pabean">
+            <input name="type_pabean" type="text" class="form-control" id="type_pabean"
+                value="{{ $pib->type_pabean ?? old('type_pabean') }}">
         </div>
         <div class="form-group col">
             <label for="date_product">Tanggal Produk</label>
             <div class="input-group date" id="productDate" data-target-input="nearest">
                 <input name="date_product" type="text" class="form-control datetimepicker-input"
-                    data-target="#productDate" />
+                    value="{{ $pib->date_product ?? old('date_product') }}" data-target="#productDate" />
                 <div class="input-group-append" data-target="#productDate" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i>
                     </div>
@@ -65,7 +67,7 @@
             <td>
                 <input type="text" name="name_product[0]" id="name_product0" class="form-control" readonly>
             </td>
-            <td><input type="number" name="qty_product[0]" class="form-control" />
+            <td><input type="number" step="0.01" name="qty_product[0]" class="form-control" />
             </td>
             <td>
                 <select name="unit_product[0]" id="unit_product" class="form-control">
@@ -78,13 +80,13 @@
             </td>
             <td>
                 <div class="input-group">
-                    <input type="number" name="netto_product[0]" class="form-control" />
+                    <input type="number" step="0.01" name="netto_product[0]" class="form-control" />
                     <div class="input-group-appeand">
                         <div class="input-group-text">KG</div>
                     </div>
                 </div>
             </td>
-            <td><input type="number" name="qty_pack[0]" class="form-control" />
+            <td><input type="number" step="0.01" name="qty_pack[0]" class="form-control" />
             </td>
             <td><select name="type_pack[0]" id="type_pack" class="form-control">
                     <option value="" selected disabled>
@@ -93,7 +95,7 @@
                     <option value="Container">Container</option>
                 </select>
             </td>
-            <td><input type="number" name="value_pabean[0]" class="form-control" />
+            <td><input type="number" step="0.01" name="value_pabean[0]" class="form-control" />
             </td>
             <td><button type="button" name="add" id="dynamic-pr" class="btn btn-outline-primary"><i
                         class="fa fa-plus"></i></button></td>

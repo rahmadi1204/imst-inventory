@@ -55,10 +55,26 @@
             <label for="type_import">Jenis Import</label>
             <select name="type_import" id="type_import" class="form-control ">
                 <option selected disabled>Pilih</option>
-                <option value="Untuk Dipakai">1. Untuk Dipakai</option>
-                <option value="Sementara">2. Sementara</option>
-                <option value="Pelayanan Segera">3. Pelayanan Segera</option>
-                <option value="Gabunagn 1 dan 2">4. Gabunagn 1 dan 2</option>
+                @if (isset($pib->type_pib))
+                    <option value="Untuk Dipakai" {{ $pib->type_pib == 'Untuk Dipakai' ? 'selected' : '' }}>1. Untuk
+                        Dipakai</option>
+                    <option value="Sementara" {{ $pib->type_pib == 'Sementara' ? 'selected' : '' }}>2. Sementara
+                    </option>
+                    <option value="Pelayanan Segera" {{ $pib->type_pib == 'Pelayanan Segera' ? 'selected' : '' }}>3.
+                        Pelayanan Segera</option>
+                    <option value="Gabungan 1 dan 2" {{ $pib->type_pib == 'Gaabungan 1 dan 2' ? 'selected' : '' }}>4.
+                        Gabungan 1 dan 2</option>
+                @else
+                    <option value="Untuk Dipakai" {{ old('type_pib') == 'Untuk Dipakai' ? 'selected' : '' }}>1. Untuk
+                        Dipakai</option>
+                    <option value="Sementara" {{ old('type_pib') == 'Sementara' ? 'selected' : '' }}>2. Sementara
+                    </option>
+                    <option value="Pelayanan Segera" {{ old('type_pib') == 'Pelayanan Segera' ? 'selected' : '' }}>3.
+                        Pelayanan Segera</option>
+                    <option value="Gabungan 1 dan 2" {{ old('type_pib') == 'Gaabungan 1 dan 2' ? 'selected' : '' }}>
+                        4.
+                        Gabungan 1 dan 2</option>
+                @endif
             </select>
         </div>
         <div class="form-group col">

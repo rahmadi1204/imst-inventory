@@ -35,7 +35,7 @@
     $("#qty_product0, #unit_price0").keyup(function() {
         let jumlah = $("#qty_product0").val();
         let harga = $("#unit_price0").val();
-        let total = parseInt(jumlah) * parseInt(harga);
+        let total = parseFloat(jumlah) * parseFloat(harga);
         $('#total_amount0').val(total);
     });
     $('#datePO').datetimepicker({
@@ -64,11 +64,11 @@
             j +
             ']" id="qty_product' +
             j +
-            '" class="form-control" /></td><td><div class="input-group"><div class="input-group-prepend"><span class="input-group-text curr">IDR</span></div><input name="unit_price[' +
+            '" class="form-control" /></td><td><div class="input-group"><div class="input-group-prepend"><span class="input-group-text curr">USD</span></div><input name="unit_price[' +
             j +
-            ']" type="number" class="form-control" id="unit_price' +
+            ']" type="number" step="0.01" class="form-control" id="unit_price' +
             j +
-            '"value="{{ $po->unit_price ?? old('unit_price') }}" required></div></td><td><div class="input-group" ><div class="input-group-prepend" ><span class = "input-group-text curr" > IDR </span></div> <input name = "total_amount[' +
+            '"value="{{ $po->unit_price ?? old('unit_price') }}" required></div></td><td><div class="input-group" ><div class="input-group-prepend" ><span class = "input-group-text curr" > USD </span></div> <input name = "total_amount[' +
             j +
             ']"type = "number"class = "form-control mata-uang"id = "total_amount' +
             j +
@@ -77,7 +77,7 @@
         $("#qty_product" + j + ", #unit_price" + j).keyup(function() {
             let jumlah = $("#qty_product" + j).val();
             let harga = $("#unit_price" + j).val();
-            let total = parseInt(jumlah) * parseInt(harga);
+            let total = parseFloat(jumlah) * parseFloat(harga);
             $('#total_amount' + j).val(total);
         });
         $("#code_product" + j).change(function() {

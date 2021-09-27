@@ -101,16 +101,16 @@ class PibController extends Controller
             'date_invoice' => 'required',
             'transaction' => 'required',
             'date_transaction' => 'required',
-            'house_bl' => 'required',
-            'date_house_bl' => 'required',
-            'master_bl' => 'required',
-            'date_master_bl' => 'required',
-            'bc11' => 'required',
-            'date_bc11' => 'required',
-            'pos' => 'required',
-            'sub' => 'required',
-            'facility' => 'required',
-            'dump' => 'required',
+            'house_bl' => 'nullable',
+            'date_house_bl' => 'nullable',
+            'master_bl' => 'nullable',
+            'date_master_bl' => 'nullable',
+            'bc11' => 'nullable',
+            'date_bc11' => 'nullable',
+            'pos' => 'nullable',
+            'sub' => 'nullable',
+            'facility' => 'nullable',
+            'dump' => 'nullable',
             'valuta' => 'required',
             'ndpbm' => 'required',
             'value' => 'required',
@@ -132,10 +132,11 @@ class PibController extends Controller
             $this->addDevies($request);
             $this->addHistory($request);
             $this->addStock($request);
-            $this->addRecived($request);
+            // $this->addRecived($request);
 
 
             DB::commit();
+            // dd('OK');
             return redirect()->route('pib.create')->withInput()->with('Ok', ' Data Tersimpan');
         } catch (\Throwable $th) {
             //throw $th;
@@ -155,6 +156,7 @@ class PibController extends Controller
     }
     public function addInvoice($pib)
     {
+        // dd($pib);
         $addInvoice =  PibInvoice::create($pib);
         return $addInvoice;
     }
@@ -293,10 +295,12 @@ class PibController extends Controller
             'qty_product' => 'required',
         ]);
         // dd($history);
+        $no_approval = str_replace('-', '', $request->no_approval);
         $count = count($history['code_product']);
         // dd($count);
         for ($i = 0; $i < $count; $i++) {
             $add = HistoryProduct::create([
+                'no_approval' => $no_approval,
                 'code_product' => $request->code_product[$i],
                 'name_product' => $request->name_product[$i],
                 'date_product' =>  $request->date_product,
@@ -308,23 +312,23 @@ class PibController extends Controller
         }
         return $add;
     }
-    public function addRecived($request)
-    {
-        $count = count($request['code_product']);
-        // dd($request);
-        for ($i = 0; $i < $count; $i++) {
-            $old[$i] = PoProduct::where('code_product', $request->code_product[$i])
-                ->where('no_po', $request->no_po)
-                ->value('qty_less');
-            $qty[$i] = $old[$i] - $request->qty_product[$i];
-            $add = PoProduct::where('code_product', $request->code_product[$i])
-                ->where('no_po', $request->no_po)
-                ->update([
-                    'qty_less' => $qty[$i],
-                ]);
-        }
-        return $add;
-    }
+    // public function addRecived($request)
+    // {
+    //     $count = count($request['code_product']);
+    //     // dd($request);
+    //     for ($i = 0; $i < $count; $i++) {
+    //         $old[$i] = PoProduct::where('code_product', $request->code_product[$i])
+    //             ->where('no_po', $request->no_po)
+    //             ->value('qty_less');
+    //         $qty[$i] = $old[$i] - $request->qty_product[$i];
+    //         $add = PoProduct::where('code_product', $request->code_product[$i])
+    //             ->where('no_po', $request->no_po)
+    //             ->update([
+    //                 'qty_less' => $qty[$i],
+    //             ]);
+    //     }
+    //     return $add;
+    // }
     public function addStock($request)
     {
 
@@ -374,6 +378,8 @@ class PibController extends Controller
     }
     public function deleteStock($id)
     {
+
+        HistoryProduct::where('no_approval', $id)->delete();
         $newQty = DB::table('pib_products')->where('no_approval', '=', $id)->get(['code_product', 'qty_product']);
         // dd($newQty);
         $count = count($newQty);

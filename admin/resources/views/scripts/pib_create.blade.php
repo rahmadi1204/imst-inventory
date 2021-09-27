@@ -196,7 +196,7 @@
 
         let jumlah = $("#ndpbm").val();
         let harga = $("#value").val();
-        let total = parseInt(jumlah) * parseInt(harga);
+        let total = parseFloat(jumlah) * parseFloat(harga);
         $('#pabean_value').val(total);
     });
 </script>

@@ -130,19 +130,19 @@
             <td>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text curr">IDR</span>
+                        <span class="input-group-text curr">USD</span>
                     </div>
-                    <input name="unit_price[0]" type="number" class="form-control" id="unit_price0"
+                    <input name="unit_price[0]" type="number" step="0.01" class="form-control" id="unit_price0"
                         value="{{ $po->unit_price ?? old('unit_price') }}" required>
                 </div>
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text curr">IDR</span>
+                        <span class="input-group-text curr">USD</span>
                     </div>
-                    <input name="total_amount[0]" type="number" class="form-control mata-uang" id="total_amount0"
-                        value="{{ $po->total_amount ?? old('total_amount') }}" required readonly>
+                    <input name="total_amount[0]" type="number" step="0.01" class="form-control mata-uang"
+                        id="total_amount0" value="{{ $po->total_amount ?? old('total_amount') }}" required readonly>
                 </div>
             </td>
             <td><button type="button" name="add" id="dynamic-pr" class="btn btn-outline-primary"><i

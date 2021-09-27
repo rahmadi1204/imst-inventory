@@ -59,8 +59,8 @@
                                             <td>{{ number_format($item->qty_product) }}</td>
                                             <td>{{ number_format($item->qty_less) }}</td>
                                             <td>{{ $item->currency }}</td>
-                                            <td>{{ number_format($item->unit_price, 0, ',', '.') }} </td>
-                                            <td>{{ number_format($item->total_amount) }}</td>
+                                            <td>{{ number_format($item->unit_price, 3, ',', '.') }} </td>
+                                            <td>{{ number_format($item->total_amount, 3, ',', '.') }}</td>
                                             <td>{{ $item->latest }}</td>
                                             <td>
                                                 @if ($item->qty_less == 0)

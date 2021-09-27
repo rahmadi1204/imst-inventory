@@ -21,10 +21,10 @@ class CreatePoProductsTable extends Migration
             $table->string('name_product');
             $table->string('description');
             $table->string('latest');
-            $table->integer('qty_product');
-            $table->integer('qty_less');
-            $table->integer('unit_price');
-            $table->integer('total_amount');
+            $table->bigInteger('qty_product');
+            $table->bigInteger('qty_less');
+            $table->double('unit_price');
+            $table->double('total_amount');
             $table->timestamps();
         });
     }

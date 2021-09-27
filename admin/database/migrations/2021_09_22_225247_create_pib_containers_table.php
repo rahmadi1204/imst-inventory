@@ -18,9 +18,9 @@ class CreatePibContainersTable extends Migration
             $table->string('no_approval')->nullable();
             $table->string('no_register')->nullable();
             $table->string('no_container')->nullable();
-            $table->integer('size_container')->nullable();
+            $table->string('size_container')->nullable();
             $table->string('type_container')->nullable();
-            $table->integer('qty_container')->nullable();
+            $table->bigInteger('qty_container')->nullable();
             $table->timestamps();
         });
     }
