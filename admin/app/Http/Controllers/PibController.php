@@ -67,31 +67,6 @@ class PibController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-
-        DB::beginTransaction();
-
-        try {
-            $this->addPibs($request);
-            $this->addLoad($request);
-            $this->addInvoice($request);
-            $this->addContainer($request);
-            $this->addProduct($request);
-            $this->addDevies($request);
-            $this->addHistory($request);
-            $this->addStock($request);
-            $this->addRecived($request);
-
-
-            DB::commit();
-            return redirect()->route('pib.create')->withInput()->with('Ok', ' Data Tersimpan');
-        } catch (\Throwable $th) {
-            //throw $th;
-            dd('gagal');
-            return redirect()->route('pib.create')->withInput()->with('Fail', ' Data Tidak Tersimpan');
-        }
-    }
-    public function addPibs($request)
-    {
         $pib = $request->validate([
             'type_document_pabean' => 'required',
             'office_pabean' => 'required',
@@ -114,61 +89,72 @@ class PibController extends Controller
             'name_ppjk' => 'required',
             'npwp_ppjk' => 'required',
             'np_ppjk' => 'required',
-        ]);
-        $pib['no_approval'] = str_replace('-', '', $request->no_approval);
-        // dd($pib);
-        $add = Pib::create($pib);
-        return $add;
-    }
-    public function addLoad($request)
-    {
-        // dd($request);
-        $pib = $request->validate([
-            'no_approval' => 'required',
-            'no_register' => 'nullable',
-            'date_register' => 'nullable',
-            'way_transport' => 'nullable',
-            'name_transport' => 'nullable',
-            'date_estimate' => 'nullable',
-            'load_place' => 'nullable',
-            'load_transit' => 'nullable',
-            'load_destination' => 'nullable',
-        ]);
-        $pib['no_approval'] = str_replace('-', '', $request->no_approval);
-        // dd($pib);
-        $add = PibLoad::create($pib);
-        return $add;
-    }
-    public function addInvoice($request)
-    {
-        // dd($request);
-        $pib = $request->validate([
-            'no_approval' => 'required',
+            'no_register' => 'required',
+            'date_register' => 'required',
+            'way_transport' => 'required',
+            'name_transport' => 'required',
+            'date_estimate' => 'required',
+            'load_place' => 'required',
+            'load_transit' => 'required',
+            'load_destination' => 'required',
             'invoice' => 'required',
             'date_invoice' => 'required',
             'transaction' => 'required',
             'date_transaction' => 'required',
-            'house_bl' => 'nullable',
-            'date_house_bl' => 'nullable',
-            'master_bl' => 'nullable',
-            'date_master_bl' => 'nullable',
-            'bc11' => 'nullable',
-            'date_bc11' => 'nullable',
-            'pos' => 'nullable',
-            'sub' => 'nullable',
-            'facility' => 'nullable',
-            'dump' => 'nullable',
-            'valuta' => 'nullable',
-            'ndpbm' => 'nullable',
-            'value' => 'nullable',
-            'insurance' => 'nullable',
-            'freight' => 'nullable',
-            'pabean_value' => 'nullable',
+            'house_bl' => 'required',
+            'date_house_bl' => 'required',
+            'master_bl' => 'required',
+            'date_master_bl' => 'required',
+            'bc11' => 'required',
+            'date_bc11' => 'required',
+            'pos' => 'required',
+            'sub' => 'required',
+            'facility' => 'required',
+            'dump' => 'required',
+            'valuta' => 'required',
+            'ndpbm' => 'required',
+            'value' => 'required',
+            'insurance' => 'required',
+            'freight' => 'required',
+            'pabean_value' => 'required',
         ]);
-        $pib['invoice'] = str_replace('-', '', $request->invoice);
         $pib['no_approval'] = str_replace('-', '', $request->no_approval);
+        $pib['invoice'] = str_replace('-', '', $request->invoice);
         $pib['sub'] = str_replace(' ', '', $request->sub);
-        // dd($pib);
+        DB::beginTransaction();
+
+        try {
+            $this->addPibs($pib);
+            $this->addLoad($pib);
+            $this->addInvoice($pib);
+            $this->addContainer($request);
+            $this->addProduct($request);
+            $this->addDevies($request);
+            $this->addHistory($request);
+            $this->addStock($request);
+            $this->addRecived($request);
+
+
+            DB::commit();
+            return redirect()->route('pib.create')->withInput()->with('Ok', ' Data Tersimpan');
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd('gagal');
+            return redirect()->route('pib.create')->withInput()->with('Fail', ' Data Tidak Tersimpan');
+        }
+    }
+    public function addPibs($pib)
+    {
+        $add = Pib::create($pib);
+        return $add;
+    }
+    public function addLoad($pib)
+    {
+        $addLoad = PibLoad::create($pib);
+        return $addLoad;
+    }
+    public function addInvoice($pib)
+    {
         $addInvoice =  PibInvoice::create($pib);
         return $addInvoice;
     }
@@ -183,8 +169,7 @@ class PibController extends Controller
         ]);
         $container['no_approval'] = str_replace('-', '', $request->no_approval);
         $count = count($container['no_container']);
-        // dd($count);
-        // dd($container['no_approval']);
+
         for ($i = 0; $i < $count; $i++) {
             // dd($count);
             $add = PibContainer::create([
@@ -285,12 +270,12 @@ class PibController extends Controller
             'pph_taxfree' => 'nullable',
             'pph_free' => 'nullable',
             'pph_paidoff' => 'nullable',
-            'total_paid' => 'nullable',
-            'total_borne' => 'nullable',
-            'total_delay' => 'nullable',
-            'total_taxfree' => 'nullable',
-            'total_free' => 'nullable',
-            'total_paidoff' => 'nullable',
+            'total_paid' => 'required',
+            'total_borne' => 'required',
+            'total_delay' => 'required',
+            'total_taxfree' => 'required',
+            'total_free' => 'required',
+            'total_paidoff' => 'required',
         ]);
         $devies['no_approval'] = str_replace('-', '', $request->no_approval);
         // dd($devies);
@@ -371,13 +356,34 @@ class PibController extends Controller
     {
         $id = $request->id;
         // dd($id);
-        $deletePib = Pib::where('no_approval', $id)->delete();
-        $deleteInvoice = PibInvoice::where('no_approval', $id)->delete();
-        $deleteLoad = PibLoad::where('no_approval', $id)->delete();
-        $deleteDevy = PibDevy::where('no_approval', $id)->delete();
-        $deleteContainer = PibContainer::where('no_approval', $id)->delete();
-        $deleteProduct = PibProduct::where('no_approval', $id)->delete();
-
-        return redirect()->back()->with('Ok', 'Data Dihapus');
+        DB::beginTransaction();
+        try {
+            Pib::where('no_approval', $id)->delete();
+            PibInvoice::where('no_approval', $id)->delete();
+            PibLoad::where('no_approval', $id)->delete();
+            PibDevy::where('no_approval', $id)->delete();
+            PibContainer::where('no_approval', $id)->delete();
+            PibProduct::where('no_approval', $id)->delete();
+            $this->deleteStock($id);
+            DB::commit();
+            return redirect()->back()->with('Ok', 'Data Dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('Fail', 'Data Gagal Dihapus');
+        }
+    }
+    public function deleteStock($id)
+    {
+        $newQty = DB::table('pib_products')->where('no_approval', '=', $id)->get(['code_product', 'qty_product']);
+        // dd($newQty);
+        $count = count($newQty);
+        for ($i = 0; $i < $count; $i++) {
+            $oldQty[$i] = DB::table('stock_products')->where('code_product', '=', $newQty[$i]->code_product)->value('qty_product');
+            // dd($oldQty[$i]);
+            $add = DB::table('stock_products')->where('code_product', '=', $newQty[$i]->code_product)->update([
+                'qty_product' => $oldQty[$i] - $newQty[$i]->qty_product,
+            ]);
+        }
+        return $add;
     }
 }

@@ -22,7 +22,16 @@
             <select name="no_po" id="no_po" class="form-control">
                 <option selected disabled>Pilih</option>
                 @foreach ($po as $item)
-                    <option value="{{ $item->no_po }}">{{ $item->no_po }}</option>
+                    @isset($pib)
+                        @if ($item->no_po == $pib->no_po)
+                            <option value="{{ $item->no_po }}" selected>{{ $item->no_po }}</option>
+                        @endif
+                    @endisset
+                    @if ($item->no_po == old('no_po'))
+                        <option value="{{ $item->no_po }}" selected>{{ $item->no_po }}</option>
+                    @else
+                        <option value="{{ $item->no_po }}">{{ $item->no_po }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>
@@ -33,8 +42,13 @@
             <label for="type_pib">Jenis PIB</label>
             <select name="type_pib" id="type_pib" class="form-control">
                 <option selected disabled>Pilih</option>
-                <option value="Biasa" {{ old('type_pib') == 'Biasa' ? 'selected' : '' }}>1. Biasa</option>
-                <option value="Berkala" {{ old('type_pib') == 'Berkala' ? 'selected' : '' }}>2. Berkala</option>
+                @if (isset($pib->type_pib))
+                    <option value="Biasa" {{ $pib->type_pib == 'Biasa' ? 'selected' : '' }}>1. Biasa</option>
+                    <option value="Berkala" {{ $pib->type_pib == 'Berkala' ? 'selected' : '' }}>2. Berkala</option>
+                @else
+                    <option value="Biasa" {{ old('type_pib') == 'Biasa' ? 'selected' : '' }}>1. Biasa</option>
+                    <option value="Berkala" {{ old('type_pib') == 'Berkala' ? 'selected' : '' }}>2. Berkala</option>
+                @endif
             </select>
         </div>
         <div class="form-group col">
