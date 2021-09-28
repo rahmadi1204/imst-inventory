@@ -6,6 +6,7 @@ use App\Models\TypeProduct;
 use App\Models\StockProduct;
 use Illuminate\Http\Request;
 use App\Models\HistoryProduct;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Master\MasterProduct;
 use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;

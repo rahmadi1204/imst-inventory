@@ -7,10 +7,11 @@ use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\PoProduct;
 use App\Models\Warehouse;
+use App\Models\PibProduct;
 use App\Models\TypeProduct;
 use App\Models\Data\Product;
-use App\Models\HistoryProduct;
 use Illuminate\Http\Request;
+use App\Models\HistoryProduct;
 use App\Models\RecivedProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
@@ -19,9 +20,25 @@ class PoController extends Controller
 {
     function index()
     {
+
         $data = DB::table('pos')
             ->join('po_products', 'po_products.no_po', '=', 'pos.no_po')
             ->get();
+        foreach ($data as $key) {
+            DB::table('po_products')->where('code_product', '=', $key->code_product)->update([
+                'qty_recived' => 0,
+            ]);
+            $product = PibProduct::where('no_po', $key->no_po)->groupBy('code_product')
+                ->selectRaw(' sum(qty_product) as sum, code_product')
+                ->pluck('sum', 'code_product');
+            // dd($product);
+            foreach ($product as $key => $value) {
+                PoProduct::where('code_product', $key)->update([
+                    'qty_recived' => $value,
+                ]);
+            }
+        }
+        // dd($product);
         return view('master_data.po.po_index', [
             'data' => $data,
             'title' => 'Data Pre Order',
@@ -89,7 +106,7 @@ class PoController extends Controller
                     'description' => $request->description[$i],
                     'latest' => $request->latest[$i],
                     'qty_product' => $request->qty_product[$i],
-                    'qty_less' => $request->qty_product[$i],
+                    'qty_recived' => 0,
                     'unit_price' => $request->unit_price[$i],
                     'total_amount' => $request->total_amount[$i],
                     'created_at' => now(),

@@ -22,7 +22,7 @@ class CreatePoProductsTable extends Migration
             $table->string('description');
             $table->string('latest');
             $table->bigInteger('qty_product');
-            $table->bigInteger('qty_less');
+            $table->bigInteger('qty_recived');
             $table->double('unit_price');
             $table->double('total_amount');
             $table->timestamps();
