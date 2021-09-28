@@ -117,8 +117,13 @@
             <label for="valuta">Valuta</label>
             <select name="valuta" id="valuta" class="form-control">
                 <option value="" selected disabled>Pilih</option>
-                <option value="USD">USD</option>
-                <option value="IDR">IDR</option>
+                @if (isset($pib->valuta))
+                    <option value="USD" {{ $pib->valuta == 'USD' ? 'selected' : '' }}>1. USD</option>
+                    <option value="IDR" {{ $pib->valuta == 'IDR' ? 'selected' : '' }}>2. IDR</option>
+                @else
+                    <option value="USD" {{ old('valuta') == 'USD' ? 'selected' : '' }}>1. USD</option>
+                    <option value="IDR" {{ old('valuta') == 'IDR' ? 'selected' : '' }}>2. IDR</option>
+                @endif
             </select>
         </div>
         <div class="form-group col">

@@ -16,6 +16,7 @@ class CreateHistoryProductsTable extends Migration
         Schema::create('history_products', function (Blueprint $table) {
             $table->id();
             $table->string('no_approval');
+            $table->string('code_pib');
             $table->string('code_product');
             $table->string('name_product');
             $table->string('date_product');

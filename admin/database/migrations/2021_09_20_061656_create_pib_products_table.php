@@ -15,8 +15,8 @@ class CreatePibProductsTable extends Migration
     {
         Schema::create('pib_products', function (Blueprint $table) {
             $table->id();
+            $table->string('code_pib');
             $table->string('no_approval');
-            $table->string('no_register');
             $table->date('date_product');
             $table->bigInteger('pos_product');
             $table->string('code_product');

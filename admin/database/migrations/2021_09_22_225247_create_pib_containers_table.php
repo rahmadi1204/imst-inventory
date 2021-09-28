@@ -15,6 +15,7 @@ class CreatePibContainersTable extends Migration
     {
         Schema::create('pib_containers', function (Blueprint $table) {
             $table->id();
+            $table->string('code_pib');
             $table->string('no_approval')->nullable();
             $table->string('no_register')->nullable();
             $table->string('no_container')->nullable();

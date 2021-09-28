@@ -15,6 +15,7 @@ class CreatePibsTable extends Migration
     {
         Schema::create('pibs', function (Blueprint $table) {
             $table->id();
+            $table->string('code_pib');
             $table->string('type_document_pabean')->nullable();
             $table->string('office_pabean')->nullable();
             $table->string('no_approval')->unique();

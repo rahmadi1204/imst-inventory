@@ -16,7 +16,7 @@ class CreatePibDeviesTable extends Migration
         Schema::create('pib_devies', function (Blueprint $table) {
             $table->id();
             $table->string('no_approval');
-            $table->string('no_register');
+            $table->string('code_pib');
             $table->double('bm_paid')->nullable();
             $table->double('bm_borne')->nullable();
             $table->double('bm_delay')->nullable();

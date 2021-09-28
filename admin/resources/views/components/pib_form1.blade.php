@@ -56,22 +56,28 @@
             <select name="type_import" id="type_import" class="form-control ">
                 <option selected disabled>Pilih</option>
                 @if (isset($pib->type_pib))
-                    <option value="Untuk Dipakai" {{ $pib->type_pib == 'Untuk Dipakai' ? 'selected' : '' }}>1. Untuk
+                    <option value="Untuk Dipakai" {{ $pib->type_import == 'Untuk Dipakai' ? 'selected' : '' }}>1.
+                        Untuk
                         Dipakai</option>
-                    <option value="Sementara" {{ $pib->type_pib == 'Sementara' ? 'selected' : '' }}>2. Sementara
+                    <option value="Sementara" {{ $pib->type_import == 'Sementara' ? 'selected' : '' }}>2. Sementara
                     </option>
-                    <option value="Pelayanan Segera" {{ $pib->type_pib == 'Pelayanan Segera' ? 'selected' : '' }}>3.
+                    <option value="Pelayanan Segera" {{ $pib->type_import == 'Pelayanan Segera' ? 'selected' : '' }}>
+                        3.
                         Pelayanan Segera</option>
-                    <option value="Gabungan 1 dan 2" {{ $pib->type_pib == 'Gaabungan 1 dan 2' ? 'selected' : '' }}>4.
+                    <option value="Gabungan 1 dan 2"
+                        {{ $pib->type_import == 'Gaabungan 1 dan 2' ? 'selected' : '' }}>4.
                         Gabungan 1 dan 2</option>
                 @else
-                    <option value="Untuk Dipakai" {{ old('type_pib') == 'Untuk Dipakai' ? 'selected' : '' }}>1. Untuk
+                    <option value="Untuk Dipakai" {{ old('type_import') == 'Untuk Dipakai' ? 'selected' : '' }}>1.
+                        Untuk
                         Dipakai</option>
-                    <option value="Sementara" {{ old('type_pib') == 'Sementara' ? 'selected' : '' }}>2. Sementara
+                    <option value="Sementara" {{ old('type_import') == 'Sementara' ? 'selected' : '' }}>2. Sementara
                     </option>
-                    <option value="Pelayanan Segera" {{ old('type_pib') == 'Pelayanan Segera' ? 'selected' : '' }}>3.
+                    <option value="Pelayanan Segera"
+                        {{ old('type_import') == 'Pelayanan Segera' ? 'selected' : '' }}>3.
                         Pelayanan Segera</option>
-                    <option value="Gabungan 1 dan 2" {{ old('type_pib') == 'Gaabungan 1 dan 2' ? 'selected' : '' }}>
+                    <option value="Gabungan 1 dan 2"
+                        {{ old('type_import') == 'Gaabungan 1 dan 2' ? 'selected' : '' }}>
                         4.
                         Gabungan 1 dan 2</option>
                 @endif
@@ -81,10 +87,28 @@
             <label for="payment_method">Cara Pembayaran</label>
             <select name="payment_method" id="payment_method" class="form-control ">
                 <option selected disabled>Pilih</option>
-                <option value="Biasa/Tunai">1. Biasa/Tunai</option>
-                <option value="Berkala">2. Berkala</option>
-                <option value="Dengan Jaminan">3. Dengan Jaminan</option>
-                <option value="Lainnya">4. Lainnya</option>
+                @if (isset($pib->type_pib))
+                    <option value="Biasa/Tunai" {{ $pib->payment_method == 'Biasa/Tunai' ? 'selected' : '' }}>1.
+                        Biasa/Tunai</option>
+                    <option value="Berkala" {{ $pib->payment_method == 'Berkala' ? 'selected' : '' }}>2. Berkala
+                    </option>
+                    <option value="Dengan Jaminan" {{ $pib->payment_method == 'Dengan Jaminan' ? 'selected' : '' }}>
+                        3.
+                        Dengan Jaminan</option>
+                    <option value="Lainnya" {{ $pib->payment_method == 'Lainnya' ? 'selected' : '' }}>4.
+                        Lainnya</option>
+                @else
+                    <option value="Biasa/Tunai" {{ old('payment_method') == 'Biasa/Tunai' ? 'selected' : '' }}>1.
+                        Biasa/Tunai</option>
+                    <option value="Berkala" {{ old('payment_method') == 'Berkala' ? 'selected' : '' }}>2. Berkala
+                    </option>
+                    <option value="Dengan Jaminan" {{ old('payment_method') == 'Dengan Jaminan' ? 'selected' : '' }}>
+                        3.
+                        Dengan Jaminan</option>
+                    <option value="Lainnya" {{ old('payment_method') == 'Lainnya' ? 'selected' : '' }}>
+                        4.
+                        Lainnya</option>
+                @endif
             </select>
         </div>
     </div>
@@ -94,8 +118,19 @@
             <select name="name_shipper" id="name_shipper" class="form-control ">
                 <option selected disabled>Pilih</option>
                 @foreach ($seller as $item)
-                    <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}">
-                        {{ $item->name_supplier }}</option>
+                    @isset($pib)
+                        @if ($item->name_supplier == $pib->name_supplier)
+                            <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
+                                selected>{{ $item->name_supplier }}</option>
+                        @endif
+                    @endisset
+                    @if ($item->name_supplier == old('name_seller'))
+                        <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
+                            selected>{{ $item->name_supplier }}</option>
+                    @else
+                        <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}">
+                            {{ $item->name_supplier }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>
@@ -110,9 +145,21 @@
             <label for="name_seller">Penjual</label>
             <select name="name_seller" id="name_seller" class="form-control ">
                 <option selected disabled>Pilih</option>
+
                 @foreach ($seller as $item)
-                    <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}">
-                        {{ $item->name_supplier }}</option>
+                    @isset($pib)
+                        @if ($item->name_supplier == $pib->name_supplier)
+                            <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
+                                selected>{{ $item->name_supplier }}</option>
+                        @endif
+                    @endisset
+                    @if ($item->name_supplier == old('name_seller'))
+                        <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
+                            selected>{{ $item->name_supplier }}</option>
+                    @else
+                        <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}">
+                            {{ $item->name_supplier }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>
@@ -128,6 +175,20 @@
             <select name="name_importir" id="name_importir" class="form-control ">
                 <option selected disabled>Pilih</option>
                 @foreach ($importir as $item)
+                    @isset($pib)
+                        @if ($item->name_importir == $pib->name_importir)
+                            <option value="{{ $item->name_importir }}" address="{{ $item->address_importir }}"
+                                nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                                apiu="{{ $item->apiu }}" selected>
+                                {{ $item->name_importir }}</option>
+                        @endif
+                    @endisset
+                    @if ($item->name_importir == old('name_importir'))
+                        <option value="{{ $item->name_importir }}" address="{{ $item->address_importir }}"
+                            nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                            apiu="{{ $item->apiu }}" selected>
+                            {{ $item->name_importir }}</option>
+                    @endif
                     <option value="{{ $item->name_importir }}" address="{{ $item->address_importir }}"
                         nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
                         apiu="{{ $item->apiu }}">
@@ -162,7 +223,23 @@
             <select name="name_owner" id="name_owner" class="form-control">
                 <option selected disabled>Pilih</option>
                 @foreach ($importir as $item)
-                    <option value="{{ $item->name_importir }}" address="{{ $item->address_importir }}">
+                    @isset($pib)
+                        @if ($item->name_importir == $pib->name_importir)
+                            <option value="{{ $item->name_importir }}" address="{{ $item->address_importir }}"
+                                nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                                apiu="{{ $item->apiu }}" selected>
+                                {{ $item->name_importir }}</option>
+                        @endif
+                    @endisset
+                    @if ($item->name_importir == old('name_importir'))
+                        <option value="{{ $item->name_importir }}" address="{{ $item->address_importir }}"
+                            nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                            apiu="{{ $item->apiu }}" selected>
+                            {{ $item->name_importir }}</option>
+                    @endif
+                    <option value="{{ $item->name_importir }}" address="{{ $item->address_importir }}"
+                        nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                        apiu="{{ $item->apiu }}">
                         {{ $item->name_importir }}</option>
                 @endforeach
             </select>

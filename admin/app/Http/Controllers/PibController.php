@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePibRequest;
 use App\Models\Po;
 use App\Models\Pib;
 use App\Models\PibDevy;
@@ -50,6 +51,7 @@ class PibController extends Controller
         $product = MasterProduct::all();
         $po = Po::all();
         $unit = Unit::all();
+        // dd($importir);
         return view('master_data.pib.pib_create', [
             'seller' => $seller,
             'unit' => $unit,
@@ -64,79 +66,34 @@ class PibController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StorePibRequest $request)
     {
-        // dd($request);
-        $pib = $request->validate([
-            'type_document_pabean' => 'required',
-            'office_pabean' => 'required',
-            'no_approval' => 'required',
-            'no_po' => 'required',
-            'type_pib' => 'required',
-            'type_import' => 'required',
-            'payment_method' => 'required',
-            'name_shipper' => 'required',
-            'address_shipper' => 'required',
-            'name_seller' => 'required',
-            'address_seller' => 'required',
-            'nik_importir' => 'required',
-            'name_importir' => 'required',
-            'address_importir' => 'required',
-            'status_importir' => 'required',
-            'apiu' => 'required',
-            'name_owner' => 'required',
-            'address_owner' => 'required',
-            'name_ppjk' => 'required',
-            'npwp_ppjk' => 'required',
-            'np_ppjk' => 'required',
-            'no_register' => 'required',
-            'date_register' => 'required',
-            'way_transport' => 'required',
-            'name_transport' => 'required',
-            'date_estimate' => 'required',
-            'load_place' => 'required',
-            'load_transit' => 'required',
-            'load_destination' => 'required',
-            'invoice' => 'required',
-            'date_invoice' => 'required',
-            'transaction' => 'required',
-            'date_transaction' => 'required',
-            'house_bl' => 'nullable',
-            'date_house_bl' => 'nullable',
-            'master_bl' => 'nullable',
-            'date_master_bl' => 'nullable',
-            'bc11' => 'nullable',
-            'date_bc11' => 'nullable',
-            'pos' => 'nullable',
-            'sub' => 'nullable',
-            'facility' => 'nullable',
-            'dump' => 'nullable',
-            'valuta' => 'required',
-            'ndpbm' => 'required',
-            'value' => 'required',
-            'insurance' => 'required',
-            'freight' => 'required',
-            'pabean_value' => 'required',
-        ]);
-        $pib['no_approval'] = str_replace('-', '', $request->no_approval);
-        $pib['invoice'] = str_replace('-', '', $request->invoice);
-        $pib['sub'] = str_replace(' ', '', $request->sub);
+        $validate = $request->validated();
+        // dd($validate);
+        $request->code_pib = date('ymdhis');
+        $request->created_at = date('Y-m-d');
+        $request->updated_at = date('Y-m-d');
+        $request->no_approval = str_replace('-', '', $request->no_approval);
+        $request->invoice = str_replace('-', '', $request->invoice);
+        $request->sub = str_replace(' ', '', $request->sub);
+
         DB::beginTransaction();
 
         try {
-            $this->addPibs($pib);
-            $this->addLoad($pib);
-            $this->addInvoice($pib);
+
+            $this->addPibs($request);
+            $this->addLoad($request);
+            $this->addInvoice($request);
             $this->addContainer($request);
             $this->addProduct($request);
             $this->addDevies($request);
             $this->addHistory($request);
-            $this->addStock($request);
+            // $this->addStock($request);
             // $this->addRecived($request);
 
 
             DB::commit();
-            // dd('OK');
+            dd('OK');
             return redirect()->route('pib.create')->withInput()->with('Ok', ' Data Tersimpan');
         } catch (\Throwable $th) {
             //throw $th;
@@ -144,73 +101,113 @@ class PibController extends Controller
             return redirect()->route('pib.create')->withInput()->with('Fail', ' Data Tidak Tersimpan');
         }
     }
-    public function addPibs($pib)
+    public function addPibs($request)
     {
-        $add = Pib::create($pib);
+        $add = Pib::insert([
+            'code_pib' => $request->code_pib,
+            'type_document_pabean' => $request->type_document_pabean,
+            'office_pabean' => $request->office_pabean,
+            'no_approval' => $request->no_approval,
+            'no_po' => $request->no_po,
+            'type_pib' => $request->type_pib,
+            'type_import' => $request->type_import,
+            'payment_method' => $request->payment_method,
+            'name_shipper' => $request->name_shipper,
+            'address_shipper' => $request->address_shipper,
+            'name_seller' => $request->name_seller,
+            'address_seller' => $request->address_seller,
+            'nik_importir' => $request->nik_importir,
+            'name_importir' => $request->name_importir,
+            'address_importir' => $request->address_importir,
+            'status_importir' => $request->status_importir,
+            'apiu' => $request->apiu,
+            'name_owner' => $request->name_owner,
+            'address_owner' => $request->address_owner,
+            'name_ppjk' => $request->name_ppjk,
+            'npwp_ppjk' => $request->npwp_ppjk,
+            'np_ppjk' => $request->np_ppjk,
+            'created_at' => $request->created_at,
+            'updated_at' => $request->updated_at,
+        ]);
         return $add;
     }
-    public function addLoad($pib)
+    public function addLoad($request)
     {
-        $addLoad = PibLoad::create($pib);
-        return $addLoad;
+        $add = PibLoad::insert([
+            'code_pib' => $request->code_pib,
+            'no_approval' => $request->no_approval,
+            'no_register' => $request->no_register,
+            'date_register' => $request->date_register,
+            'way_transport' => $request->way_transport,
+            'name_transport' => $request->name_transport,
+            'date_estimate' => $request->date_estimate,
+            'load_place' => $request->load_place,
+            'load_transit' => $request->load_transit,
+            'load_destination' => $request->load_destination,
+            'created_at' => $request->created_at,
+            'updated_at' => $request->updated_at,
+        ]);
+        return $add;
     }
-    public function addInvoice($pib)
+    public function addInvoice($request)
     {
         // dd($pib);
-        $addInvoice =  PibInvoice::create($pib);
+        $addInvoice =  PibInvoice::insert([
+            'code_pib' => $request->code_pib,
+            'no_approval' => $request->no_approval,
+            'invoice' => $request->invoice,
+            'date_invoice' => $request->date_invoice,
+            'transaction' => $request->transaction,
+            'date_transaction' => $request->date_transaction,
+            'house_bl' => $request->house_bl,
+            'date_house_bl' => $request->date_house_bl,
+            'master_bl' => $request->master_bl,
+            'date_master_bl' => $request->date_master_bl,
+            'bc11' => $request->bc11,
+            'date_bc11' => $request->date_bc11,
+            'pos' => $request->pos,
+            'sub' => $request->sub,
+            'facility' => $request->facility,
+            'dump' => $request->dump,
+            'valuta' => $request->valuta,
+            'ndpbm' => $request->ndpbm,
+            'value' => $request->value,
+            'insurance' => $request->insurance,
+            'freight' => $request->freight,
+            'pabean_value' => $request->pabean_value,
+            'created_at' => $request->created_at,
+            'updated_at' => $request->updated_at,
+        ]);
         return $addInvoice;
     }
     public function addContainer($request)
     {
-        $container = $request->validate([
-            'no_approval' => 'required',
-            'no_register' => 'required',
-            'no_container' => 'required',
-            'size_container' => 'required',
-            'type_container' => 'required',
-        ]);
-        $container['no_approval'] = str_replace('-', '', $request->no_approval);
-        $count = count($container['no_container']);
+        $count = count($request['no_container']);
 
         for ($i = 0; $i < $count; $i++) {
             // dd($count);
             $add = PibContainer::create([
-                'no_approval' => $container['no_approval'],
-                'no_register' => $request->no_register,
+                'no_approval' => $request->no_approval,
+                'code_pib' => $request->code_pib,
                 'no_container' => $request->no_container[$i],
                 'type_container' => $request->type_container[$i],
                 'size_container' => $request->size_container[$i],
                 'qty_container' => $count,
+                'created_at' => $request->created_at,
+                'updated_at' => $request->updated_at,
             ]);
         }
         return $add;
     }
     public function addProduct($request)
     {
-        $product = $request->validate([
-            'no_approval' => 'required',
-            'no_register' => 'required',
-            'date_product' => 'required',
-            'pos_product' => 'required',
-            'code_product' => 'required',
-            'type_product' => 'required',
-            'name_product' => 'required',
-            'country_product' => 'required',
-            'qty_product' => 'required',
-            'unit_product' => 'required',
-            'netto_product' => 'required',
-            'qty_pack' => 'required',
-            'type_pack' => 'required',
-            'value_pabean' => 'required',
-            'type_pabean' => 'required',
-        ]);
-        $no_approval = str_replace('-', '', $request->no_approval);
-        $count = count($product['code_product']);
+
+        $count = count($request['code_product']);
         // dd($no_approval);
         for ($i = 0; $i < $count; $i++) {
-            $add = PibProduct::create([
-                'no_approval' => $no_approval,
-                'no_register' => $request->no_register,
+            $add = PibProduct::insert([
+                'no_approval' => $request->no_approval,
+                'code_pib' => $request->code_pib,
                 'date_product' => $request->date_product,
                 'pos_product' => $request->pos_product[$i],
                 'code_product' => $request->code_product[$i],
@@ -225,6 +222,8 @@ class PibController extends Controller
                 'value_pabean' => $request->value_pabean[$i],
                 'type_pabean' => $request->type_pabean,
                 'qty_type_product' => $count,
+                'created_at' => $request->created_at,
+                'updated_at' => $request->updated_at,
             ]);
         }
         return $add;
@@ -235,7 +234,7 @@ class PibController extends Controller
         $devies = $request->validate([
 
             'no_approval' => 'required',
-            'no_register' => 'required',
+            'code_pib' => 'nullable',
             'bm_paid' => 'nullable',
             'bm_borne' => 'nullable',
             'bm_delay' => 'nullable',
@@ -279,7 +278,8 @@ class PibController extends Controller
             'total_free' => 'required',
             'total_paidoff' => 'required',
         ]);
-        $devies['no_approval'] = str_replace('-', '', $request->no_approval);
+        $devies['no_approval'] = $request->no_approval;
+        $devies['code_pib'] = $request->code_pib;
         // dd($devies);
         $addDevies = PibDevy::create($devies);
         return $addDevies;
@@ -287,20 +287,13 @@ class PibController extends Controller
 
     public function addHistory($request)
     {
-        // dd($request);
-        $history = $request->validate([
-            'code_product' => 'required',
-            'name_product' => 'required',
-            'date_product' => 'required',
-            'qty_product' => 'required',
-        ]);
-        // dd($history);
-        $no_approval = str_replace('-', '', $request->no_approval);
-        $count = count($history['code_product']);
+
+        $count = count($request['code_product']);
         // dd($count);
         for ($i = 0; $i < $count; $i++) {
-            $add = HistoryProduct::create([
-                'no_approval' => $no_approval,
+            $add = HistoryProduct::insert([
+                'no_approval' => $request->no_approval,
+                'code_pib' => $request->code_pib,
                 'code_product' => $request->code_product[$i],
                 'name_product' => $request->name_product[$i],
                 'date_product' =>  $request->date_product,
@@ -308,6 +301,8 @@ class PibController extends Controller
                 'from' =>  $request->name_shipper,
                 'to' =>  $request->name_importir,
                 'qty_product' =>  $request->qty_product[$i],
+                'created_at' => $request->created_at,
+                'updated_at' => $request->updated_at,
             ]);
         }
         return $add;
@@ -329,32 +324,32 @@ class PibController extends Controller
     //     }
     //     return $add;
     // }
-    public function addStock($request)
-    {
+    // public function addStock($request)
+    // {
 
-        $count = count($request['code_product']);
-        // dd($request);
-        for ($i = 0; $i < $count; $i++) {
-            $old[$i] = StockProduct::where('code_product', $request->code_product[$i])
-                ->value('qty_product');
-            if ($old[$i] == null) {
-                $qty[$i] = $request->qty_product[$i];
-                $add = StockProduct::create([
-                    'code_product' => $request->code_product[$i],
-                    'name_product' => $request->name_product[$i],
-                    'type_product' => $request->type_product[$i],
-                    'qty_product' =>  $qty[$i],
-                ]);
-            } else {
-                $qty[$i] = $old[$i] + $request->qty_product[$i];
-                $add = StockProduct::where('code_product', $request->code_product[$i])
-                    ->update([
-                        'qty_product' => $qty[$i],
-                    ]);
-            }
-        }
-        return $add;
-    }
+    //     $count = count($request['code_product']);
+    //     // dd($request);
+    //     for ($i = 0; $i < $count; $i++) {
+    //         $old[$i] = StockProduct::where('code_product', $request->code_product[$i])
+    //             ->value('qty_product');
+    //         if ($old[$i] == null) {
+    //             $qty[$i] = $request->qty_product[$i];
+    //             $add = StockProduct::create([
+    //                 'code_product' => $request->code_product[$i],
+    //                 'name_product' => $request->name_product[$i],
+    //                 'type_product' => $request->type_product[$i],
+    //                 'qty_product' =>  $qty[$i],
+    //             ]);
+    //         } else {
+    //             $qty[$i] = $old[$i] + $request->qty_product[$i];
+    //             $add = StockProduct::where('code_product', $request->code_product[$i])
+    //                 ->update([
+    //                     'qty_product' => $qty[$i],
+    //                 ]);
+    //         }
+    //     }
+    //     return $add;
+    // }
 
     public function destroy(Request $request)
     {
