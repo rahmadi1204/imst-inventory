@@ -25,21 +25,22 @@
                     @isset($pib)
                         @if ($item->no_po == $pib->no_po)
                             <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
-                                address="{{ $item->vendor_address }}" selected>
+                                code_po="{{ $item->code_po }}" address="{{ $item->vendor_address }}" selected>
                                 {{ $item->no_po }}</option>
                         @endif
                     @endisset
                     @if ($item->no_po == old('no_po'))
                         <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
-                            address="{{ $item->vendor_address }}" selected>
+                            code_po="{{ $item->code_po }}" address="{{ $item->vendor_address }}" selected>
                             {{ $item->no_po }}</option>
                     @else
                         <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
-                            address="{{ $item->vendor_address }}">
+                            code_po="{{ $item->code_po }}" address="{{ $item->vendor_address }}">
                             {{ $item->no_po }}</option>
                     @endif
                 @endforeach
             </select>
+            <input type="text" name="code_po" id="code_po" hidden>
         </div>
 
     </div>
@@ -270,7 +271,8 @@
         <div class="form-group col">
             <label for="np_ppjk">NP-PPJK</label>
             <input name="np_ppjk" type="text" class="form-control" id="np_ppjk"
-                data-inputmask='"mask": "999999 99-99-9999"' data-mask value="{{ $pib->np_ppjk ?? old('np_ppjk') }}">
+                data-inputmask='"mask": "999999 99-99-9999"' data-mask
+                value="{{ $pib->np_ppjk ?? old('np_ppjk') }}">
         </div>
 
 

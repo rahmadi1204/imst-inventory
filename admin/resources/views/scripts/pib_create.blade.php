@@ -20,7 +20,7 @@
         ++j;
         $("#productAddRemove").append('<tr><td><input type="text" name="pos_product[' +
             j +
-            ']" class="form-control" /><td><select name="code_product[' + j +
+            ']" class="form-control" /></td><td><select name="code_product[' + j +
             ']" id="code_product' +
             j +
             '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><input type="text" name="type_product[' +
@@ -70,7 +70,9 @@
         let code = $(this).val();
         let name = $('#no_po option:selected').attr("name_supplier");
         let address = $('#no_po option:selected').attr("address");
+        let code_po = $('#no_po option:selected').attr("code_po");
 
+        $("#code_po").val(code_po);
         $("#name_seller").val(name);
         $("#address_seller").val(address);
         $("#name_shipper").val(name);

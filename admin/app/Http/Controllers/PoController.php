@@ -22,16 +22,17 @@ class PoController extends Controller
 {
     function index()
     {
-        $a = 1;
+        $a = 2;
         for ($i = 0; $i < $a; $i++) {
             $data = DB::table('pos')
-                ->join('po_products', 'po_products.no_po', '=', 'pos.no_po')
+                ->join('po_products', 'po_products.code_po', '=', 'pos.code_po')
                 ->get();
+            // dd($data);
             foreach ($data as $key) {
                 DB::table('po_products')->where('code_product', '=', $key->code_product)->update([
                     'qty_recived' => 0,
                 ]);
-                $product = PibProduct::where('no_po', $key->no_po)->groupBy('code_product')
+                $product = HistoryProduct::where('code_po', $key->code_po)->groupBy('code_product')
                     ->selectRaw(' sum(qty_product) as sum, code_product')
                     ->pluck('sum', 'code_product');
                 // dd($product);
@@ -101,10 +102,12 @@ class PoController extends Controller
 
         $count = count($request->code_product);
         $amount = 0;
+        $code_po = date('ymdhis');
         try {
             for ($i = 0; $i < $count; $i++) {
                 PoProduct::insert([
                     'no_po' => $request->no_po,
+                    'code_po' => $code_po,
                     'code_product' => $request->code_product[$i],
                     'type_product' => $request->type_product[$i],
                     'name_product' => $request->name_product[$i],
@@ -122,6 +125,7 @@ class PoController extends Controller
 
             $po =  Po::insert([
                 'no_po' => $request->no_po,
+                'code_po' => $code_po,
                 'project' => $request->project,
                 'date_po' => $request->date_po,
                 'vendor_name' => $request->vendor_name,

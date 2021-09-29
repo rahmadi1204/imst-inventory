@@ -23,34 +23,28 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Tanggal</th>
-                                        <th>No Return</th>
                                         <th>No Referensi</th>
-                                        <th>Keterangan</th>
                                         <th>Nama Vendor</th>
+                                        <th>Nama Produk</th>
+                                        <th>Jumlah Diretur</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                {{-- <tbody>
+                                <tbody>
                                     @php
                                         $no = 1;
                                     @endphp
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $no++ }}</td>
+                                            <td>{{ $item->date_ncrv }}</td>
                                             <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
-                                            <td>{{ $item->no_po }}</td>
+                                            <td>{{ $item->name_supplier }}</td>
+                                            <td>{{ $item->name_product }}</td>
+                                            <td>{{ $item->qty_product }}</td>
                                             <td>
-                                                <a href="{{ route('ncr_vendor.edit', $item->id) }}" class="btn btn-success">
+                                                <a href="{{ route('ncr_vendor.edit', $item->id) }}"
+                                                    class="btn btn-success">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
@@ -61,7 +55,7 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                </tbody> --}}
+                                </tbody>
                             </table>
                         </div>
                     </div>

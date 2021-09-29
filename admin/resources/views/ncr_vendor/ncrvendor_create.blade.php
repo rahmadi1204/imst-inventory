@@ -27,15 +27,13 @@
                             </div>
                         </div>
 
-                        <form action="{{ route('po.store') }}" method="post">
+                        <form action="{{ route('ncr_vendor.store') }}" method="post">
                             @csrf
 
                             @include('components.ncr_vendor_form')
 
                             <div class="card-footer ">
-                                <button type="submit" class="btn btn-primary float-right">
-                                    Detil Barang
-                                </button>
+                                <button type="submit" class="btn btn-primary float-right">Simpan</button>
                             </div>
                         </form>
                     </div>
@@ -43,7 +41,7 @@
                 <!-- /.card -->
             </div>
         </div>
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-12">
                 <div class="card card-secondary">
                     <div class="card-header">
@@ -63,7 +61,7 @@
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
-                            {{-- <tbody>
+                            <tbody>
                                 @php
                                     $no = 1;
                                 @endphp
@@ -95,16 +93,16 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            </tbody> --}}
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         </div>
     </section>
     {{-- Delete Modal --}}
-    <form action="{{ route('po.destroy') }}" method="post">
+    <form action="{{ route('ncr_vendor.destroy') }}" method="post">
         @csrf
         @include('components.delete_modal')
     </form>

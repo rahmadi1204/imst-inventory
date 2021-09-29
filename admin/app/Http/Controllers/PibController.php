@@ -80,6 +80,7 @@ class PibController extends Controller
         $request->invoice = str_replace('-', '', $request->invoice);
         $request->sub = str_replace(' ', '', $request->sub);
 
+        dd($request->code_po);
         DB::beginTransaction();
 
         try {
@@ -296,8 +297,8 @@ class PibController extends Controller
         // dd($count);
         for ($i = 0; $i < $count; $i++) {
             $add = HistoryProduct::insert([
-                'no_approval' => $request->no_approval,
                 'code_pib' => $request->code_pib,
+                'code_po' => $request->code_po,
                 'code_product' => $request->code_product[$i],
                 'name_product' => $request->name_product[$i],
                 'date_product' =>  $request->date_product,
@@ -311,6 +312,7 @@ class PibController extends Controller
         }
         return $add;
     }
+
     // public function addRecived($request)
     // {
     //     $count = count($request['code_product']);

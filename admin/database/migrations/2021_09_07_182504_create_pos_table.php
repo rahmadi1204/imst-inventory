@@ -16,6 +16,7 @@ class CreatePosTable extends Migration
         Schema::create('pos', function (Blueprint $table) {
             $table->id();
             $table->string('no_po');
+            $table->string('code_po');
             $table->string('project');
             $table->date('date_po');
             $table->string('vendor_name');
