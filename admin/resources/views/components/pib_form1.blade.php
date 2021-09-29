@@ -24,13 +24,19 @@
                 @foreach ($po as $item)
                     @isset($pib)
                         @if ($item->no_po == $pib->no_po)
-                            <option value="{{ $item->no_po }}" selected>{{ $item->no_po }}</option>
+                            <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
+                                address="{{ $item->vendor_address }}" selected>
+                                {{ $item->no_po }}</option>
                         @endif
                     @endisset
                     @if ($item->no_po == old('no_po'))
-                        <option value="{{ $item->no_po }}" selected>{{ $item->no_po }}</option>
+                        <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
+                            address="{{ $item->vendor_address }}" selected>
+                            {{ $item->no_po }}</option>
                     @else
-                        <option value="{{ $item->no_po }}">{{ $item->no_po }}</option>
+                        <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
+                            address="{{ $item->vendor_address }}">
+                            {{ $item->no_po }}</option>
                     @endif
                 @endforeach
             </select>

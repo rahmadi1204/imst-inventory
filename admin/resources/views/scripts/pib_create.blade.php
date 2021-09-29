@@ -66,6 +66,18 @@
 
     });
 
+    $('#no_po').change(function() {
+        let code = $(this).val();
+        let name = $('#no_po option:selected').attr("name_supplier");
+        let address = $('#no_po option:selected').attr("address");
+
+        $("#name_seller").val(name);
+        $("#address_seller").val(address);
+        $("#name_shipper").val(name);
+        $("#address_shipper").val(address);
+
+    });
+
     $('#name_shipper').change(function() {
         let code = $(this).val();
         let name = $('#name_shipper option:selected').text();

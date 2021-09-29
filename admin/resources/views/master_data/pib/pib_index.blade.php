@@ -53,7 +53,7 @@
                                                     <i class="fa fa-search"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                    data-target="#modal-delete-user" data-id="{{ $item->no_approval }}"
+                                                    data-target="#modal-delete-user" data-id="{{ $item->code_pib }}"
                                                     data-name="{{ $item->no_approval }}"><i class="fa fa-trash"></i>
                                                 </div>
 

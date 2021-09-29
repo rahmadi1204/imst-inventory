@@ -28,7 +28,6 @@
                                     <th>DARI</th>
                                     <th>KE</th>
                                     <th>JUMLAH</th>
-                                    <th>AKSI</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,17 +52,6 @@
                                         <td>{{ $item->from }}</td>
                                         <td>{{ $item->to }}</td>
                                         <td>{{ $item->qty_product }}</td>
-                                        <td>
-                                            <a href="{{ route('data.edit', $item->code_product) }}"
-                                                class="btn btn-success">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                data-target="#modal-delete-user" data-id="{{ $item->code_product }}"
-                                                data-name="{{ $item->name_product }}"><i class="fa fa-trash"></i>
-                                            </div>
-
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

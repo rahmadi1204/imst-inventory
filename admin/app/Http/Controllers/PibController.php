@@ -93,11 +93,11 @@ class PibController extends Controller
 
 
             DB::commit();
-            dd('OK');
+            // dd('OK');
             return redirect()->route('pib.create')->withInput()->with('Ok', ' Data Tersimpan');
         } catch (\Throwable $th) {
             //throw $th;
-            dd('gagal');
+            // dd('gagal');
             return redirect()->route('pib.create')->withInput()->with('Fail', ' Data Tidak Tersimpan');
         }
     }
@@ -208,6 +208,7 @@ class PibController extends Controller
             $add = PibProduct::insert([
                 'no_approval' => $request->no_approval,
                 'code_pib' => $request->code_pib,
+                'no_po' => $request->no_po,
                 'date_product' => $request->date_product,
                 'pos_product' => $request->pos_product[$i],
                 'code_product' => $request->code_product[$i],
@@ -357,34 +358,34 @@ class PibController extends Controller
         // dd($id);
         DB::beginTransaction();
         try {
-            Pib::where('no_approval', $id)->delete();
-            PibInvoice::where('no_approval', $id)->delete();
-            PibLoad::where('no_approval', $id)->delete();
-            PibDevy::where('no_approval', $id)->delete();
-            PibContainer::where('no_approval', $id)->delete();
-            PibProduct::where('no_approval', $id)->delete();
-            $this->deleteStock($id);
+            Pib::where('code_pib', $id)->delete();
+            PibInvoice::where('code_pib', $id)->delete();
+            PibLoad::where('code_pib', $id)->delete();
+            PibDevy::where('code_pib', $id)->delete();
+            PibContainer::where('code_pib', $id)->delete();
+            PibProduct::where('code_pib', $id)->delete();
+            HistoryProduct::where('code_pib', $id)->delete();
             DB::commit();
-            return redirect()->back()->with('Ok', 'Data Dihapus');
+            return redirect()->route('pib')->with('Ok', 'Data Dihapus');
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with('Fail', 'Data Gagal Dihapus');
         }
     }
-    public function deleteStock($id)
-    {
+    // public function deleteStock($id)
+    // {
 
-        HistoryProduct::where('no_approval', $id)->delete();
-        $newQty = DB::table('pib_products')->where('no_approval', '=', $id)->get(['code_product', 'qty_product']);
-        // dd($newQty);
-        $count = count($newQty);
-        for ($i = 0; $i < $count; $i++) {
-            $oldQty[$i] = DB::table('stock_products')->where('code_product', '=', $newQty[$i]->code_product)->value('qty_product');
-            // dd($oldQty[$i]);
-            $add = DB::table('stock_products')->where('code_product', '=', $newQty[$i]->code_product)->update([
-                'qty_product' => $oldQty[$i] - $newQty[$i]->qty_product,
-            ]);
-        }
-        return $add;
-    }
+    //     HistoryProduct::where('no_approval', $id)->delete();
+    //     $newQty = DB::table('pib_products')->where('no_approval', '=', $id)->get(['code_product', 'qty_product']);
+    //     // dd($newQty);
+    //     $count = count($newQty);
+    //     for ($i = 0; $i < $count; $i++) {
+    //         $oldQty[$i] = DB::table('stock_products')->where('code_product', '=', $newQty[$i]->code_product)->value('qty_product');
+    //         // dd($oldQty[$i]);
+    //         $add = DB::table('stock_products')->where('code_product', '=', $newQty[$i]->code_product)->update([
+    //             'qty_product' => $oldQty[$i] - $newQty[$i]->qty_product,
+    //         ]);
+    //     }
+    //     return $add;
+    // }
 }
