@@ -53,18 +53,20 @@ class StorePibRequest extends FormRequest
             'name_transport' => 'required',
             'date_estimate' => 'required',
             'load_place' => 'required',
-            'load_transit' => 'required',
+            'load_transit' => 'nullable',
             'load_destination' => 'required',
             //form3
             'invoice' => 'required',
             'date_invoice' => 'required',
-            'transaction' => 'required',
-            'date_transaction' => 'required',
+            'transaction' => 'nullable',
+            'date_transaction' => 'nullable',
             'house_bl' => 'nullable',
             'date_house_bl' => 'nullable',
             'master_bl' => 'nullable',
             'date_master_bl' => 'nullable',
             'bc11' => 'nullable',
+
+
             'date_bc11' => 'nullable',
             'pos' => 'nullable',
             'sub' => 'nullable',

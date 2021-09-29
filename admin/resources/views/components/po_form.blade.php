@@ -1,6 +1,28 @@
 <div class="card-body">
     <div class="row">
         <div class="form-group col">
+            <label for="no_po">Nomor PO</label>
+            <input name="no_po" type="text" class="form-control" value="{{ $po->no_po ?? old('no_po') }}" id="no_po"
+                required>
+        </div>
+        <div class="form-group col">
+            <label for="project">Project</label>
+            <input name="project" type="text" class="form-control" value="{{ $po->project ?? old('project') }}"
+                required>
+        </div>
+        <div class="form-group col">
+            <label for="date_po">Tanggal:</label>
+            <div class="input-group date" id="datePO" data-target-input="nearest">
+                <input name="date_po" type="text" class="form-control datetimepicker-input" data-target="#datePO"
+                    required value="{{ $po->date_po ?? old('date_po') }} " />
+                <div class="input-group-append" data-target="#datePO" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col">
             <label for="vendor_name">Vendor </label>
             <select name="vendor_name" id="vendor_name" class="form-control custom-select">
                 <option selected>Pilih</option>
@@ -30,6 +52,8 @@
             <input name="vendor_address" type="text" class="form-control"
                 value="{{ $po->vendor_address ?? old('vendor_address') }}" id="vendor_address" required readonly>
         </div>
+    </div>
+    <div class="row">
         <div class="form-group col">
             <label for="send_address">Tujuan / Lokasi</label>
             <div class="input-group">
@@ -60,45 +84,39 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col">
-            <label for="no_po">Nomor PO</label>
-            <input name="no_po" type="text" class="form-control" value="{{ $po->no_po ?? old('no_po') }}"
-                id="no_po" required>
-        </div>
-        <div class="form-group col">
-            <label for="project">Project</label>
-            <input name="project" type="text" class="form-control" value="{{ $po->project ?? old('project') }}"
-                required>
-        </div>
-        <div class="form-group col">
-            <label for="date_po">Tanggal:</label>
-            <div class="input-group date" id="datePO" data-target-input="nearest">
-                <input name="date_po" type="text" class="form-control datetimepicker-input" data-target="#datePO"
-                    required value="{{ $po->date_po ?? old('date_po') }} " />
-                <div class="input-group-append" data-target="#datePO" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group col">
+        <div class="form-group col-4">
             <label for="currency">Mata Uang</label>
             <select name="currency" id="currency" class="form-control custom-select">
                 <option selected disabled>Pilih</option>
-                <option value="USD">Dolar US</option>
-                <option value="IDR">Rupiah</option>
+                @foreach ($currency as $item)
+
+                    @if (isset($po))
+                        @if ($po->currency == $item->code)
+                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}" selected>
+                                {{ $item->symbol }} {{ $item->name }}
+                            </option>
+                        @else
+                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}">
+                                {{ $item->symbol }} {{ $item->name }}
+                            </option>
+                        @endif
+                    @else
+                        <option value="{{ $item->code }}" symbol="{{ $item->symbol }}">
+                            {{ $item->name }} ({{ $item->symbol }})
+                        </option>
+                    @endif
+                @endforeach
             </select>
         </div>
     </div>
     <table id="productAddRemove" class="table table-bordered table-hover table-responsive">
         <tr>
             <th style="width: 10%">Kode Barang</th>
-            <th style="width: 14%">Tipe Barang</th>
-            <th style="width: 14%">Nama Barang</th>
-            <th style="width: 10%">Deskripsi</th>
-            <th style="width: 8%">Latestk</th>
+            <th style="width: 30%" class="text-center">Deskripsi</th>
             <th style="width: 9%">Jumlah Barang</th>
             <th style="width: 15%">Harga Barang</th>
             <th style="width: 15%">Jumlah Total</th>
+            <th style="width: 16%">Latest Of Shipment</th>
             <th style="width: 5%"></th>
         </tr>
         <tr>
@@ -114,23 +132,19 @@
                 </select>
             </td>
             <td>
-                <input type="text" class="form-control" name="type_product[0]" id="type_product0" readonly>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="type_product[0]" id="type_product0" readonly hidden>
+                    <input type="text" name="name_product[0]" id="name_product0" class="form-control" readonly>
+                    <input type="text" name="description[0]" id="description0" class="form-control" hidden>
+                </div>
             </td>
-            <td>
-                <input type="text" name="name_product[0]" id="name_product0" class="form-control" readonly>
-            </td>
-            <td>
-                <input type="text" name="description[0]" id="description0" class="form-control">
-            </td>
-            <td>
-                <input type="text" name="latest[0]" id="latest0" class="form-control">
-            </td>
+
             <td><input type="number" name="qty_product[0]" id="qty_product0" class="form-control" />
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text curr">USD</span>
+                        <span class="input-group-text curr">$</span>
                     </div>
                     <input name="unit_price[0]" type="number" step="0.01" class="form-control" id="unit_price0"
                         value="{{ $po->unit_price ?? old('unit_price') }}" required>
@@ -139,11 +153,15 @@
             <td>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text curr">USD</span>
+                        <span class="input-group-text curr">$</span>
                     </div>
                     <input name="total_amount[0]" type="number" step="0.01" class="form-control mata-uang"
                         id="total_amount0" value="{{ $po->total_amount ?? old('total_amount') }}" required readonly>
                 </div>
+            </td>
+            <td>
+                <input type="text" name="latest[0]" id="latest0" class="form-control" data-inputmask-alias="datetime"
+                    data-inputmask-inputformat="yyyy/mm/dd" data-mask>
             </td>
             <td><button type="button" name="add" id="dynamic-pr" class="btn btn-outline-primary"><i
                         class="fa fa-plus"></i></button></td>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Po;
 use Illuminate\Http\Request;
 
 class NcrVendorController extends Controller
@@ -29,8 +30,10 @@ class NcrVendorController extends Controller
      */
     public function create()
     {
+        $po = Po::all();
         return view('ncr_vendor.ncrvendor_create', [
             'title' => 'Data NCR Vendor',
+            'po' => $po,
             'transaksiOpen' => "active",
             'transaksiOpen' => "menu-open",
             'transaksiActive' => "active",

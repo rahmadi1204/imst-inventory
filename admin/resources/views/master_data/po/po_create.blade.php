@@ -35,6 +35,8 @@
                             @include('components.po_form')
 
                             <div class="card-footer ">
+                                Note: Pilih Mata Uang Terakhir Untuk Menyesuaikan Symbol Mata Uang (Tidak Berpengaruh Pada
+                                Database)
                                 <button type="submit" class="btn btn-primary float-right">
                                     Simpan
                                 </button>
@@ -100,21 +102,5 @@
     </form>
 @endsection
 @section('scripts')
-    <script src="{{ asset('/templates/admin') }}/plugins/rupiah/jquery.mask.min.js"></script>
-    <script src="{{ asset('/templates/admin') }}/plugins/rupiah/terbilang.js"></script>
-    <script type="text/javascript">
-        function inputTerbilang() {
-            //membuat inputan otomatis jadi mata uang
-            $('.mata-uang').mask('0.000.000.000', {
-                reverse: true
-            });
-
-            //mengambil data uang yang akan dirubah jadi terbilang
-            var input = document.getElementById("terbilang-input").value.replace(/\./g, "");
-
-            //menampilkan hasil dari terbilang
-            document.getElementById("terbilang-output").value = terbilang(input).replace(/  +/g, ' ');
-        }
-    </script>
     @include('scripts.po_create')
 @endsection

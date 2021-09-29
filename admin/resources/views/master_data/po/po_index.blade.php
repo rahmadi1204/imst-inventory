@@ -66,9 +66,11 @@
                                                 @if ($item->qty_recived == $item->qty_product)
                                                     <span class="btn btn-success">
                                                         Selesai
-                                                    @else
-                                                        <span class="btn btn-warning">
-                                                            Kurang
+                                                    @elseif ($item->qty_recived < $item->qty_product)
+                                                            <span class="btn btn-warning">
+                                                                Kurang
+                                                            @else <span class="btn btn-info">
+                                                                    Kelebihan
                                                 @endif
                                                 </span>
                                             </td>
@@ -77,7 +79,7 @@
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                    data-target="#modal-delete-user" data-id="{{ $item->id }}"
+                                                    data-target="#modal-delete-user" data-id="{{ $item->no_po }}"
                                                     data-name="{{ $item->no_po }}"><i class="fa fa-trash"></i>
                                                 </div>
 

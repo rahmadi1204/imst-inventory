@@ -26,7 +26,7 @@
             '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><input type="text" name="type_product[' +
             j +
             ']" class="form-control" id="type_product' + j +
-            '"  readonly/></td><td><input type="text" name="name_product[' +
+            '"  readonly hidden/><input type="text" name="name_product[' +
             j +
             ']" class="form-control" id="name_product' + j +
             '"  readonly/></td><td><input type="text" name="qty_product[' +
@@ -37,7 +37,7 @@
             ']" class="form-control" />   <div class="input-group-appeand"><div class = "input-group-text" >KG</div></div></div></td ><td><input type="text" name="qty_pack[' +
             j +
             ']" class="form-control" /></td><td><select name="type_pack[' + j +
-            ']" class="form-control"><option selected disabled>Pilih</option><option value="Pack">Pack</option><option value="Container">Container</option></select></td><td><input type="text" name="value_pabean[' +
+            ']" class="form-control"><option selected disabled>Pilih</option><option value="Pack">Pack</option><option value="Container">Container</option><option value="Pallet">Pallet</option></select></td><td><input type="text" name="value_pabean[' +
             j +
             ']" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-product"><i class="fa fa-trash"></i></button></td></tr>'
         );

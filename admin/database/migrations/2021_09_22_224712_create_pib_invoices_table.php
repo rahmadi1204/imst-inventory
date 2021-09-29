@@ -19,8 +19,8 @@ class CreatePibInvoicesTable extends Migration
             $table->string('no_approval');
             $table->string('invoice');
             $table->date('date_invoice');
-            $table->string('transaction');
-            $table->date('date_transaction');
+            $table->string('transaction')->nullable();
+            $table->date('date_transaction')->nullable();
             $table->string('house_bl')->nullable();
             $table->date('date_house_bl')->nullable();
             $table->string('master_bl')->nullable();

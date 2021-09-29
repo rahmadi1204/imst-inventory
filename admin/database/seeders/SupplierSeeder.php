@@ -25,6 +25,11 @@ class SupplierSeeder extends Seeder
                 'name_supplier' => 'WABTEC CORPORATION',
                 'address_supplier' => 'FBO STANDART',
                 'date' => now(),
+            ], [
+                'code_supplier' => 'FIB',
+                'name_supplier' => 'FIB BRAKES INTERNATIONAL',
+                'address_supplier' => '6 WENBAN PLACE WETHERRILL PARK.N.S.W 2164 AUSTRRALIA',
+                'date' => now(),
             ]
         ]);
     }

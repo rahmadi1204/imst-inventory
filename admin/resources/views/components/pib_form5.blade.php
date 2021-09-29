@@ -31,21 +31,20 @@
                 </div>
             </div>
         </div>
-
     </div>
     <table class="table table-bordered" id="productAddRemove">
         <tr>
-            <th style="width: 9%">Pos Tarif Produk</th>
-            <th style="width: 8%">Kode Barang</th>
-            <th colspan="2" style="width: 22%">Uraian Jenis Barang, Merek, Tipe,
+            <th>Pos Tarif Produk, Uraian</th>
+            <th width="12%">Kode Barang</th>
+            <th width="20%">Uraian Jenis Barang, Merek, Tipe,
                 Spesifikasi Wajib</th>
-            <th style="width: 9%">Jumlah Produk</th>
-            <th style="width: 9%">Satuan Produk</th>
-            <th style="width: 10%">Berat Bersih Produk</th>
-            <th style="width: 9%">Jumlah Kemasan Produk</th>
-            <th style="width: 9%">Satuan Kemasan Produk</th>
-            <th style="width: 10%">Nilai Pabean</th>
-            <th style="width: 5%"></th>
+            <th>Jumlah Produk</th>
+            <th>Satuan Produk</th>
+            <th>Berat Bersih Produk</th>
+            <th>Jumlah Kemasan Produk</th>
+            <th>Satuan Kemasan Produk</th>
+            <th>Nilai Pabean</th>
+            <th></th>
         </tr>
         <tr>
             <td><input type="text" name="pos_product[0]" class="form-control" />
@@ -61,9 +60,7 @@
                     @endforeach
                 </select>
             </td>
-            <td>
-                <input type="text" class="form-control" name="type_product[0]" id="type_product0" readonly>
-            </td>
+            <input type="text" class="form-control" name="type_product[0]" id="type_product0" readonly hidden>
             <td>
                 <input type="text" name="name_product[0]" id="name_product0" class="form-control" readonly>
             </td>
@@ -93,6 +90,7 @@
                         Pilih</option>
                     <option value="Pack">Pack</option>
                     <option value="Container">Container</option>
+                    <option value="Pallet">Pallet</option>
                 </select>
             </td>
             <td><input type="number" step="0.01" name="value_pabean[0]" class="form-control" />

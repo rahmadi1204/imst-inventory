@@ -24,6 +24,9 @@
             "info": true,
             "autoWidth": false,
         });
+        $('#productAddRemove').DataTable({
+            "scrollX": true,
+        });
         $('#tableSearch1').DataTable({
             "paging": true,
             "lengthChange": false,

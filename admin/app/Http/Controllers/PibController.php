@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePibRequest;
 use App\Models\Po;
 use App\Models\Pib;
 use App\Models\PibDevy;
 use App\Models\PibLoad;
+use App\Models\Currency;
 use App\Models\Importir;
 use App\Models\Supplier;
 use App\Models\Data\Unit;
+use App\Models\PoProduct;
 use App\Models\PibInvoice;
 use App\Models\PibProduct;
 use App\Models\TypeProduct;
-use App\Models\HistoryProduct;
 use App\Models\PibContainer;
+use App\Models\StockProduct;
 use Illuminate\Http\Request;
+use App\Models\HistoryProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
-use App\Models\PoProduct;
-use App\Models\StockProduct;
+use App\Http\Requests\StorePibRequest;
 
 class PibController extends Controller
 {
@@ -51,9 +52,11 @@ class PibController extends Controller
         $product = MasterProduct::all();
         $po = Po::all();
         $unit = Unit::all();
-        // dd($importir);
+        $currency = Currency::orderBy('name')->get();
+        // dd($currency);
         return view('master_data.pib.pib_create', [
             'seller' => $seller,
+            'currency' => $currency,
             'unit' => $unit,
             'po' => $po,
             'importir' => $importir,

@@ -111,5 +111,5 @@
 
 @endsection
 @section('scripts')
-
+    @include('scripts.ncrv_create')
 @endsection

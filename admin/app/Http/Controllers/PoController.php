@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Currency;
 use App\Models\Po;
 use App\Models\Customer;
 use App\Models\Supplier;
@@ -15,6 +16,7 @@ use App\Models\HistoryProduct;
 use App\Models\RecivedProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
+use App\Models\Pib;
 
 class PoController extends Controller
 {
@@ -56,12 +58,14 @@ class PoController extends Controller
         $tujuan = Warehouse::all();
         $typeProduct = TypeProduct::all();
         $product = MasterProduct::all();
+        $currency = Currency::orderBy('name')->get();
         $data = Po::where('date_po', $date)->get();
         return view('master_data.po.po_create', [
             'data' => $data,
             'supplier' => $supplier,
             'tujuan' => $tujuan,
             'product' => $product,
+            'currency' => $currency,
             'typeProduct' => $typeProduct,
             'title' => 'Data PO',
             'menuOpen' => "menu-open",
@@ -85,7 +89,6 @@ class PoController extends Controller
             'code_product' => 'required',
             'name_product' => 'required',
             'type_product' => 'required',
-            'description' => 'required',
             'qty_product' => 'required',
             'unit_price' => 'required',
             'currency' => 'required',
@@ -105,7 +108,7 @@ class PoController extends Controller
                     'code_product' => $request->code_product[$i],
                     'type_product' => $request->type_product[$i],
                     'name_product' => $request->name_product[$i],
-                    'description' => $request->description[$i],
+                    'description' => $request->type_product[$i] . "-" . $request->name_product[$i],
                     'latest' => $request->latest[$i],
                     'qty_product' => $request->qty_product[$i],
                     'qty_recived' => 0,
@@ -137,6 +140,26 @@ class PoController extends Controller
             //throw $th;
             DB::rollback();
             return redirect()->route('po')->with('Fail', 'Data Tidak Disimpan');
+        }
+    }
+    public function destroy(Request $request)
+    {
+        $id = $request->id;
+        // dd($id);
+        $cek = Pib::where('no_po', $id)->get();
+        if ($cek == "[]") {
+            DB::beginTransaction();
+            try {
+                Po::where('no_po', $id)->delete();
+                PoProduct::where('no_po', $id)->delete();
+                DB::commit();
+                return redirect()->route('po')->with('Ok', 'Data Dihapus');
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return redirect()->route('po')->with('Fail', 'Data Gagal Dihapus');
+            }
+        } else {
+            return redirect()->route('po')->with('Fail', 'Data Gagal Dihapus, Data Berelasi Dengan Data PIB');
         }
     }
 }

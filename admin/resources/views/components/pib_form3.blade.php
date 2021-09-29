@@ -96,7 +96,7 @@
         <div class="form-group col">
             <label for="sub">SUB</label>
             <input name="sub" type="text" class="form-control" id="sub" data-inputmask='"mask": "9999 9999"' data-mask
-                value="{{ $pib->sub ?? old('sub') }}">
+                value="{{ $pib->sub ?? (old('sub') ?? '00000000') }}">
         </div>
 
     </div>
@@ -117,13 +117,29 @@
             <label for="valuta">Valuta</label>
             <select name="valuta" id="valuta" class="form-control">
                 <option value="" selected disabled>Pilih</option>
-                @if (isset($pib->valuta))
-                    <option value="USD" {{ $pib->valuta == 'USD' ? 'selected' : '' }}>1. USD</option>
-                    <option value="IDR" {{ $pib->valuta == 'IDR' ? 'selected' : '' }}>2. IDR</option>
-                @else
-                    <option value="USD" {{ old('valuta') == 'USD' ? 'selected' : '' }}>1. USD</option>
-                    <option value="IDR" {{ old('valuta') == 'IDR' ? 'selected' : '' }}>2. IDR</option>
-                @endif
+                @foreach ($currency as $item)
+                    @if (isset($pib))
+                        @if ($pib->currency == $item->code)
+                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}" selected>
+                                {{ $item->symbol }} {{ $item->name }}
+                            </option>
+                        @else
+                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}">
+                                {{ $item->symbol }} {{ $item->name }}
+                            </option>
+                        @endif
+                    @else
+                        @if (old('valuta') == $item->code)
+                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}" selected>
+                                {{ $item->symbol }} {{ $item->name }}
+                            </option>
+                        @else
+                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}">
+                                {{ $item->symbol }} {{ $item->name }}
+                            </option>
+                        @endif
+                    @endif
+                @endforeach
             </select>
         </div>
         <div class="form-group col">

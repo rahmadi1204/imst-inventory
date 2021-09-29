@@ -9,7 +9,15 @@
         <tr>
             <td><input type="text" name="no_container[0]" class="form-control" />
             </td>
-            <td><input type="text" name="size_container[0]" class="form-control" />
+            <td>
+                <div class="input-group">
+                    <input type="text" name="size_container[0]" class="form-control" />
+                    <div class="input-group-prepand">
+                        <div class="form-control">
+                            FEET
+                        </div>
+                    </div>
+                </div>
             </td>
             <td><input type="text" name="type_container[0]" class="form-control" />
             </td>
