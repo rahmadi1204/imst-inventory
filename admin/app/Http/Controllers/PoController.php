@@ -20,22 +20,24 @@ class PoController extends Controller
 {
     function index()
     {
-
-        $data = DB::table('pos')
-            ->join('po_products', 'po_products.no_po', '=', 'pos.no_po')
-            ->get();
-        foreach ($data as $key) {
-            DB::table('po_products')->where('code_product', '=', $key->code_product)->update([
-                'qty_recived' => 0,
-            ]);
-            $product = PibProduct::where('no_po', $key->no_po)->groupBy('code_product')
-                ->selectRaw(' sum(qty_product) as sum, code_product')
-                ->pluck('sum', 'code_product');
-            // dd($product);
-            foreach ($product as $key => $value) {
-                PoProduct::where('code_product', $key)->update([
-                    'qty_recived' => $value,
+        $a = 1;
+        for ($i = 0; $i < $a; $i++) {
+            $data = DB::table('pos')
+                ->join('po_products', 'po_products.no_po', '=', 'pos.no_po')
+                ->get();
+            foreach ($data as $key) {
+                DB::table('po_products')->where('code_product', '=', $key->code_product)->update([
+                    'qty_recived' => 0,
                 ]);
+                $product = PibProduct::where('no_po', $key->no_po)->groupBy('code_product')
+                    ->selectRaw(' sum(qty_product) as sum, code_product')
+                    ->pluck('sum', 'code_product');
+                // dd($product);
+                foreach ($product as $key => $value) {
+                    PoProduct::where('code_product', $key)->update([
+                        'qty_recived' => $value,
+                    ]);
+                }
             }
         }
         // dd($product);
