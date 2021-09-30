@@ -328,8 +328,8 @@ class PibController extends Controller
             $add = ReportDocument::insert([
                 'code_pib' => $request->code_pib,
                 'code_po' => $request->code_po,
-                'type_in' => $no,
-                'no_in' => $request->date_product,
+                'type_in' => 1,
+                'no_in' => $no,
                 'date_in' => $request->date_product,
                 'code_product_in' => $request->code_product[$i],
                 'name_product_in' => $request->name_product[$i],

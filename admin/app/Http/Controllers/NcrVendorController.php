@@ -7,22 +7,19 @@ use App\Models\Pib;
 use App\Models\Currency;
 use App\Models\Supplier;
 use App\Models\Data\Unit;
-use App\Models\HistoryProduct;
+use App\Models\NcrVendor;
 use App\Models\Warehouse;
 use App\Models\TypeProduct;
 use Illuminate\Http\Request;
+use App\Models\HistoryProduct;
+use App\Models\ReportDocument;
+use App\Models\NcrVendorProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
-use App\Models\NcrVendor;
-use App\Models\NcrVendorProduct;
 
 class NcrVendorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $data = DB::table('ncr_vendors')
@@ -39,11 +36,6 @@ class NcrVendorController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $supplier = Supplier::all();
@@ -71,12 +63,7 @@ class NcrVendorController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         // dd($request);
@@ -101,82 +88,67 @@ class NcrVendorController extends Controller
         $attr['updated_at'] = now();
         // dd($attr);
         $count = count($prd['code_product']);
-
-        NcrVendor::insert($attr);
-        for ($i = 0; $i < $count; $i++) {
-            NcrVendorProduct::create([
-                'code_ncrv' => $attr['code_ncrv'],
-                'code_po' => $request->code_po,
-                'code_product' => $request->code_product[0],
-                'type_product' => $request->type_product[0],
-                'name_product' => $request->name_product[0],
-                'qty_product' => -$request->qty_product[0],
-                'unit_product' => $request->unit_product[0],
-            ]);
-            HistoryProduct::create([
-                'code_po' => $request->code_po,
-                'code_ncrv' => $attr['code_ncrv'],
-                'code_product' => $request->code_product[0],
-                'name_product' => $request->name_product[0],
-                'date_product' => $request->date_ncrv,
-                'qty_product' => -$request->qty_product[0],
-                'from' => $request->name_warehouse,
-                'to' => $request->name_supplier,
-                'type_history' => 0,
-            ]);
+        $no = 1;
+        $cek = ReportDocument::where('type_out', 1)->get();
+        if ($cek != "[]") {
+            $no = 1 + count($cek);
         }
+
 
         DB::beginTransaction();
         try {
 
+            NcrVendor::insert($attr);
+            for ($i = 0; $i < $count; $i++) {
+                NcrVendorProduct::create([
+                    'code_ncrv' => $attr['code_ncrv'],
+                    'code_po' => $request->code_po,
+                    'code_product' => $request->code_product[$i],
+                    'type_product' => $request->type_product[$i],
+                    'name_product' => $request->name_product[$i],
+                    'qty_product' => -$request->qty_product[$i],
+                    'unit_product' => $request->unit_product[$i],
+                ]);
+                HistoryProduct::create([
+                    'code_po' => $request->code_po,
+                    'code_ncrv' => $attr['code_ncrv'],
+                    'code_product' => $request->code_product[$i],
+                    'name_product' => $request->name_product[$i],
+                    'date_product' => $request->date_ncrv,
+                    'qty_product' => -$request->qty_product[$i],
+                    'value_pabean' => 0,
+                    'from' => $request->name_warehouse,
+                    'to' => $request->name_supplier,
+                    'type_history' => 0,
+                ]);
+                ReportDocument::insert([
+                    'code_po' => $request->code_po,
+                    'code_ncrv' => $attr['code_ncrv'],
+                    'type_out' => 1,
+                    'no_out' => $no,
+                    'date_out' => $request->date_ncrv,
+                    'code_product_out' => $request->code_product[$i],
+                    'name_product_out' => $request->name_product[$i],
+                    'type_product_out' => $request->type_product[$i],
+                    'unit_product_out' => $request->unit_product[$i],
+                    'qty_product_out' =>  $request->qty_product[$i],
+                    'value_product_out' => 0,
+                    'date_product_out' =>  $request->date_ncrv,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
             DB::commit();
+            dd('ok');
             return redirect()->route('ncr_vendor')->with('Ok', "Data Tersimpan");
         } catch (\Throwable $th) {
             DB::rollback();
+            dd('fail');
             return redirect()->route('ncr_vendor')->with('Fail', "Data Tidak Tersimpan");
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         $id = $request->id;
