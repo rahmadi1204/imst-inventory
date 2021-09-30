@@ -25,10 +25,12 @@ class StorePibRequest extends FormRequest
     {
         return [
             //form1
+
             'type_document_pabean' => 'required',
             'office_pabean' => 'required',
             'no_approval' => 'required|unique:pibs,no_approval',
             'no_po' => 'required',
+            'code_po' => 'required',
             'type_pib' => 'required',
             'type_import' => 'required',
             'payment_method' => 'required',

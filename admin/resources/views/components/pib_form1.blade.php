@@ -15,7 +15,7 @@
             <label for="no_approval">Nomor Pengajuan</label>
             <input name="no_approval" type="text" class="form-control"
                 data-inputmask='"mask": "999999-999999-99999999-999999"' data-mask id="no_approval"
-                value="{{ $pib->no_approval ?? old('no_approval') }}">
+                value="{{ $pib->no_approval ?? (old('no_approval') ?? '00000000000000000000000000') }}">
         </div>
         <div class="form-group col">
             <label for="no_po">Nomor Pre Order</label>
@@ -40,7 +40,7 @@
                     @endif
                 @endforeach
             </select>
-            <input type="text" name="code_po" id="code_po" hidden>
+            <input type="hidden" name="code_po" id="code_po" value="{{ old('code_po') }}">
         </div>
 
     </div>
@@ -266,13 +266,13 @@
         <div class="form-group col">
             <label for="npwp_ppjk">NPWP PPJK</label>
             <input name="npwp_ppjk" type="text" class="form-control" data-inputmask='"mask": "99.999.999.9.999.999"'
-                data-mask id="npwp_ppjk" value="{{ $pib->npwp_ppjk ?? old('npwp_ppjk') }}">
+                data-mask id="npwp_ppjk" value="{{ $pib->npwp_ppjk ?? (old('npwp_ppjk') ?? '000000000000000') }}">
         </div>
         <div class="form-group col">
             <label for="np_ppjk">NP-PPJK</label>
             <input name="np_ppjk" type="text" class="form-control" id="np_ppjk"
                 data-inputmask='"mask": "999999 99-99-9999"' data-mask
-                value="{{ $pib->np_ppjk ?? old('np_ppjk') }}">
+                value="{{ $pib->np_ppjk ?? (old('np_ppjk') ?? '00000000000000') }}">
         </div>
 
 

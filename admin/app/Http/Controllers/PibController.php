@@ -79,7 +79,7 @@ class PibController extends Controller
         $request->invoice = str_replace('-', '', $request->invoice);
         $request->sub = str_replace(' ', '', $request->sub);
 
-        dd($request->code_po);
+
         DB::beginTransaction();
 
         try {
@@ -92,16 +92,15 @@ class PibController extends Controller
             $this->addDevies($request);
             $this->addHistory($request);
             $this->addDocument($request);
-            // $this->addStock($request);
-            // $this->addRecived($request);
 
 
             DB::commit();
             // dd('OK');
+
             return redirect()->route('pib.create')->withInput()->with('Ok', ' Data Tersimpan');
         } catch (\Throwable $th) {
             //throw $th;
-            // dd('gagal');
+            dd('gagal');
             return redirect()->route('pib.create')->withInput()->with('Fail', ' Data Tidak Tersimpan');
         }
     }
@@ -319,22 +318,31 @@ class PibController extends Controller
 
         $count = count($request['code_product']);
         // dd($count);
+        $no = 1;
+        $cek = ReportDocument::where('type_in', 1)->get();
+        if ($cek != "[]") {
+            $no = 1 + count($cek);
+        }
+        // dd($no);
         for ($i = 0; $i < $count; $i++) {
             $add = ReportDocument::insert([
                 'code_pib' => $request->code_pib,
                 'code_po' => $request->code_po,
-                'code_product' => $request->code_product[$i],
-                'name_product' => $request->name_product[$i],
-                'value_pabean' => $request->value_pabean[$i],
-                'date_product' =>  $request->date_product,
-                'type_history' =>  1,
-                'from' =>  $request->name_shipper,
-                'to' =>  $request->name_importir,
-                'qty_product' =>  $request->qty_product[$i],
+                'type_in' => $no,
+                'no_in' => $request->date_product,
+                'date_in' => $request->date_product,
+                'code_product_in' => $request->code_product[$i],
+                'name_product_in' => $request->name_product[$i],
+                'type_product_in' => $request->type_product[$i],
+                'unit_product_in' => $request->unit_product[$i],
+                'qty_product_in' =>  $request->qty_product[$i],
+                'value_product_in' => $request->value_pabean[$i],
+                'date_product_in' =>  $request->date_product,
                 'created_at' => $request->created_at,
                 'updated_at' => $request->updated_at,
             ]);
         }
+
         return $add;
     }
 

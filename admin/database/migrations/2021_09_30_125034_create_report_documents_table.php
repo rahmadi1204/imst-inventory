@@ -22,7 +22,7 @@ class CreateReportDocumentsTable extends Migration
             $table->string('type_in')->nullable();
             $table->string('no_in')->nullable();
             $table->date('date_in')->nullable();
-            $table->date('data_product_in')->nullable();
+            $table->date('date_product_in')->nullable();
             $table->string('code_product_in')->nullable();
             $table->string('type_product_in')->nullable();
             $table->string('name_product_in')->nullable();
@@ -32,7 +32,7 @@ class CreateReportDocumentsTable extends Migration
             $table->string('type_out')->nullable();
             $table->string('no_out')->nullable();
             $table->date('date_out')->nullable();
-            $table->date('data_product_out')->nullable();
+            $table->date('date_product_out')->nullable();
             $table->string('code_product_out')->nullable();
             $table->string('type_product_out')->nullable();
             $table->string('name_product_out')->nullable();
