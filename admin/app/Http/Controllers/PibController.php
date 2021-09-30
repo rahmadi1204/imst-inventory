@@ -10,17 +10,16 @@ use App\Models\Currency;
 use App\Models\Importir;
 use App\Models\Supplier;
 use App\Models\Data\Unit;
-use App\Models\PoProduct;
 use App\Models\PibInvoice;
 use App\Models\PibProduct;
 use App\Models\TypeProduct;
 use App\Models\PibContainer;
-use App\Models\StockProduct;
 use Illuminate\Http\Request;
 use App\Models\HistoryProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
 use App\Http\Requests\StorePibRequest;
+use App\Models\ReportDocument;
 
 class PibController extends Controller
 {
@@ -92,6 +91,7 @@ class PibController extends Controller
             $this->addProduct($request);
             $this->addDevies($request);
             $this->addHistory($request);
+            $this->addDocument($request);
             // $this->addStock($request);
             // $this->addRecived($request);
 
@@ -297,6 +297,30 @@ class PibController extends Controller
         // dd($count);
         for ($i = 0; $i < $count; $i++) {
             $add = HistoryProduct::insert([
+                'code_pib' => $request->code_pib,
+                'code_po' => $request->code_po,
+                'code_product' => $request->code_product[$i],
+                'name_product' => $request->name_product[$i],
+                'value_pabean' => $request->value_pabean[$i],
+                'date_product' =>  $request->date_product,
+                'type_history' =>  1,
+                'from' =>  $request->name_shipper,
+                'to' =>  $request->name_importir,
+                'qty_product' =>  $request->qty_product[$i],
+                'created_at' => $request->created_at,
+                'updated_at' => $request->updated_at,
+            ]);
+        }
+        return $add;
+    }
+
+    public function addDocument($request)
+    {
+
+        $count = count($request['code_product']);
+        // dd($count);
+        for ($i = 0; $i < $count; $i++) {
+            $add = ReportDocument::insert([
                 'code_pib' => $request->code_pib,
                 'code_po' => $request->code_po,
                 'code_product' => $request->code_product[$i],

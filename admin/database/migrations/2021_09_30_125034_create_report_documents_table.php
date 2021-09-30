@@ -15,6 +15,10 @@ class CreateReportDocumentsTable extends Migration
     {
         Schema::create('report_documents', function (Blueprint $table) {
             $table->id();
+            $table->string('code_po')->nullable();
+            $table->string('code_pib')->nullable();
+            $table->string('code_ncrv')->nullable();
+            $table->string('code_ncrc')->nullable();
             $table->string('type_in')->nullable();
             $table->string('no_in')->nullable();
             $table->date('date_in')->nullable();
