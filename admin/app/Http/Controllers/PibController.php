@@ -97,7 +97,7 @@ class PibController extends Controller
             DB::commit();
             // dd('OK');
 
-            return redirect()->route('pib.create')->withInput()->with('Ok', ' Data Tersimpan');
+            return redirect()->route('pib')->withInput()->with('Ok', ' Data Tersimpan');
         } catch (\Throwable $th) {
             //throw $th;
             dd('gagal');
