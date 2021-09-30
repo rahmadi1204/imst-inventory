@@ -177,8 +177,19 @@ class NcrVendorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        DB::beginTransaction();
+        try {
+            NcrVendor::where('code_ncrv', $id)->delete();
+            NcrVendorProduct::where('code_ncrv', $id)->delete();
+            HistoryProduct::where('code_ncrv', $id)->delete();
+            DB::commit();
+            return redirect()->route('ncr_vendor')->with('Ok', 'Data Terhaapus');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->route('ncr_vendor')->with('Fail', 'Data Tidak Terhaapus');
+        }
     }
 }

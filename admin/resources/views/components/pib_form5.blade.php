@@ -32,20 +32,21 @@
             </div>
         </div>
     </div>
-    <table class="table table-bordered" id="productAddRemove">
-        <tr>
-            <th>Pos Tarif Produk, Uraian</th>
-            <th width="12%">Kode Barang</th>
-            <th width="20%">Uraian Jenis Barang, Merek, Tipe,
-                Spesifikasi Wajib</th>
-            <th>Jumlah Produk</th>
-            <th>Satuan Produk</th>
-            <th>Berat Bersih Produk</th>
-            <th>Jumlah Kemasan Produk</th>
-            <th>Satuan Kemasan Produk</th>
-            <th>Nilai Pabean</th>
-            <th></th>
-        </tr>
+    <table id="productAddRemove" class="table table-bordered table-hover nowrap">
+        <thead class="thead-light">
+            <tr>
+                <th>Pos Tarif Produk, Uraian</th>
+                <th>Kode Barang</th>
+                <th>Uraian Jenis Barang, Merek, Tipe,Spesifikasi Wajib</th>
+                <th>Jumlah Produk</th>
+                <th>Satuan Produk</th>
+                <th>Berat Bersih Produk</th>
+                <th>Jumlah Kemasan Produk</th>
+                <th>Satuan Kemasan Produk</th>
+                <th>Nilai Pabean</th>
+                <th>Add/Delete</th>
+            </tr>
+        </thead>
         <tr>
             <td><input type="text" name="pos_product[0]" class="form-control" />
             </td>

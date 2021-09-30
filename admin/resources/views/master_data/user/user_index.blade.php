@@ -25,13 +25,14 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="tableSearch" class="table table-bordered table-hover">
+                            <table id="tableSearch" class="table table-bordered table-hover nowrap">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>Username</th>
                                         <th>Status</th>
+
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

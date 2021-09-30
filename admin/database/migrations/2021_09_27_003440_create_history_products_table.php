@@ -22,7 +22,9 @@ class CreateHistoryProductsTable extends Migration
             $table->string('code_product');
             $table->string('name_product');
             $table->string('date_product');
+            $table->double('value_pabean')->nullable();
             $table->bigInteger('type_history');
+            $table->value_pabean('type_history')->nullable();
             $table->string('from');
             $table->string('to');
             $table->bigInteger('qty_product');

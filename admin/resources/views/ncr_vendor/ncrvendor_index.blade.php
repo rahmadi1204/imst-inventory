@@ -18,7 +18,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="tableSearch" class="table table-bordered table-hover">
+                            <table id="tableSearch" class="table table-bordered table-hover nowrap">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
@@ -43,12 +43,12 @@
                                             <td>{{ $item->name_product }}</td>
                                             <td>{{ $item->qty_product }}</td>
                                             <td>
-                                                <a href="{{ route('ncr_vendor.edit', $item->id) }}"
+                                                <a href="{{ route('ncr_vendor.edit', $item->code_ncrv) }}"
                                                     class="btn btn-success">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                    data-target="#modal-delete-user" data-id="{{ $item->id }}"
+                                                    data-target="#modal-delete-user" data-id="{{ $item->code_ncrv }}"
                                                     data-name="{{ $item->no_po }}"><i class="fa fa-trash"></i>
                                                 </div>
 
