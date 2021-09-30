@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table id="tableSearch" class="table table-bordered table-hover">
+                        <table id="tableSearch" class="table table-bordered table-hover nowrap">
                             <thead class="thead-light">
                                 <tr>
                                     <th>NO</th>
