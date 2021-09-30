@@ -46,7 +46,8 @@
                             <table id="tableSearch" class="table table-bordered table-hover">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th class="text-center bg-primary" colspan="11">DOKUMEN PEMASUKAN</th>
+                                        <th class="text-center bg-primary"></th>
+                                        <th class="text-center bg-primary" colspan="10">DOKUMEN PEMASUKAN</th>
                                         <th class="text-center bg-primary" colspan="10">DOKUMEN PENGELUARAN</th>
                                         <th class="text-center bg-primary" colspan="3">SALDO BARANG</th>
                                     </tr>

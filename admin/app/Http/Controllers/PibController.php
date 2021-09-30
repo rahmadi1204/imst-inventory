@@ -301,6 +301,7 @@ class PibController extends Controller
                 'code_po' => $request->code_po,
                 'code_product' => $request->code_product[$i],
                 'name_product' => $request->name_product[$i],
+                'value_pabean' => $request->value_pabean[$i],
                 'date_product' =>  $request->date_product,
                 'type_history' =>  1,
                 'from' =>  $request->name_shipper,
