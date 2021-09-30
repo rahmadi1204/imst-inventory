@@ -16,6 +16,7 @@ class CreatePoProductsTable extends Migration
         Schema::create('po_products', function (Blueprint $table) {
             $table->id();
             $table->string('no_po');
+            $table->string('code_po');
             $table->string('code_product');
             $table->string('type_product');
             $table->string('name_product');

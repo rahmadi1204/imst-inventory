@@ -15,7 +15,7 @@ class CreateMasterProductsTable extends Migration
     {
         Schema::create('master_products', function (Blueprint $table) {
             $table->id();
-            $table->string('code_product');
+            $table->string('code_product')->unique();
             $table->string('name_product');
             $table->string('type_product');
             $table->string('status_product')->nullable();
