@@ -161,7 +161,7 @@
                         </ul>
                     </li>
                     <li class="nav-item {{ $reportOpen ?? '' }}">
-                        <a href="#" class="nav-link {{ $reportActiive ?? '' }}">
+                        <a href="#" class="nav-link {{ $reportActive ?? '' }}">
                             <i class="nav-icon fas fa-clipboard-list"></i>
                             <p>
                                 Laporan
@@ -170,15 +170,16 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="nav-link {{ $reportIn ?? '' }}">
-                                    <i class="nav-icon fa fa-sign-in-alt text-dark"></i>
+                                <a href="{{ route('report_document') }}"
+                                    class="nav-link {{ $reportDocument ?? '' }}">
+                                    <i class="nav-icon fa fa-file-alt text-dark"></i>
                                     <p>
-                                        Data Masuk
+                                        Barang Perdokumen
                                     </p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link {{ $reportOut ?? '' }}">
+                                <a href="#" class="nav-link {{ $reportMutasi ?? '' }}">
                                     <i class="nav-icon fa fa-sign-out-alt text-dark"></i>
                                     <p>
                                         Data Keluar

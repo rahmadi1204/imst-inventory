@@ -19,7 +19,7 @@ use App\Http\Controllers\Data\AuxiliaryController;
 use App\Http\Controllers\Data\DataProductController;
 use App\Http\Controllers\Data\HistoryProductController;
 use App\Http\Controllers\Data\MasterProductController;
-
+use App\Http\Controllers\ReportDocumentController;
 
 // Route Buelum Login
 Route::middleware(['guest'])->group(function () {
@@ -102,6 +102,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/po/update/{po:id}', [PoController::class, 'update'])->name('po.update');
         Route::post('/po/delete', [PoController::class, 'destroy'])->name('po.destroy');
 
+        #pib
+        Route::get('/pib', [PibController::class, 'index'])->name('pib');
+        Route::get('/pib/add', [PibController::class, 'create'])->name('pib.create');
+        Route::post('/pib/add', [PibController::class, 'store'])->name('pib.store');
+        Route::get('/pib/update/{pib:id}', [PibController::class, 'edit'])->name('pib.edit');
+        Route::post('/pib/update/{pib:id}', [PibController::class, 'update'])->name('pib.update');
+        Route::post('/pib/delete', [PibController::class, 'destroy'])->name('pib.destroy');
+
         #ncr_customer
         Route::get('/ncr_customer', [NcrCustomerController::class, 'index'])->name('ncr_customer');
         Route::get('/ncr_customer/add', [NcrCustomerController::class, 'create'])->name('ncr_customer.create');
@@ -118,12 +126,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/ncr_vendor/update/{po:id}', [NcrVendorController::class, 'update'])->name('ncr_vendor.update');
         Route::post('/ncr_vendor/delete', [NcrVendorController::class, 'destroy'])->name('ncr_vendor.destroy');
 
-        #pib
-        Route::get('/pib', [PibController::class, 'index'])->name('pib');
-        Route::get('/pib/add', [PibController::class, 'create'])->name('pib.create');
-        Route::post('/pib/add', [PibController::class, 'store'])->name('pib.store');
-        Route::get('/pib/update/{pib:id}', [PibController::class, 'edit'])->name('pib.edit');
-        Route::post('/pib/update/{pib:id}', [PibController::class, 'update'])->name('pib.update');
-        Route::post('/pib/delete', [PibController::class, 'destroy'])->name('pib.destroy');
+        #report
+        #barang perdokumen
+        Route::get('/report_document', [ReportDocumentController::class, 'index'])->name('report_document');
+        Route::get('/report_document/add', [ReportDocumentController::class, 'create'])->name('report_document.create');
+        Route::post('/report_document/add', [ReportDocumentController::class, 'store'])->name('report_document.store');
+        Route::get('/report_document/update/{report_document:id}', [ReportDocumentController::class, 'edit'])->name('report_document.edit');
+        Route::post('/report_document/update/{report_document:id}', [ReportDocumentController::class, 'update'])->name('report_document.update');
+        Route::post('/report_document/delete', [ReportDocumentController::class, 'destroy'])->name('report_document.destroy');
     });
 });
