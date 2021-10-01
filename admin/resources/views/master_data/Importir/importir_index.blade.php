@@ -15,7 +15,7 @@
                             </div>
                             <div class="card-tools">
                                 <div class="btn btn-light" data-toggle="modal" data-target="#modal-create">
-                                    <i class="fa fa-plus"></i> User
+                                    <i class="fa fa-plus"></i> Importir
                                 </div>
                             </div>
                         </div>
@@ -25,9 +25,10 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Username</th>
-                                        <th>Status</th>
+                                        <th>Tanggal</th>
+                                        <th>Kode Importir</th>
+                                        <th>Nama Importir</th>
+                                        <th>Alamat Importir</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -35,20 +36,23 @@
                                     @php
                                         $no = 1;
                                     @endphp
-                                    @foreach ($users as $user)
-                                        <tr class="data-row">
+                                    @foreach ($data as $item)
+                                        <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->username }}</td>
-                                            <td>{{ $user->role }}</td>
-                                            <td class="d-flex justify-content-md-center">
-                                                <a href="{{ route('user.edit', $user->username) }}"
-                                                    class="btn btn-success mr-2" id="user_edit">
+                                            <td>{{ $item->created_at->format('Y-m-d') }}</td>
+                                            <td>{{ $item->nik_importir }}</td>
+                                            <td>{{ $item->name_importir }}</td>
+                                            <td>{{ $item->address_importir }}</td>
+                                            <td>
+                                                <a href="{{ route('importir.edit', $item->nik_importir) }}"
+                                                    class="btn btn-success">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                    data-target="#modal-delete-user" data-id="{{ $user->id }}"
-                                                    data-name="{{ $user->name }}"><i class="fa fa-trash"></i></div>
+                                                    data-target="#modal-delete-user" data-id="{{ $item->nik_importir }}"
+                                                    data-name="{{ $item->name_importir }}"><i class="fa fa-trash"></i>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -62,19 +66,19 @@
     </section>
 
     {{-- Create Modal --}}
-    <form action="{{ route('user.store') }}" method="post">
+    <form action="{{ route('importir.store') }}" method="post">
         @csrf
         <div class="modal fade" id="modal-create">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah User</h4>
+                        <h4 class="modal-title">Tambah Data importir</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        @include('components.user_form')
+                        @include('components.importir_form')
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -89,7 +93,7 @@
     </form>
 
     {{-- Delete Modal --}}
-    <form action="{{ route('user.destroy') }}" method="post">
+    <form action="{{ route('importir.destroy') }}" method="post">
         @csrf
         @include('components.delete_modal')
     </form>

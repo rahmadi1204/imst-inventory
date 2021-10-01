@@ -29,8 +29,9 @@
 
                         <form action="{{ route('customer.update', $customer->code_customer) }}" method="post">
                             @csrf
-
-                            @include('components.customer_form')
+                            <div class="card-body">
+                                @include('components.customer_form')
+                            </div>
 
                             <div class="card-footer ">
                                 <button type="submit" class="btn btn-primary float-right">

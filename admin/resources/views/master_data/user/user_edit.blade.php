@@ -17,7 +17,9 @@
                         <form class="form-horizontal needs-validation" action="{{ route('user.update', $data->username) }}"
                             method="post">
                             @csrf
-                            @include('components.user_form')
+                            <div class="card-body">
+                                @include('components.user_form')
+                            </div>
                             <div class="card-footer ">
                                 <button type="submit" class="btn btn-primary float-right">
                                     Simpan

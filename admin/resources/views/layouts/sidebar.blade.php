@@ -104,6 +104,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('importir') }}" class="nav-link {{ $importirActive ?? '' }}">
+                                    <i class="fa fa-user nav-icon text-dark"></i>
+                                    <p class="text-dark">Importir</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('customer') }}" class="nav-link {{ $customerActive ?? '' }}">
                                     <i class="fa fa-users nav-icon text-dark"></i>
                                     <p class="text-dark">Customer</p>

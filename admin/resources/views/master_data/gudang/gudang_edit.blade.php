@@ -29,8 +29,9 @@
 
                         <form action="{{ route('warehouse.update', $warehouse->code_warehouse) }}" method="post">
                             @csrf
-
-                            @include('components.warehouse_form')
+                            <div class="card-body">
+                                @include('components.warehouse_form')
+                            </div>
 
                             <div class="card-footer ">
                                 <button type="submit" class="btn btn-primary float-right">

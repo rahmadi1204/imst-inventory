@@ -7,6 +7,7 @@ use App\Http\Controllers\PibController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Data\RawController;
+use App\Http\Controllers\ImportirController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\Data\DataController;
 use App\Http\Controllers\NcrVendorController;
@@ -16,10 +17,10 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\NcrCustomerController;
 use App\Http\Controllers\Data\FinishedController;
 use App\Http\Controllers\Data\AuxiliaryController;
-use App\Http\Controllers\Data\DataProductController;
-use App\Http\Controllers\Data\HistoryProductController;
-use App\Http\Controllers\Data\MasterProductController;
 use App\Http\Controllers\ReportDocumentController;
+use App\Http\Controllers\Data\DataProductController;
+use App\Http\Controllers\Data\MasterProductController;
+use App\Http\Controllers\Data\HistoryProductController;
 
 // Route Buelum Login
 Route::middleware(['guest'])->group(function () {
@@ -40,8 +41,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('user');
         Route::get('/users/create', [UserController::class, 'create'])->name('user.create');
         Route::post('/users/store', [UserController::class, 'store'])->name('user.store');
-        Route::get('/users/edit/{username}', [UserController::class, 'edit'])->name('user.edit');
-        Route::post('/users/update/{username}', [UserController::class, 'update'])->name('user.update');
+        Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+        Route::post('/users/update/{id}', [UserController::class, 'update'])->name('user.update');
         Route::post('/users/destroy', [UserController::class, 'destroy'])->name('user.destroy');
         Route::get('/users/pdf', [UserController::class, 'createPdf'])->name('user.pdf');
 
@@ -77,6 +78,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/supplier/update/{supplier:id}', [SupplierController::class, 'edit'])->name('supplier.edit');
         Route::post('/supplier/update/{supplier:id}', [SupplierController::class, 'update'])->name('supplier.update');
         Route::post('/supplier/delete', [SupplierController::class, 'destroy'])->name('supplier.destroy');
+
+        #importir
+        Route::get('/importir', [ImportirController::class, 'index'])->name('importir');
+        Route::get('/importir/add', [ImportirController::class, 'create'])->name('importir.create');
+        Route::post('/importir/add', [ImportirController::class, 'store'])->name('importir.store');
+        Route::get('/importir/update/{importir:id}', [ImportirController::class, 'edit'])->name('importir.edit');
+        Route::post('/importir/update/{importir:id}', [ImportirController::class, 'update'])->name('importir.update');
+        Route::post('/importir/delete', [ImportirController::class, 'destroy'])->name('importir.destroy');
 
         #customer
         Route::get('/customer', [CustomerController::class, 'index'])->name('customer');

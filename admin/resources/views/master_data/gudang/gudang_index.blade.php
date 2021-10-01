@@ -8,13 +8,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $title ?? 'Data' }}</h3>
+                            <div class="card-title">
+                                <h4>{{ $title ?? 'Data' }}</h4>
+                            </div>
                             <div class="card-tools">
-                                <a href="{{ route('warehouse.create') }}" class="btn btn-primary mr-3">
-                                    <i class="fa fa-plus"></i> Warehouse
-                                </a>
+                                <div class="btn btn-light" data-toggle="modal" data-target="#modal-create">
+                                    <i class="fa fa-plus"></i> Gudang
+                                </div>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -62,6 +64,33 @@
             </div>
         </div>
     </section>
+
+    {{-- Create Modal --}}
+    <form action="{{ route('warehouse.store') }}" method="post">
+        @csrf
+        <div class="modal fade" id="modal-create">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Tambah Data Gudang</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @include('components.warehouse_form')
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </form>
 
     {{-- Delete Modal --}}
     <form action="{{ route('warehouse.destroy') }}" method="post">

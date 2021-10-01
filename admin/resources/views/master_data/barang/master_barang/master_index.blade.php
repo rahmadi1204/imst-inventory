@@ -9,7 +9,9 @@
             <div class="col">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">{{ $title ?? 'Data' }}</h3>
+                        <div class="card-title">
+                            <h4>{{ $title ?? 'Data' }}</h4>
+                        </div>
                         <div class="card-tools">
                             <div class="btn btn-light" data-toggle="modal" data-target="#modal-default">
                                 <i class="fa fa-plus"></i> Master Barang
