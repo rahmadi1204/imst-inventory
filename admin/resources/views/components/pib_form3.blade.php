@@ -121,21 +121,21 @@
                     @if (isset($pib))
                         @if ($pib->valuta == $item->code)
                             <option value="{{ $item->code }}" symbol="{{ $item->symbol }}" selected>
-                                {{ $item->symbol }} {{ $item->name }}
+                                {{ $item->name }} {{ $item->symbol }}
                             </option>
                         @else
                             <option value="{{ $item->code }}" symbol="{{ $item->symbol }}">
-                                {{ $item->symbol }} {{ $item->name }}
+                                {{ $item->name }} {{ $item->symbol }}
                             </option>
                         @endif
                     @else
                         @if (old('valuta') == $item->code)
                             <option value="{{ $item->code }}" symbol="{{ $item->symbol }}" selected>
-                                {{ $item->symbol }} {{ $item->name }}
+                                {{ $item->name }} {{ $item->symbol }}
                             </option>
                         @else
                             <option value="{{ $item->code }}" symbol="{{ $item->symbol }}">
-                                {{ $item->symbol }} {{ $item->name }}
+                                {{ $item->name }} {{ $item->symbol }}
                             </option>
                         @endif
                     @endif

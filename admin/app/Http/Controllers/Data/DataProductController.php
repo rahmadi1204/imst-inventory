@@ -16,14 +16,14 @@ class DataProductController extends Controller
     public function index()
     {
 
+        DB::table('master_products')->update([
+            'qty_product' => 0,
+            'status_product' => "KOSONG",
+        ]);
         $cek = DB::table('history_products')
             ->selectRaw('history_products.code_product, sum(qty_product) as qty_product')
             ->groupBy('code_product')
             ->pluck('qty_product', 'code_product');
-        $reset = DB::table('master_products')->update([
-            'qty_product' => 0,
-            'status_product' => "KOSONG",
-        ]);
         foreach ($cek as $key => $value) {
             DB::table('master_products')->where('code_product', '=', $key)
                 ->update([
