@@ -25,7 +25,16 @@ class NcrVendorController extends Controller
         $data = DB::table('ncr_vendors')
             ->join('ncr_vendor_products', 'ncr_vendor_products.code_ncrv', '=', 'ncr_vendors.code_ncrv')
             ->join('master_products', 'master_products.code_product', '=', 'ncr_vendor_products.code_product')
-            ->get();
+            ->get([
+                'ncr_vendors.code_ncrv',
+                'ncr_vendors.date_ncrv',
+                'ncr_vendors.no_po',
+                'ncr_vendors.name_supplier',
+                'ncr_vendors.name_warehouse',
+                'master_products.name_product',
+                'ncr_vendor_products.code_ncrv_product',
+                'ncr_vendor_products.qty_product',
+            ]);
         // dd($data);
         return view('ncr_vendor.ncrvendor_index', [
             'title' => 'NCR Vendor',
