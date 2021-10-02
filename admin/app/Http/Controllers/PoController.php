@@ -39,7 +39,24 @@ class PoController extends Controller
         $data = DB::table('pos')
             ->join('po_products', 'po_products.code_po', '=', 'pos.code_po')
             ->join('master_products', 'master_products.code_product', '=', 'po_products.code_product')
-            ->get();
+            ->get([
+                'pos.id',
+                'pos.no_po',
+                'pos.project',
+                'pos.date_po',
+                'pos.vendor_name',
+                'pos.vendor_address',
+                'pos.send_address',
+                'pos.currency',
+                'pos.total_amount_po',
+                'po_products.code_product',
+                'po_products.description',
+                'po_products.qty_product',
+                'po_products.qty_recived',
+                'po_products.unit_price',
+                'po_products.total_amount',
+                'po_products.latest',
+            ]);
 
         return view('master_data.po.po_index', [
             'data' => $data,
