@@ -43,82 +43,117 @@
                             <!-- /.form group -->
                         </div>
                         <div class="card-body">
-                            <table id="tableSearch" class="table table-bordered table-hover nowrap">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th class="text-center bg-primary"></th>
-                                        <th class="text-center bg-primary" colspan="10">DOKUMEN PEMASUKAN</th>
-                                        <th class="text-center bg-primary" colspan="10">DOKUMEN PENGELUARAN</th>
-                                        <th class="text-center bg-primary" colspan="3">SALDO BARANG</th>
-                                    </tr>
-                                    <tr>
-                                        <th>NO</th>
-                                        <th>JENIS</th>
-                                        <th>NO</th>
-                                        <th>TGL</th>
-                                        <th>TGL MASUK</th>
-                                        <th>KODE BARANG</th>
-                                        <th>SERI BARANG</th>
-                                        <th>NAMA BARANG</th>
-                                        <th>SATUAN</th>
-                                        <th>JUMLAH</th>
-                                        <th>NILAI PABEAN</th>
-                                        <th>JENIS</th>
-                                        <th>NO</th>
-                                        <th>TGL</th>
-                                        <th>TGL MASUK</th>
-                                        <th>KODE BARANG</th>
-                                        <th>SERI BARANG</th>
-                                        <th>NAMA BARANG</th>
-                                        <th>SATUAN</th>
-                                        <th>JUMLAH</th>
-                                        <th>NILAI PABEAN</th>
-                                        <th>SATUAN</th>
-                                        <th>JUMLAH</th>
-                                        <th>NILAI PABEAN</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $item)
-                                        <tr>
-                                            <td>{{ $no++ }}</td>
-                                            @if ($item->type_in == 1)
-                                                <td>PIB</td>
-                                            @else
+                            <div class="row">
+                                <div class="col-5">
+                                    <table id="masuk" class="table table-bordered table-hover nowrap">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th class="text-center bg-primary"></th>
+                                                <th class="text-center bg-primary" colspan="10">DOKUMEN PEMASUKAN</th>
+                                            </tr>
+                                            <tr>
+                                                <th>NO</th>
+                                                <th>JENIS</th>
+                                                <th>NO</th>
+                                                <th>TGL</th>
+                                                <th>TGL MASUK</th>
+                                                <th>KODE BARANG</th>
+                                                <th>SERI BARANG</th>
+                                                <th>NAMA BARANG</th>
+                                                <th>SATUAN</th>
+                                                <th>JUMLAH</th>
+                                                <th>NILAI PABEAN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($masuk as $item)
+                                                <tr>
+                                                    <td>{{ $no++ }}</td>
+                                                    @if ($item->type_in == 1)
+                                                        <td>PIB</td>
+                                                    @else
+                                                        <td></td>
+                                                    @endif
+                                                    <td>{{ $item->no_in }}</td>
+                                                    <td>{{ $item->date_in }}</td>
+                                                    <td>{{ $item->date_product_in }}</td>
+                                                    <td>{{ $item->code_product_in }}</td>
+                                                    <td>{{ $item->type_product_in }}</td>
+                                                    <td>{{ $item->name_product_in }}</td>
+                                                    <td>{{ $item->unit_product_in }}</td>
+                                                    <td>{{ $item->qty_product_in }}</td>
+                                                    <td>{{ $item->value_product_in }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-5">
+                                    <table id="keluar" class="table table-bordered table-hover nowrap">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th class="text-center bg-primary" colspan="10">DOKUMEN PENGELUARAN</th>
+                                            </tr>
+                                            <tr>
+                                                <th>JENIS</th>
+                                                <th>NO</th>
+                                                <th>TGL</th>
+                                                <th>TGL MASUK</th>
+                                                <th>KODE BARANG</th>
+                                                <th>SERI BARANG</th>
+                                                <th>NAMA BARANG</th>
+                                                <th>SATUAN</th>
+                                                <th>JUMLAH</th>
+                                                <th>NILAI PABEAN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($keluar as $item)
+                                                <tr>
+                                                    @if ($item->type_out == 1)
+                                                        <td>NCR Vendor</td>
+                                                    @elseif($item->type_out == 2)
+                                                        <td>NCR Customer</td>
+                                                    @else
+                                                        <td></td>
+                                                    @endif
+                                                    <td>{{ $item->no_out }}</td>
+                                                    <td>{{ $item->date_out }}</td>
+                                                    <td>{{ $item->date_product_out }}</td>
+                                                    <td>{{ $item->code_product_out }}</td>
+                                                    <td>{{ $item->type_product_out }}</td>
+                                                    <td>{{ $item->name_product_out }}</td>
+                                                    <td>{{ $item->unit_product_out }}</td>
+                                                    <td>{{ $item->qty_product_out }}</td>
+                                                    <td>{{ $item->value_product_out }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-2">
+                                    <table id="saldo" class="table table-bordered table-hover nowrap">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th class="text-center bg-primary" colspan="3">SALDO BARANG</th>
+                                            </tr>
+                                            <tr>
+                                                <th>SATUAN</th>
+                                                <th>JUMLAH</th>
+                                                <th>NILAI PABEAN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
                                                 <td></td>
-                                            @endif
-                                            <td>{{ $item->no_in }}</td>
-                                            <td>{{ $item->date_in }}</td>
-                                            <td>{{ $item->date_product_in }}</td>
-                                            <td>{{ $item->code_product_in }}</td>
-                                            <td>{{ $item->type_product_in }}</td>
-                                            <td>{{ $item->name_product_in }}</td>
-                                            <td>{{ $item->unit_product_in }}</td>
-                                            <td>{{ $item->qty_product_in }}</td>
-                                            <td>{{ $item->value_product_in }}</td>
-                                            @if ($item->type_out == 1)
-                                                <td>NCR Vendor</td>
-                                            @elseif($item->type_out == 2)
-                                                <td>NCR Customer</td>
-                                            @else
                                                 <td></td>
-                                            @endif
-                                            <td>{{ $item->no_out }}</td>
-                                            <td>{{ $item->date_out }}</td>
-                                            <td>{{ $item->date_product_out }}</td>
-                                            <td>{{ $item->code_product_out }}</td>
-                                            <td>{{ $item->type_product_out }}</td>
-                                            <td>{{ $item->name_product_out }}</td>
-                                            <td>{{ $item->unit_product_out }}</td>
-                                            <td>{{ $item->qty_product_out }}</td>
-                                            <td>{{ $item->value_product_out }}</td>
-                                            <td>{{ $item->unit_product_all }}</td>
-                                            <td>{{ $item->qty_product_all }}</td>
-                                            <td>{{ $item->value_product_all }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

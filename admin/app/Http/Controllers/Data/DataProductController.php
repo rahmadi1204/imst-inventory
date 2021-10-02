@@ -15,28 +15,24 @@ class DataProductController extends Controller
 {
     public function index()
     {
-        $master = MasterProduct::all();
-        foreach ($master as $item) {
-            $stok = StockProduct::updateOrCreate(
-                [
-                    'code_product' => $item->code_product,
-                    'name_product' => $item->name_product,
-                    'type_product' => $item->type_product
-                ],
-                ['qty_product' => 0]
-            );
+
+        $cek = DB::table('history_products')
+            ->selectRaw('history_products.code_product, sum(qty_product) as qty_product')
+            ->groupBy('code_product')
+            ->pluck('qty_product', 'code_product');
+        $reset = DB::table('master_products')->update([
+            'qty_product' => 0,
+            'status_product' => "KOSONG",
+        ]);
+        foreach ($cek as $key => $value) {
+            DB::table('master_products')->where('code_product', '=', $key)
+                ->update([
+                    'qty_product' => $value,
+                    'status_product' => "OK",
+                ]);
         }
-        // dd($master);
-        $data = HistoryProduct::groupBy('code_product')
-            ->selectRaw(' sum(qty_product) as sum, code_product')
-            ->pluck('sum', 'code_product');
+        $data = DB::table('master_products')->get();
         // dd($data);
-        foreach ($data as $key => $value) {
-            StockProduct::where('code_product', $key)->update([
-                'qty_product' => $value
-            ]);
-        }
-        $data = StockProduct::all();
         return view('master_data.barang.data_barang.data_index', [
             'data' => $data,
             'no' => 1,

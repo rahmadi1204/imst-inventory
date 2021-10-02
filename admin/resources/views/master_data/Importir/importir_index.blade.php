@@ -39,7 +39,7 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->created_at->format('Y-m-d') }}</td>
+                                            <td>{{ $item->created_at->format('d F Y') }}</td>
                                             <td>{{ $item->nik_importir }}</td>
                                             <td>{{ $item->name_importir }}</td>
                                             <td>{{ $item->address_importir }}</td>

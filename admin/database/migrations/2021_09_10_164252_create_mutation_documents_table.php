@@ -13,21 +13,21 @@ class CreateMutationDocumentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mutation_documents', function (Blueprint $table) {
-            $table->id();
-            $table->string('product_code');
-            $table->string('product_name');
-            $table->string('product_unit');
-            $table->integer('begining_balance');
-            $table->integer('income');
-            $table->integer('expenditure');
-            $table->integer('adjustmen');
-            $table->integer('last_balance');
-            $table->integer('stock_opname');
-            $table->integer('difference');
-            $table->string('description');
-            $table->timestamps();
-        });
+        // Schema::create('mutation_documents', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('product_code');
+        //     $table->string('product_name');
+        //     $table->string('product_unit');
+        //     $table->integer('begining_balance');
+        //     $table->integer('income');
+        //     $table->integer('expenditure');
+        //     $table->integer('adjustmen');
+        //     $table->integer('last_balance');
+        //     $table->integer('stock_opname');
+        //     $table->integer('difference');
+        //     $table->string('description');
+        //     $table->timestamps();
+        // });
     }
 
     /**

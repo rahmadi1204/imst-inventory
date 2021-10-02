@@ -1,23 +1,5 @@
 <script>
     $(function() {
-        $("#tableButton").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $("#tableButton1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $("#tableButton2").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         $('#tableSearch').DataTable({
             "lengthChange": false,
             "scrollX": true,
@@ -25,10 +7,14 @@
             "autoWidth": false,
         });
         $('#productAddRemove').DataTable({
+            "searching": false,
             "lengthChange": false,
             "scrollX": true,
             "info": true,
             "autoWidth": false,
+        });
+        $('#containerAddRemove').DataTable({
+            "searching": false,
         });
         $('#tableSearch1').DataTable({
             "paging": true,
@@ -38,13 +24,32 @@
             "autoWidth": false,
             "responsive": true,
         });
-        $('#tableSearch2').DataTable({
+        $('#masuk').DataTable({
             "paging": true,
             "lengthChange": false,
+            "searching": false,
             "ordering": true,
             "info": true,
             "autoWidth": false,
-            "responsive": true,
+            "scrollX": true,
+        });
+        $('#keluar').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "scrollX": true,
+        });
+        $('#saldo').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "scrollX": true,
         });
     });
 </script>

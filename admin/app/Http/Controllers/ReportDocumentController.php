@@ -32,10 +32,15 @@ class ReportDocumentController extends Controller
         // $ncrc = DB::table('history_products')
         //     ->join('ncr_customers', 'ncr_customers.code_ncrc', '=', 'history_products.code_ncrv')->get();
         // dd($ncrv);
+        $masuk  = DB::table('report_documents')->where('type_out', '=', null)
+            ->get();
+        // dd($masuk);
+        $keluar = DB::table('report_documents')->where('type_in', '=', null)
+            ->get();
         $data = ReportDocument::all();
         return view('report.laporan_barang_perdokumen', [
             'masuk' => $masuk,
-            'keluar' => $ncrv,
+            'keluar' => $keluar,
             'data' => $data,
             'no' => 1,
             'reportOpen' => 'menu-open',

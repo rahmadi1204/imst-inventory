@@ -37,7 +37,7 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->date_ncrv }}</td>
+                                            <td>{{ date('d F Y', strtotime($item->date_ncrv)) }}</td>
                                             <td>{{ $item->no_po }}</td>
                                             <td>{{ $item->name_supplier }}</td>
                                             <td>{{ $item->name_product }}</td>
@@ -48,7 +48,8 @@
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                    data-target="#modal-delete-user" data-id="{{ $item->code_ncrv }}"
+                                                    data-target="#modal-delete-user"
+                                                    data-id="{{ $item->code_ncrv_product }}"
                                                     data-name="{{ $item->no_po }}"><i class="fa fa-trash"></i>
                                                 </div>
 

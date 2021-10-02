@@ -39,7 +39,7 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->date }}</td>
+                                            <td>{{ date('d F Y', strtotime($item->date)) }}</td>
                                             <td>{{ $item->code_customer }}</td>
                                             <td>{{ $item->name_customer }}</td>
                                             <td>{{ $item->address_customer }}</td>

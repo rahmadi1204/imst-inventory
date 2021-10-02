@@ -33,7 +33,8 @@ class MasterProductController extends Controller
             'name_product' => 'required',
             'type_product' => 'required',
         ]);
-        $attr['status_product'] = "Dalam Pesanan";
+        $attr['status_product'] = "Kosong";
+        $attr['qty_product'] = 0;
         $store = MasterProduct::insert($attr);
         if ($store) {
             return redirect()->back()->with('Ok', 'Berhasil Menyimpan');

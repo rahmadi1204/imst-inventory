@@ -13,20 +13,19 @@
         $("#vendor_address").val(addressVendor);
 
     });
-    $('#code_product').change(function() {
-        let codeProduct = $(this).val();
-        let nameProduct = $('#code_product option:selected').attr("name");
-        let typeProduct = $('#code_product option:selected').attr("type");
-
-        $("#name_product").val(nameProduct);
-        $("#type_product").val(typeProduct);
-
-    });
     $('#currency').change(function() {
         let codeCurr = $(this).val();
         let symbol = $('#currency option:selected').attr("symbol");
 
         $(".curr").text(symbol);
+
+    });
+    $("#code_product" + 0).change(function() {
+        let code = $(this).val();
+        let name = $('#code_product' + 0 + ' option:selected').attr("name");
+        let type = $('#code_product' + 0 + ' option:selected').attr("type");
+
+        $("#description" + 0).val(type + ' - ' + name);
 
     });
 
@@ -52,17 +51,11 @@
         $("#productAddRemove").append('<tr><td><select name="code_product[' + j +
             ']" id="code_product' +
             j +
-            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><div class="input-group"><input type="text" name="type_product[' +
-            j +
-            ']" class="form-control" id="type_product' + j +
-            '"  readonly hidden/><input type="text" name="name_product[' +
-            j +
-            ']" class="form-control" id="name_product' + j +
-            '"  readonly/><input type="text" name="description[' +
+            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><input type="text" name="description[' +
             j +
             ']" id="description' +
             j +
-            '" class="form-control" hidden></div></td><td><input type="number" name="qty_product[' +
+            '" class="form-control"></div></td><td><input type="number" name="qty_product[' +
             j +
             ']" id="qty_product' +
             j +
@@ -93,21 +86,11 @@
             let name = $('#code_product' + j + ' option:selected').attr("name");
             let type = $('#code_product' + j + ' option:selected').attr("type");
 
-            $("#name_product" + j).val(name);
-            $("#type_product" + j).val(type);
+            $("#description" + j).val(type + ' - ' + name);
 
         });
     });
     $(document).on('click', '.remove-input-product', function() {
         $(this).parents('tr').remove();
-    });
-    $("#code_product" + 0).change(function() {
-        let code = $(this).val();
-        let name = $('#code_product' + 0 + ' option:selected').attr("name");
-        let type = $('#code_product' + 0 + ' option:selected').attr("type");
-
-        $("#name_product" + 0).val(name);
-        $("#type_product" + 0).val(type);
-
     });
 </script>

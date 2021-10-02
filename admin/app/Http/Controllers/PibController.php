@@ -73,8 +73,6 @@ class PibController extends Controller
         $validate = $request->validated();
         // dd($validate);
         $request->code_pib = date('ymdhis');
-        $request->created_at = date('Y-m-d');
-        $request->updated_at = date('Y-m-d');
         $request->no_approval = str_replace('-', '', $request->no_approval);
         $request->invoice = str_replace('-', '', $request->invoice);
         $request->sub = str_replace(' ', '', $request->sub);
@@ -91,7 +89,7 @@ class PibController extends Controller
             $this->addProduct($request);
             $this->addDevies($request);
             $this->addHistory($request);
-            $this->addDocument($request);
+            // $this->addDocument($request);
 
 
             DB::commit();
@@ -99,8 +97,8 @@ class PibController extends Controller
 
             return redirect()->route('pib')->withInput()->with('Ok', ' Data Tersimpan');
         } catch (\Throwable $th) {
-            //throw $th;
-            dd('gagal');
+            throw $th;
+            // dd('gagal');
             return redirect()->route('pib.create')->withInput()->with('Fail', ' Data Tidak Tersimpan');
         }
     }
@@ -129,8 +127,8 @@ class PibController extends Controller
             'name_ppjk' => $request->name_ppjk,
             'npwp_ppjk' => $request->npwp_ppjk,
             'np_ppjk' => $request->np_ppjk,
-            'created_at' => $request->created_at,
-            'updated_at' => $request->updated_at,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         return $add;
     }
@@ -147,8 +145,8 @@ class PibController extends Controller
             'load_place' => $request->load_place,
             'load_transit' => $request->load_transit,
             'load_destination' => $request->load_destination,
-            'created_at' => $request->created_at,
-            'updated_at' => $request->updated_at,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         return $add;
     }
@@ -178,8 +176,8 @@ class PibController extends Controller
             'insurance' => $request->insurance,
             'freight' => $request->freight,
             'pabean_value' => $request->pabean_value,
-            'created_at' => $request->created_at,
-            'updated_at' => $request->updated_at,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         return $addInvoice;
     }
@@ -196,8 +194,8 @@ class PibController extends Controller
                 'type_container' => $request->type_container[$i],
                 'size_container' => $request->size_container[$i],
                 'qty_container' => $count,
-                'created_at' => $request->created_at,
-                'updated_at' => $request->updated_at,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
         return $add;
@@ -210,24 +208,25 @@ class PibController extends Controller
         for ($i = 0; $i < $count; $i++) {
             $add = PibProduct::insert([
                 'no_approval' => $request->no_approval,
+                'code_po' => $request->code_po,
                 'code_pib' => $request->code_pib,
+                'code_po_product' => $request->code_po . '-' . $request->code_product[$i],
+                'code_pib_product' => $request->code_pib . '-' . $request->code_product[$i],
                 'no_po' => $request->no_po,
                 'date_product' => $request->date_product,
                 'pos_product' => $request->pos_product[$i],
                 'code_product' => $request->code_product[$i],
-                'type_product' => $request->type_product[$i],
-                'name_product' => $request->name_product[$i],
                 'country_product' => $request->country_product,
                 'qty_product' => $request->qty_product[$i],
                 'unit_product' => $request->unit_product[$i],
                 'netto_product' => $request->netto_product[$i],
                 'qty_pack' => $request->qty_pack[$i],
                 'type_pack' => $request->type_pack[$i],
-                'value_pabean' => $request->value_pabean[$i],
+                'product_pabean' => $request->value_pabean[$i],
                 'type_pabean' => $request->type_pabean,
                 'qty_type_product' => $count,
-                'created_at' => $request->created_at,
-                'updated_at' => $request->updated_at,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
         return $add;
@@ -296,18 +295,20 @@ class PibController extends Controller
         // dd($count);
         for ($i = 0; $i < $count; $i++) {
             $add = HistoryProduct::insert([
-                'code_pib' => $request->code_pib,
                 'code_po' => $request->code_po,
+                'code_pib' => $request->code_pib,
+                'code_po_product' => $request->code_po . '-' . $request->code_product[$i],
+                'code_pib_product' => $request->code_pib . '-' . $request->code_product[$i],
                 'code_product' => $request->code_product[$i],
-                'name_product' => $request->name_product[$i],
-                'value_pabean' => $request->value_pabean[$i],
+                'unit_product' => $request->unit_product[$i],
+                'product_pabean' => $request->value_pabean[$i],
                 'date_product' =>  $request->date_product,
                 'type_history' =>  1,
                 'from' =>  $request->name_shipper,
                 'to' =>  $request->name_importir,
                 'qty_product' =>  $request->qty_product[$i],
-                'created_at' => $request->created_at,
-                'updated_at' => $request->updated_at,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
         return $add;
@@ -338,57 +339,77 @@ class PibController extends Controller
                 'qty_product_in' =>  $request->qty_product[$i],
                 'value_product_in' => $request->value_pabean[$i],
                 'date_product_in' =>  $request->date_product,
-                'created_at' => $request->created_at,
-                'updated_at' => $request->updated_at,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
         return $add;
     }
 
-    // public function addRecived($request)
-    // {
-    //     $count = count($request['code_product']);
-    //     // dd($request);
-    //     for ($i = 0; $i < $count; $i++) {
-    //         $old[$i] = PoProduct::where('code_product', $request->code_product[$i])
-    //             ->where('no_po', $request->no_po)
-    //             ->value('qty_less');
-    //         $qty[$i] = $old[$i] - $request->qty_product[$i];
-    //         $add = PoProduct::where('code_product', $request->code_product[$i])
-    //             ->where('no_po', $request->no_po)
-    //             ->update([
-    //                 'qty_less' => $qty[$i],
-    //             ]);
-    //     }
-    //     return $add;
-    // }
-    // public function addStock($request)
-    // {
+    public function edit($id)
+    {
+        $seller = Supplier::all();
+        $importir = Importir::all();
+        $typeProduct = TypeProduct::all();
+        $product = MasterProduct::all();
+        $po = Po::all();
+        $unit = Unit::all();
+        $currency = Currency::orderBy('name')->get();
+        $pib = DB::table('pibs')
+            ->join('pib_loads', function ($join) {
+                $join->on('pibs.code_pib', '=', 'pib_loads.code_pib');
+            })
+            ->join('pib_invoices', function ($join) {
+                $join->on('pibs.code_pib', '=', 'pib_invoices.code_pib');
+            })
+            ->join('pib_devies', function ($join) use ($id) {
+                $join->on('pibs.code_pib', '=', 'pib_devies.code_pib')
+                    ->where('pibs.no_approval', '=', $id);
+            })
+            ->first();
+        // dd($pib);
+        $containers =  DB::table('pibs')
+            ->join('pib_containers', function ($join) use ($id) {
+                $join->on('pibs.code_pib', '=', 'pib_containers.code_pib')
+                    ->where('pibs.no_approval', '=', $id);
+            })
+            ->get();
+        $products =  DB::table('pibs')
+            ->join('pib_products', function ($join) {
+                $join->on('pibs.code_pib', '=', 'pib_products.code_pib');
+            })
+            ->join('master_products', function ($join) use ($id) {
+                $join->on('master_products.code_product', '=', 'pib_products.code_product')
+                    ->where('pibs.no_approval', '=', $id);
+            })
+            ->get();
+        return view('master_data.pib.pib_detail', [
+            'pib' => $pib,
+            'containers' => $containers,
+            'products' => $products,
+            'seller' => $seller,
+            'currency' => $currency,
+            'unit' => $unit,
+            'po' => $po,
+            'importir' => $importir,
+            'product' => $product,
+            'typeProduct' => $typeProduct,
+            'title' => "Data PIB",
+            'transaksiOpen' => 'menu-open',
+            'transaksiActive' => 'active',
+            'pibActive' => 'active',
+        ]);
+    }
 
-    //     $count = count($request['code_product']);
-    //     // dd($request);
-    //     for ($i = 0; $i < $count; $i++) {
-    //         $old[$i] = StockProduct::where('code_product', $request->code_product[$i])
-    //             ->value('qty_product');
-    //         if ($old[$i] == null) {
-    //             $qty[$i] = $request->qty_product[$i];
-    //             $add = StockProduct::create([
-    //                 'code_product' => $request->code_product[$i],
-    //                 'name_product' => $request->name_product[$i],
-    //                 'type_product' => $request->type_product[$i],
-    //                 'qty_product' =>  $qty[$i],
-    //             ]);
-    //         } else {
-    //             $qty[$i] = $old[$i] + $request->qty_product[$i];
-    //             $add = StockProduct::where('code_product', $request->code_product[$i])
-    //                 ->update([
-    //                     'qty_product' => $qty[$i],
-    //                 ]);
-    //         }
-    //     }
-    //     return $add;
-    // }
+    public function updateContainer($id)
+    {
+        # code...
+    }
+    public function deleteContaainer(Request $request)
+    {
+        # code...
+    }
 
     public function destroy(Request $request)
     {
@@ -410,20 +431,4 @@ class PibController extends Controller
             return redirect()->back()->with('Fail', 'Data Gagal Dihapus');
         }
     }
-    // public function deleteStock($id)
-    // {
-
-    //     HistoryProduct::where('no_approval', $id)->delete();
-    //     $newQty = DB::table('pib_products')->where('no_approval', '=', $id)->get(['code_product', 'qty_product']);
-    //     // dd($newQty);
-    //     $count = count($newQty);
-    //     for ($i = 0; $i < $count; $i++) {
-    //         $oldQty[$i] = DB::table('stock_products')->where('code_product', '=', $newQty[$i]->code_product)->value('qty_product');
-    //         // dd($oldQty[$i]);
-    //         $add = DB::table('stock_products')->where('code_product', '=', $newQty[$i]->code_product)->update([
-    //             'qty_product' => $oldQty[$i] - $newQty[$i]->qty_product,
-    //         ]);
-    //     }
-    //     return $add;
-    // }
 }

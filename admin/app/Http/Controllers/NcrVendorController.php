@@ -24,6 +24,7 @@ class NcrVendorController extends Controller
     {
         $data = DB::table('ncr_vendors')
             ->join('ncr_vendor_products', 'ncr_vendor_products.code_ncrv', '=', 'ncr_vendors.code_ncrv')
+            ->join('master_products', 'master_products.code_product', '=', 'ncr_vendor_products.code_product')
             ->get();
         // dd($data);
         return view('ncr_vendor.ncrvendor_index', [
@@ -78,8 +79,6 @@ class NcrVendorController extends Controller
         $prd = $request->validate([
             'code_po' => 'required',
             'code_product' => 'required',
-            'type_product' => 'required',
-            'name_product' => 'required',
             'qty_product' => 'required',
             'unit_product' => 'required',
         ]);
@@ -88,11 +87,6 @@ class NcrVendorController extends Controller
         $attr['updated_at'] = now();
         // dd($attr);
         $count = count($prd['code_product']);
-        $no = 1;
-        $cek = ReportDocument::where('type_out', 1)->get();
-        if ($cek != "[]") {
-            $no = 1 + count($cek);
-        }
 
 
         DB::beginTransaction();
@@ -101,50 +95,37 @@ class NcrVendorController extends Controller
             NcrVendor::insert($attr);
             for ($i = 0; $i < $count; $i++) {
                 NcrVendorProduct::create([
-                    'code_ncrv' => $attr['code_ncrv'],
                     'code_po' => $request->code_po,
+                    'code_ncrv' => $attr['code_ncrv'],
+                    'code_ncrv_product' => $attr['code_ncrv'] . '-' . $request->code_product[$i],
                     'code_product' => $request->code_product[$i],
-                    'type_product' => $request->type_product[$i],
-                    'name_product' => $request->name_product[$i],
                     'qty_product' => -$request->qty_product[$i],
                     'unit_product' => $request->unit_product[$i],
                 ]);
                 HistoryProduct::create([
                     'code_po' => $request->code_po,
                     'code_ncrv' => $attr['code_ncrv'],
+                    'code_po_product' => $request->code_po . '-' . $request->code_product[$i],
+                    'code_ncrv_product' => $attr['code_ncrv'] . '-' . $request->code_product[$i],
                     'code_product' => $request->code_product[$i],
-                    'name_product' => $request->name_product[$i],
-                    'date_product' => $request->date_ncrv,
-                    'qty_product' => -$request->qty_product[$i],
-                    'value_pabean' => 0,
-                    'from' => $request->name_warehouse,
-                    'to' => $request->name_supplier,
-                    'type_history' => 0,
-                ]);
-                ReportDocument::insert([
-                    'code_po' => $request->code_po,
-                    'code_ncrv' => $attr['code_ncrv'],
-                    'type_out' => 1,
-                    'no_out' => $no,
-                    'date_out' => $request->date_ncrv,
-                    'code_product_out' => $request->code_product[$i],
-                    'name_product_out' => $request->name_product[$i],
-                    'type_product_out' => $request->type_product[$i],
-                    'unit_product_out' => $request->unit_product[$i],
-                    'qty_product_out' =>  $request->qty_product[$i],
-                    'value_product_out' => 0,
-                    'date_product_out' =>  $request->date_ncrv,
+                    'unit_product' => $request->unit_product[$i],
+                    'product_pabean' => 0,
+                    'date_product' =>  $attr['date_ncrv'],
+                    'type_history' =>  0,
+                    'from' =>  $request->name_warehouse,
+                    'to' =>  $request->name_supplier,
+                    'qty_product' =>  -$request->qty_product[$i],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
             }
 
             DB::commit();
-            dd('ok');
+            // dd('ok');
             return redirect()->route('ncr_vendor')->with('Ok', "Data Tersimpan");
         } catch (\Throwable $th) {
             DB::rollback();
-            dd('fail');
+            // dd('fail');
             return redirect()->route('ncr_vendor')->with('Fail', "Data Tidak Tersimpan");
         }
     }
@@ -152,16 +133,22 @@ class NcrVendorController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->id;
+        $code = mb_substr($id, 0, 12);
+        $cek =  NcrVendorProduct::where('code_ncrv', $code)->get();
         DB::beginTransaction();
+
         try {
-            NcrVendor::where('code_ncrv', $id)->delete();
-            NcrVendorProduct::where('code_ncrv', $id)->delete();
-            HistoryProduct::where('code_ncrv', $id)->delete();
+            if (count($cek) == 1) {
+                NcrVendor::where('code_ncrv', $code)->delete();
+            }
+            HistoryProduct::where('code_ncrv_product', $id)->delete();
+            NcrVendorProduct::where('code_ncrv_product', $id)->delete();
             DB::commit();
-            return redirect()->route('ncr_vendor')->with('Ok', 'Data Terhaapus');
+
+            return redirect()->route('ncr_vendor')->with('Ok', 'Data Terhapus');
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->route('ncr_vendor')->with('Fail', 'Data Tidak Terhaapus');
+            return redirect()->route('ncr_vendor')->with('Fail', 'Data Tidak Terhapus');
         }
     }
 }

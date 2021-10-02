@@ -44,12 +44,13 @@
                                             <td data-inputmask='"mask": "999999-999999-99999999-999999"' data-mask>
                                                 {{ $item->no_approval }}</td>
                                             <td>{{ $item->no_register }}</td>
-                                            <td>{{ $item->date_register }}</td>
+                                            <td>{{ date('d F Y', strtotime($item->date_register)) }}</td>
                                             <td>{{ $item->invoice }}</td>
                                             <td>{{ $item->load_place }}</td>
                                             <td>{{ $item->load_destination }}</td>
                                             <td>
-                                                <a href="" class=" btn btn-info">
+                                                <a href="{{ route('pib.edit', $item->no_approval) }}"
+                                                    class=" btn btn-info">
                                                     <i class="fa fa-search"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"

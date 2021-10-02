@@ -13,15 +13,15 @@ class CreateItemBalancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('item_balances', function (Blueprint $table) {
-            $table->id();
-            $table->string('product_code');
-            $table->string('product_name');
-            $table->integer('product_value');
-            $table->string('product_unit');
-            $table->integer('product_pabean');
-            $table->timestamps();
-        });
+        // Schema::create('item_balances', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('product_code');
+        //     $table->string('product_name');
+        //     $table->integer('product_value');
+        //     $table->string('product_unit');
+        //     $table->integer('product_pabean');
+        //     $table->timestamps();
+        // });
     }
 
     /**

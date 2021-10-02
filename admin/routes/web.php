@@ -119,6 +119,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/pib/update/{pib:id}', [PibController::class, 'update'])->name('pib.update');
         Route::post('/pib/delete', [PibController::class, 'destroy'])->name('pib.destroy');
 
+        Route::post('/pib/update/container/{pib:id}', [PibController::class, 'updateContainer'])->name('container.update');
+        Route::post('/pib/update/product-pib/{pib:id}', [PibController::class, 'updateProductPib'])->name('product_pib.update');
+
         #ncr_customer
         Route::get('/ncr_customer', [NcrCustomerController::class, 'index'])->name('ncr_customer');
         Route::get('/ncr_customer/add', [NcrCustomerController::class, 'create'])->name('ncr_customer.create');

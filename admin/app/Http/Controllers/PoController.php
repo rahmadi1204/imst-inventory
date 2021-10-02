@@ -22,28 +22,25 @@ class PoController extends Controller
 {
     function index()
     {
-        $a = 2;
-        for ($i = 0; $i < $a; $i++) {
-            $data = DB::table('pos')
-                ->join('po_products', 'po_products.code_po', '=', 'pos.code_po')
-                ->get();
-            // dd($data);
-            foreach ($data as $key) {
-                DB::table('po_products')->where('code_product', '=', $key->code_product)->update([
-                    'qty_recived' => 0,
+        $cek = DB::table('history_products')
+            ->selectRaw('history_products.code_po_product, sum(qty_product) as qty_product')
+            ->groupBy('code_po_product')
+            ->pluck('qty_product', 'code_po_product');
+        $reset = DB::table('po_products')->update([
+            'qty_recived' => 0,
+        ]);
+        $count = count($cek);
+        foreach ($cek as $key => $value) {
+            DB::table('po_products')->where('code_po_product', '=', $key)
+                ->update([
+                    'qty_recived' => $value,
                 ]);
-                $product = HistoryProduct::where('code_po', $key->code_po)->groupBy('code_product')
-                    ->selectRaw(' sum(qty_product) as sum, code_product')
-                    ->pluck('sum', 'code_product');
-                // dd($product);
-                foreach ($product as $key => $value) {
-                    PoProduct::where('code_product', $key)->update([
-                        'qty_recived' => $value,
-                    ]);
-                }
-            }
         }
-        // dd($product);
+        $data = DB::table('pos')
+            ->join('po_products', 'po_products.code_po', '=', 'pos.code_po')
+            ->join('master_products', 'master_products.code_product', '=', 'po_products.code_product')
+            ->get();
+
         return view('master_data.po.po_index', [
             'data' => $data,
             'title' => 'Data Pre Order',
@@ -88,8 +85,6 @@ class PoController extends Controller
             'project' => 'required',
             'date_po' => 'required',
             'code_product' => 'required',
-            'name_product' => 'required',
-            'type_product' => 'required',
             'qty_product' => 'required',
             'unit_price' => 'required',
             'currency' => 'required',
@@ -108,10 +103,9 @@ class PoController extends Controller
                 PoProduct::insert([
                     'no_po' => $request->no_po,
                     'code_po' => $code_po,
+                    'code_po_product' => $code_po . '-' . $request->code_product[$i],
                     'code_product' => $request->code_product[$i],
-                    'type_product' => $request->type_product[$i],
-                    'name_product' => $request->name_product[$i],
-                    'description' => $request->type_product[$i] . "-" . $request->name_product[$i],
+                    'description' => $request->description[$i],
                     'latest' => $request->latest[$i],
                     'qty_product' => $request->qty_product[$i],
                     'qty_recived' => 0,
@@ -123,7 +117,7 @@ class PoController extends Controller
                 $amount++;
             }
 
-            $po =  Po::insert([
+            Po::insert([
                 'no_po' => $request->no_po,
                 'code_po' => $code_po,
                 'project' => $request->project,

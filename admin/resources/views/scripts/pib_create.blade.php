@@ -3,9 +3,9 @@
     $("#dynamic-ar").click(function() {
         ++i;
         $("#containerAddRemove").append('<tr><td><input type="text" name="no_container[' + i +
-            ']" class="form-control" /></td><td><input type="text" name="size_container[' +
+            ']" class="form-control" /></td><td>  <div class="input-group"><input type="text" name="size_container[' +
             i +
-            ']" class="form-control" /></td><td><input type="text" name="type_container[' +
+            ']" class="form-control" /><div class="input-group-prepand"><div class="form-control">FEET</div></div></div></td><td><input type="text" name="type_container[' +
             i +
             ']" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-field"><i class="fa fa-trash"></i></button></td></tr>'
         );

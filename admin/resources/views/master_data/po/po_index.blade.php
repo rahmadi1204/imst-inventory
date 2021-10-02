@@ -50,7 +50,7 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->no_po }}</td>
                                             <td>{{ $item->project }}</td>
-                                            <td>{{ $item->date_po }}</td>
+                                            <td>{{ date('d F Y', strtotime($item->date_po)) }}</td>
                                             <td>{{ $item->vendor_name }}</td>
                                             <td>{{ $item->vendor_address }}</td>
                                             <td>{{ $item->send_address }}</td>

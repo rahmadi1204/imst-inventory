@@ -88,8 +88,6 @@ class StorePibRequest extends FormRequest
             'date_product' => 'required',
             'pos_product' => 'required',
             'code_product' => 'required',
-            'type_product' => 'required',
-            'name_product' => 'required',
             'country_product' => 'required',
             'qty_product' => 'required',
             'unit_product' => 'required',

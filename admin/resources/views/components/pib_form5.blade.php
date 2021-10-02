@@ -103,4 +103,53 @@
     <div class="btn btn-primary" onclick="stepper.next()">Next</div>
     <div class="btn btn-secondary" onclick="stepper.previous()">Kembali</div>
 
+    @isset($products)
+        <table class="table table-bordered table-hover nowrap mt-5">
+            <thead class="thead-light">
+                <tr>
+                    <th>No</th>
+                    <th>Pos Tarif Produk, Uraian</th>
+                    <th>Kode Barang</th>
+                    <th>Uraian Jenis Barang, Merek, Tipe,Spesifikasi Wajib</th>
+                    <th>Jumlah Produk</th>
+                    <th>Satuan Produk</th>
+                    <th>Berat Bersih Produk</th>
+                    <th>Jumlah Kemasan Produk</th>
+                    <th>Satuan Kemasan Produk</th>
+                    <th>Nilai Pabean</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $no = 1;
+                @endphp
+                @foreach ($products as $item)
+                    <tr>
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $item->pos_product }}</td>
+                        <td>{{ $item->code_product }}</td>
+                        <td>{{ $item->type_product }} - {{ $item->name_product }}</td>
+                        <td>{{ $item->qty_product }}</td>
+                        <td>{{ $item->unit_product }}</td>
+                        <td>{{ $item->netto_product }}</td>
+                        <td>{{ $item->qty_pack }}</td>
+                        <td>{{ $item->type_pack }}</td>
+                        <td>{{ $item->product_pabean }}</td>
+                        <td>
+                            <a href="{{ route('product_pib.update', $item->code_pib_product) }}"
+                                class=" btn btn-success">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <div class="btn btn-danger delete-modal" data-toggle="modal" data-target="#modal-delete-user"
+                                data-id="{{ $item->code_pib_product }}" data-name="{{ $item->code_product }}"><i
+                                    class="fa fa-trash"></i>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endisset
+
 </div>

@@ -21,12 +21,9 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>NO</th>
-                                    <th>CODE PO</th>
-                                    <th>CODE PIB</th>
-                                    <th>CODE NCRV</th>
-                                    <th>CODE NCRC</th>
                                     <th>TANGGAL</th>
                                     <th>KODE BARANG</th>
+                                    <th>JENIS BARANG</th>
                                     <th>NAMA BARANG</th>
                                     <th>TRANSAKSI</th>
                                     <th>DARI</th>
@@ -41,12 +38,13 @@
                                 @foreach ($data as $item)
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>{{ $item->code_po }}</td>
-                                        <td>{{ $item->code_pib }}</td>
-                                        <td>{{ $item->code_ncrv }}</td>
-                                        <td>{{ $item->code_ncrc }}</td>
-                                        <td>{{ $item->date_product }}</td>
+                                        {{-- <td>{{ $item->code_po_product }}</td>
+                                        <td>{{ $item->code_pib_product }}</td>
+                                        <td>{{ $item->code_ncrv_product }}</td>
+                                        <td>{{ $item->code_ncrc_product }}</td> --}}
+                                        <td>{{ date('d F Y', strtotime($item->date_product)) }}</td>
                                         <td>{{ $item->code_product }}</td>
+                                        <td>{{ $item->type_product }}</td>
                                         <td>{{ $item->name_product }}</td>
                                         <td>
                                             @if ($item->type_history == 1)

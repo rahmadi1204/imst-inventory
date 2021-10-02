@@ -126,7 +126,7 @@
                 <option selected disabled>Pilih</option>
                 @foreach ($seller as $item)
                     @isset($pib)
-                        @if ($item->name_supplier == $pib->name_supplier)
+                        @if ($item->name_supplier == $pib->name_shipper)
                             <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
                                 selected>{{ $item->name_supplier }}</option>
                         @endif
@@ -155,7 +155,7 @@
 
                 @foreach ($seller as $item)
                     @isset($pib)
-                        @if ($item->name_supplier == $pib->name_supplier)
+                        @if ($item->name_supplier == $pib->name_shipper)
                             <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
                                 selected>{{ $item->name_supplier }}</option>
                         @endif

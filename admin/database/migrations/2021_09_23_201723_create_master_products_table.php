@@ -18,6 +18,7 @@ class CreateMasterProductsTable extends Migration
             $table->string('code_product')->unique();
             $table->string('name_product');
             $table->string('type_product');
+            $table->bigInteger('qty_product');
             $table->string('status_product')->nullable();
             $table->timestamps();
         });

@@ -119,7 +119,7 @@
                 <option value="" selected disabled>Pilih</option>
                 @foreach ($currency as $item)
                     @if (isset($pib))
-                        @if ($pib->currency == $item->code)
+                        @if ($pib->valuta == $item->code)
                             <option value="{{ $item->code }}" symbol="{{ $item->symbol }}" selected>
                                 {{ $item->symbol }} {{ $item->name }}
                             </option>

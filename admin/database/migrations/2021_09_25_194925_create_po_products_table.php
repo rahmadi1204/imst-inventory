@@ -17,9 +17,8 @@ class CreatePoProductsTable extends Migration
             $table->id();
             $table->string('no_po');
             $table->string('code_po');
+            $table->string('code_po_product');
             $table->string('code_product');
-            $table->string('type_product');
-            $table->string('name_product');
             $table->string('description')->nullable();
             $table->date('latest');
             $table->bigInteger('qty_product');
