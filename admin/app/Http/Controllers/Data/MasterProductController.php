@@ -42,6 +42,19 @@ class MasterProductController extends Controller
             return redirect()->back()->with('Fail', 'Gagal Menyimpan');
         }
     }
+    public function update(Request $request)
+    {
+        $update = MasterProduct::find($request->id)->update([
+            'code_product' => $request->code_product,
+            'name_product' => $request->name_product,
+            'type_product' => $request->type_product,
+        ]);
+        if ($update) {
+            return redirect()->back()->with('Ok', 'Berhasil Menyimpan');
+        } else {
+            return redirect()->back()->with('Fail', 'Gagal Menyimpan');
+        }
+    }
     public function destroy()
     {
         $id = request('id');
