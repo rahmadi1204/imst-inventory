@@ -186,13 +186,15 @@
         </div>
     </div> --}}
     <table class="table table-bordered" id="productAddRemove">
-        <tr>
-            <th width="12%">Kode Barang</th>
-            <th width="50%">Jenis & Nama Barang</th>
-            <th>Jumlah Produk</th>
-            <th>Satuan Produk</th>
-            <th></th>
-        </tr>
+        <thead class="thead-light">
+            <tr>
+                <th>Kode Barang</th>
+                <th>Jenis & Nama Barang</th>
+                <th>Jumlah Produk</th>
+                <th>Satuan Produk</th>
+                <th></th>
+            </tr>
+        </thead>
         <tr>
             <td>
                 <select name="code_product[0]" id="code_product0" class="form-control">

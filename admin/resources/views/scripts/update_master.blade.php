@@ -6,6 +6,7 @@
         let updateType = $(this).data('type');
         $("#data_id_product").val(updateId);
         $("#code_product").val(updateCode);
+        $("#code_product").prop('readonly', true);
         $("#name_product").val(updateName);
         $('#type_product option[value="' + updateType + '"]').prop('selected', true)
         $("#data_name_product").text(updateName);

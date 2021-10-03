@@ -157,7 +157,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link {{ $NcrCustActive ?? '' }}">
+                                <a href="{{ route('ncr_customer') }}" class="nav-link {{ $NcrCustActive ?? '' }}">
                                     <i class="nav-icon fa fa-plus-square text-dark"></i>
                                     <p>
                                         NCR Customer

@@ -58,7 +58,7 @@ class ImportirController extends Controller
     public function edit($id)
     {
         // dd($id);
-        $importir = Importir::where('code_importir', $id)->first();
+        $importir = Importir::where('nik_importir', $id)->first();
         // dd($raw);
         return view('master_data.importir.importir_edit', [
             'importir' => $importir,
@@ -72,17 +72,17 @@ class ImportirController extends Controller
     {
         // dd($request);
         $attr = $request->validate([
-            'code_importir' => 'required',
+            'nik_importir' => 'required',
             'name_importir' => 'required',
             'address_importir' => 'required',
             'date' => 'required',
         ], [
-            'code_importir.required' => 'Kode importir Harus Diisi',
+            'nik_importir.required' => 'NIK importir Harus Diisi',
             'name_importir.required' => 'Nama importir Harus Diisi',
             'address_importir.required' => 'Alamat importir Harus Diisi',
             'date.required' => 'Tanggal Harus Diisi',
         ]);
-        $update = Importir::where('code_importir', $id)->update($attr);
+        $update = Importir::where('nik_importir', $id)->update($attr);
         if ($update) {
             return redirect()->route('importir')->with('Ok', 'Data Berhasil Disimpan');
         } else {
