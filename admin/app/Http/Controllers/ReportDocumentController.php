@@ -84,8 +84,22 @@ class ReportDocumentController extends Controller
                 'stock_products.product_pabean',
                 'stock_products.unit_product',
 
-
             ]);
+
+        foreach ($dataMasuk as  $value) {
+            DB::table('report_documents')->upsert(
+                [
+                    'code_product' => $value->code_product,
+                    'qty_product_in' => $value->qty_product,
+                    'unit_product_in' => $getUnit,
+                    'product_pabean_in' => $value->product_pabean,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                ['code_product'],
+                ['qty_product_in', 'unit_product_in', 'updated_at']
+            );
+        }
         // dd($dataMasuk);
         $sumKeluar  = DB::table('history_products')
             ->selectRaw('history_products.code_product, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
@@ -124,11 +138,38 @@ class ReportDocumentController extends Controller
                 'stock_products.unit_product',
             ]);
         // dd($dataKeluar);
+        foreach ($dataKeluar as  $value) {
+            DB::table('report_documents')
+                ->where('code_product', '=', $value->code_product)->update(
+                    [
+                        'qty_product_out' => $value->qty_product,
+                        'unit_product_out' => $getUnit,
+                        'product_pabean_out' => $value->product_pabean,
+                        'updated_at' => now(),
+                    ]
+                );
+        }
+        $data = DB::table('report_documents')
+            ->join('master_products', 'master_products.code_product', '=', 'report_documents.code_product')
+            ->get([
+                'master_products.code_product',
+                'master_products.type_product',
+                'master_products.name_product',
+                'report_documents.qty_product_in',
+                'report_documents.qty_product_out',
+                'report_documents.unit_product_in',
+                'report_documents.unit_product_out',
+                'report_documents.product_pabean_in',
+                'report_documents.product_pabean_out',
+                'report_documents.updated_at',
+            ]);
+        // dd($data);
         return view('report.laporan_barang_perdokumen', [
             'masuk' => $masuk,
             'keluar' => $keluar,
             'dataMasuk' => $dataMasuk,
             'dataKeluar' => $dataKeluar,
+            'data' => $data,
             'noMasuk' => 1,
             'noKeluar' => 1,
             'reportOpen' => 'menu-open',

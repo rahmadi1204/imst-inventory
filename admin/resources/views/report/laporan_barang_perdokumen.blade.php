@@ -125,7 +125,7 @@
                                                 @if ($item->type_history == 0)
                                                     <td>NCR Vendor</td>
                                                 @else
-                                                    <td>NCRR Customer</td>
+                                                    <td>NCR Customer</td>
                                                 @endif
                                                 <td>{{ $item->no_out }}</td>
                                                 <td>{{ $item->date_product }}</td>
@@ -179,8 +179,41 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($dataMasuk as $data)
-
+                                        @php
+                                            $j = 1;
+                                            $jml = 0;
+                                            $pabean = 0;
+                                        @endphp
+                                        @foreach ($data as $item)
+                                            <tr>
+                                                <td>{{ $j++ }}</td>
+                                                <td>{{ $item->type_product }}</td>
+                                                <td></td>
+                                                <td>{{ $item->updated_at }}</td>
+                                                <td>{{ $item->updated_at }}</td>
+                                                <td>{{ $item->code_product }}</td>
+                                                <td>{{ $item->type_product }}</td>
+                                                <td>{{ $item->name_product }}</td>
+                                                <td>{{ $item->unit_product_in }}</td>
+                                                <td>{{ $item->qty_product_in }}</td>
+                                                <td>{{ $item->product_pabean_in }}</td>
+                                                <td>{{ $item->type_product }}</td>
+                                                <td></td>
+                                                <td>{{ $item->updated_at }}</td>
+                                                <td>{{ $item->updated_at }}</td>
+                                                <td>{{ $item->code_product }}</td>
+                                                <td>{{ $item->type_product }}</td>
+                                                <td>{{ $item->name_product }}</td>
+                                                <td>{{ $item->unit_product_out }}</td>
+                                                <td>{{ $item->qty_product_out }}</td>
+                                                <td>{{ $item->product_pabean_out }}</td>
+                                                <td>{{ $item->unit_product_out }}</td>
+                                                <td>
+                                                    {{ $jml = $item->qty_product_in + $item->qty_product_out }}
+                                                </td>
+                                                <td>{{ $pabean = $item->product_pabean_in + $item->product_pabean_out }}
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
