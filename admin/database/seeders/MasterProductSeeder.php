@@ -19,12 +19,14 @@ class MasterProductSeeder extends Seeder
                 'code_product' => '518 50 6305',
                 'name_product' => 'BRAKE SHOES COMPOSITE T',
                 'type_product' => 'Bahan Baku',
+                'qty_product' => 0,
                 'status_product' => 'OK',
                 'created_at' => now(),
             ], [
                 'code_product' => '407 50 6350',
                 'name_product' => 'BRAKE SHOES COMPOSITE M',
                 'type_product' => 'Bahan Baku',
+                'qty_product' => 0,
                 'status_product' => 'OK',
                 'created_at' => now(),
             ]
