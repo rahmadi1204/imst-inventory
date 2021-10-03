@@ -72,7 +72,7 @@ class PibController extends Controller
     public function store(StorePibRequest $request)
     {
         $validate = $request->validated();
-        // dd($validate);
+        dd($validate);
         $request->code_pib = date('ymdhis');
         $request->no_approval = str_replace('-', '', $request->no_approval);
         $request->invoice = str_replace('-', '', $request->invoice);
@@ -110,6 +110,7 @@ class PibController extends Controller
             'type_document_pabean' => $request->type_document_pabean,
             'office_pabean' => $request->office_pabean,
             'no_approval' => $request->no_approval,
+            'code_po' => $request->code_po,
             'no_po' => $request->no_po,
             'type_pib' => $request->type_pib,
             'type_import' => $request->type_import,
@@ -311,39 +312,6 @@ class PibController extends Controller
                 'updated_at' => now(),
             ]);
         }
-        return $add;
-    }
-
-    public function addDocument($request)
-    {
-
-        $count = count($request['code_product']);
-        // dd($count);
-        $no = 1;
-        $cek = ReportDocument::where('type_in', 1)->get();
-        if ($cek != "[]") {
-            $no = 1 + count($cek);
-        }
-        // dd($no);
-        for ($i = 0; $i < $count; $i++) {
-            $add = ReportDocument::insert([
-                'code_pib' => $request->code_pib,
-                'code_po' => $request->code_po,
-                'type_in' => 1,
-                'no_in' => $no,
-                'date_in' => $request->date_product,
-                'code_product_in' => $request->code_product[$i],
-                'name_product_in' => $request->name_product[$i],
-                'type_product_in' => $request->type_product[$i],
-                'unit_product_in' => $request->unit_product[$i],
-                'qty_product_in' =>  $request->qty_product[$i],
-                'value_product_in' => $request->value_pabean[$i],
-                'date_product_in' =>  $request->date_product,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-
         return $add;
     }
 

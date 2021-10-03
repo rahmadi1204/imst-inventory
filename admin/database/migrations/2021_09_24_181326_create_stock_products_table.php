@@ -15,8 +15,11 @@ class CreateStockProductsTable extends Migration
     {
         Schema::create('stock_products', function (Blueprint $table) {
             $table->id();
+            $table->string('code_stock')->unique();
+            $table->bigInteger('type_stock');
             $table->string('code_product');
             $table->bigInteger('qty_product');
+            $table->double('product_pabean');
             $table->timestamps();
         });
     }

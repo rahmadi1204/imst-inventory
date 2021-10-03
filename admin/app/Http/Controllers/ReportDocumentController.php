@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\HistoryProduct;
-use App\Models\ReportDocument;
 use Illuminate\Support\Facades\DB;
 
 class ReportDocumentController extends Controller
@@ -12,37 +10,127 @@ class ReportDocumentController extends Controller
     public function index()
     {
         $masuk = DB::table('history_products')
-            ->join('pib_products', 'pib_products.code_pib', '=', 'history_products.code_pib')->get();
+            ->join('master_products', function ($join) {
+                $join->on('master_products.code_product', '=', 'history_products.code_product')->where('type_history', '=', 1);
+            })
+            ->get([
+                'master_products.code_product',
+                'master_products.type_product',
+                'master_products.name_product',
+                'history_products.type_history',
+                'history_products.date_product',
+                'history_products.qty_product',
+                'history_products.unit_product',
+                'history_products.product_pabean',
+            ]);
         $count = count($masuk);
         for ($i = 0; $i < $count; $i++) {
-            $masuk[$i]->type_in = 1;
             $masuk[$i]->date_in = $masuk[$i]->date_product;
             $masuk[$i]->no_in = $i + 1;
         }
         // dd($masuk);
-        $ncrv = DB::table('history_products')
-            ->join('ncr_vendor_products', 'ncr_vendor_products.code_ncrv', '=', 'history_products.code_ncrv')->get();
-        $count = count($ncrv);
-        for ($i = 0; $i < $count; $i++) {
-            $ncrv[$i]->type_out = 1;
-            $ncrv[$i]->date_out = $ncrv[$i]->date_product;
-            $ncrv[$i]->no_out = $i + 1;
+        $keluar = DB::table('history_products')
+            ->join('master_products', function ($join) {
+                $join->on('master_products.code_product', '=', 'history_products.code_product')->where('type_history', '<', 1);
+            })
+            ->get([
+                'master_products.code_product',
+                'master_products.type_product',
+                'master_products.name_product',
+                'history_products.type_history',
+                'history_products.date_product',
+                'history_products.qty_product',
+                'history_products.unit_product',
+                'history_products.product_pabean',
+            ]);
+        $count = count($keluar);
+        for ($j = 0; $j < $count; $j++) {
+            $keluar[$j]->date_out = $keluar[$j]->date_product;
+            $keluar[$j]->no_out = $j + 1;
         }
-        // dd($ncrv);
-        // $ncrc = DB::table('history_products')
-        //     ->join('ncr_customers', 'ncr_customers.code_ncrc', '=', 'history_products.code_ncrv')->get();
-        // dd($ncrv);
-        $masuk  = DB::table('report_documents')->where('type_out', '=', null)
+        $sumMasuk  = DB::table('history_products')
+            ->selectRaw('history_products.code_product, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
+            ->groupBy('code_product')
+            ->where('type_history', '=', 1)
             ->get();
-        // dd($masuk);
-        $keluar = DB::table('report_documents')->where('type_in', '=', null)
+        // ->pluck('qty_product', 'code_product');
+        // dd($sumMasuk);
+        foreach ($sumMasuk as $value) {
+            $getUnit = HistoryProduct::where('code_product', $value->code_product)->value('unit_product');
+            // dd($getUnit);
+            DB::table('stock_products')->upsert(
+                [
+                    'type_stock' => 1,
+                    'code_product' => $value->code_product,
+                    'code_stock' => "1" . $value->code_product,
+                    'qty_product' => $value->qty_product,
+                    'unit_product' => $getUnit,
+                    'product_pabean' => $value->product_pabean,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                ['code_stock'],
+                ['qty_product', 'unit_product']
+            );
+        }
+        $dataMasuk =   DB::table('stock_products')->where('type_stock', '=', 1)
+            ->join('master_products', 'master_products.code_product', '=', 'stock_products.code_product')
+            ->get([
+                'master_products.code_product',
+                'master_products.type_product',
+                'master_products.name_product',
+                'stock_products.qty_product',
+                'stock_products.created_at',
+                'stock_products.product_pabean',
+                'stock_products.unit_product',
+
+
+            ]);
+        // dd($dataMasuk);
+        $sumKeluar  = DB::table('history_products')
+            ->selectRaw('history_products.code_product, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
+            ->groupBy('code_product')
+            ->where('type_history', '<', 1)
             ->get();
-        $data = ReportDocument::all();
+        // ->pluck('qty_product', 'code_product');
+        // dd($sumKeluar);
+        foreach ($sumKeluar as $value) {
+            $getUnit = HistoryProduct::where('code_product', $value->code_product)->value('unit_product');
+            // dd($getUnit);
+            DB::table('stock_products')->upsert(
+                [
+                    'type_stock' => 0,
+                    'code_product' => $value->code_product,
+                    'code_stock' => "0" . $value->code_product,
+                    'qty_product' => $value->qty_product,
+                    'unit_product' => $getUnit,
+                    'product_pabean' => $value->product_pabean,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                ['code_stock'],
+                ['qty_product', 'unit_product']
+            );
+        }
+        $dataKeluar =   DB::table('stock_products')->where('type_stock', '=', 0)
+            ->join('master_products', 'master_products.code_product', '=', 'stock_products.code_product')
+            ->get([
+                'master_products.code_product',
+                'master_products.type_product',
+                'master_products.name_product',
+                'stock_products.qty_product',
+                'stock_products.created_at',
+                'stock_products.product_pabean',
+                'stock_products.unit_product',
+            ]);
+        // dd($dataKeluar);
         return view('report.laporan_barang_perdokumen', [
             'masuk' => $masuk,
             'keluar' => $keluar,
-            'data' => $data,
-            'no' => 1,
+            'dataMasuk' => $dataMasuk,
+            'dataKeluar' => $dataKeluar,
+            'noMasuk' => 1,
+            'noKeluar' => 1,
             'reportOpen' => 'menu-open',
             'reportActive' => 'active',
             'reportDocument' => 'active',
