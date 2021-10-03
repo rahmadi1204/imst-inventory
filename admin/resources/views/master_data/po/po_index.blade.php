@@ -79,7 +79,7 @@
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                    data-target="#modal-delete-user" data-id="{{ $item->no_po }}"
+                                                    data-target="#modal-delete" data-id="{{ $item->no_po }}"
                                                     data-name="{{ $item->no_po }}"><i class="fa fa-trash"></i>
                                                 </div>
 

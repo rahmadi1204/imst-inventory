@@ -37,18 +37,16 @@ class ImportirController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        $attr = $request->validate([
-            'code_importir' => 'required',
-            'name_importir' => 'required',
-            'address_importir' => 'required',
-            'date' => 'required',
-        ], [
-            'code_importir.required' => 'Kode importir Harus Diisi',
-            'name_importir.required' => 'Nama importir Harus Diisi',
-            'address_importir.required' => 'Alamat importir Harus Diisi',
-            'date.required' => 'Tanggal Harus Diisi',
+
+        $insert = Importir::insert([
+            'nik_importir' => $request->nik_importir,
+            'name_importir' => $request->name_importir,
+            'address_importir' => $request->address_importir,
+            'status_importir' => $request->status_importir,
+            'apiu' => $request->apiu,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-        $insert = Importir::insert($attr);
         if ($insert) {
             return redirect()->back()->with('Ok', 'Data Berhasil Disimpan');
         } else {
@@ -75,12 +73,14 @@ class ImportirController extends Controller
             'nik_importir' => 'required',
             'name_importir' => 'required',
             'address_importir' => 'required',
-            'date' => 'required',
+            'status_importir' => 'required',
+            'apiu' => 'required',
         ], [
             'nik_importir.required' => 'NIK importir Harus Diisi',
             'name_importir.required' => 'Nama importir Harus Diisi',
             'address_importir.required' => 'Alamat importir Harus Diisi',
-            'date.required' => 'Tanggal Harus Diisi',
+            'status_importir.required' => 'Status importir Harus Diisi',
+            'apiu.required' => 'APIUHarus Diisi',
         ]);
         $update = Importir::where('nik_importir', $id)->update($attr);
         if ($update) {
@@ -93,7 +93,7 @@ class ImportirController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->id;
-        $delete = Importir::where('code_importir', $id)->delete();
+        $delete = Importir::where('nik_importir', $id)->delete();
         if ($delete) {
             return redirect()->back()->with('Ok', 'Data Berhasil Dihapus');
         } else {

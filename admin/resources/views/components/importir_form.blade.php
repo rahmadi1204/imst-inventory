@@ -1,25 +1,25 @@
 <div class="form-group col">
-    <label for="inputKdImportir">Kode Importir</label>
-    <input name="nik_mportir" type="text" class="form-control"
-        value="{{ $importir->nik_mportir ?? old('nik_mportir') }}" id="inputKdImportir" required>
+    <label for="nik_importir">NIK Importir</label>
+    <input name="nik_importir" type="text" class="form-control"
+        value="{{ $importir->nik_importir ?? old('nik_importir') }}" id="nik_importir" required>
 </div>
 <div class="form-group col">
-    <label for="inputNameimportir">Nama Importir</label>
+    <label for="name_importir">Nama Importir</label>
     <input name="name_importir" type="text" class="form-control"
-        value="{{ $importir->name_importir ?? old('name_importir') }}" id="inputKdImportir" required>
+        value="{{ $importir->name_importir ?? old('name_importir') }}" id="name_importir" required>
 </div>
 <div class="form-group col">
-    <label for="tanggal">Tanggal:</label>
-    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-        <input name="date" type="text" class="form-control datetimepicker-input" data-target="#reservationdate" required
-            value="{{ $importir->date ?? old('date') }} " />
-        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-        </div>
-    </div>
-</div>
-<div class="form-group col">
-    <label for="alamatimportir">Alamat Importir</label>
-    <input name="address_importir" type="text" class="form-control" id="alamatimportir"
+    <label for="address_importir">Alamat Importir</label>
+    <input name="address_importir" type="text" class="form-control" id="address_importir"
         value="{{ $importir->address_importir ?? old('address_importir') }}" required>
+</div>
+<div class="form-group col">
+    <label for="status_importir">Status Importir</label>
+    <input name="status_importir" type="text" class="form-control" id="status_importir"
+        value="{{ $importir->status_importir ?? old('status_importir') }}" required>
+</div>
+<div class="form-group col">
+    <label for="apiu">APIU Importir</label>
+    <input name="apiu" type="text" class="form-control" id="apiu" value="{{ $importir->apiu ?? old('apiu') }}"
+        required>
 </div>
