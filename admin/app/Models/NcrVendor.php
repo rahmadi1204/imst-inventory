@@ -12,7 +12,7 @@ class NcrVendor extends Model
         'code_ncrv',
         'date_ncrv',
         'no_po',
-        'name_supplier',
+        'code_supplier',
         'name_warehouse',
         'way_transport',
         'code_product',

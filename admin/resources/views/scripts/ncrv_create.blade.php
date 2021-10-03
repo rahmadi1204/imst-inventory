@@ -1,6 +1,7 @@
 <script>
     $('#no_po').change(function() {
         let code = $(this).val();
+        let code_supplier = $('#no_po option:selected').attr("code_supplier");
         let name = $('#no_po option:selected').attr("name_supplier");
         let address = $('#no_po option:selected').attr("address");
         let code_po = $('#no_po option:selected').attr("code_po");
@@ -8,6 +9,7 @@
         $("#name_supplier").val(name);
         $("#address_supplier").val(address);
         $("#code_po").val(code_po);
+        $("#code_supplier").val(code_supplier);
 
     });
     $("#code_product" + 0).change(function() {

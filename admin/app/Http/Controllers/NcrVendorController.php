@@ -25,11 +25,12 @@ class NcrVendorController extends Controller
         $data = DB::table('ncr_vendors')
             ->join('ncr_vendor_products', 'ncr_vendor_products.code_ncrv', '=', 'ncr_vendors.code_ncrv')
             ->join('master_products', 'master_products.code_product', '=', 'ncr_vendor_products.code_product')
+            ->join('suppliers', 'suppliers.code_supplier', '=', 'ncr_vendors.code_supplier')
             ->get([
                 'ncr_vendors.code_ncrv',
                 'ncr_vendors.date_ncrv',
                 'ncr_vendors.no_po',
-                'ncr_vendors.name_supplier',
+                'suppliers.name_supplier',
                 'ncr_vendors.name_warehouse',
                 'master_products.name_product',
                 'ncr_vendor_products.code_ncrv_product',
@@ -52,7 +53,14 @@ class NcrVendorController extends Controller
         $warehouse = Warehouse::all();
         $typeProduct = TypeProduct::all();
         $product = MasterProduct::all();
-        $po = Po::all();
+        $po = DB::table('pos')->join('suppliers', 'suppliers.code_supplier', '=', 'pos.code_supplier')
+            ->get([
+                'suppliers.code_supplier',
+                'suppliers.name_supplier',
+                'suppliers.address_supplier',
+                'pos.code_po',
+                'pos.no_po',
+            ]);
         $pib = Pib::all();
         $unit = Unit::all();
         $currency = Currency::orderBy('name')->get();
@@ -81,7 +89,7 @@ class NcrVendorController extends Controller
             'date_ncrv' => 'required',
             'no_po' => 'required',
             'code_po' => 'required',
-            'name_supplier' => 'required',
+            'code_supplier' => 'required',
             'name_warehouse' => 'required',
             'way_transport' => 'required',
         ]);

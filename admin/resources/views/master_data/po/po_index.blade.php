@@ -51,8 +51,8 @@
                                             <td>{{ $item->no_po }}</td>
                                             <td>{{ $item->project }}</td>
                                             <td>{{ date('d F Y', strtotime($item->date_po)) }}</td>
-                                            <td>{{ $item->vendor_name }}</td>
-                                            <td>{{ $item->vendor_address }}</td>
+                                            <td>{{ $item->name_supplier }}</td>
+                                            <td>{{ $item->address_supplier }}</td>
                                             <td>{{ $item->send_address }}</td>
                                             <td>{{ $item->code_product }}</td>
                                             <td>{{ $item->description }}</td>
@@ -79,7 +79,7 @@
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                    data-target="#modal-delete" data-id="{{ $item->no_po }}"
+                                                    data-target="#modal-delete" data-id="{{ $item->code_po }}"
                                                     data-name="{{ $item->no_po }}"><i class="fa fa-trash"></i>
                                                 </div>
 

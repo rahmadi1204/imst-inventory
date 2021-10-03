@@ -30,6 +30,7 @@ class PibController extends Controller
             ->join('pib_loads', 'pib_loads.no_approval', '=', 'pibs.no_approval')
             ->join('pib_invoices', 'pib_invoices.no_approval', '=', 'pibs.no_approval')
             ->join('pib_devies', 'pib_devies.no_approval', '=', 'pibs.no_approval')
+            ->join('suppliers', 'suppliers.code_supplier', '=', 'pibs.code_supplier')
             // ->join('pib_containers', 'pib_containers.no_approval', '=', 'pibs.no_approval')
             // ->join('pib_products', 'pib_products.no_approval', '=', 'pibs.no_approval')
             ->get();
@@ -113,8 +114,7 @@ class PibController extends Controller
             'type_pib' => $request->type_pib,
             'type_import' => $request->type_import,
             'payment_method' => $request->payment_method,
-            'name_shipper' => $request->name_shipper,
-            'address_shipper' => $request->address_shipper,
+            'code_supplier' => $request->code_supplier,
             'name_seller' => $request->name_seller,
             'address_seller' => $request->address_seller,
             'nik_importir' => $request->nik_importir,
@@ -362,6 +362,9 @@ class PibController extends Controller
             })
             ->join('pib_invoices', function ($join) {
                 $join->on('pibs.code_pib', '=', 'pib_invoices.code_pib');
+            })
+            ->join('suppliers', function ($join) {
+                $join->on('pibs.code_supplier', '=', 'suppliers.code_supplier');
             })
             ->join('pib_devies', function ($join) use ($id) {
                 $join->on('pibs.code_pib', '=', 'pib_devies.code_pib')

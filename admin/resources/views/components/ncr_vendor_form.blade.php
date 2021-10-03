@@ -17,18 +17,21 @@
                 @foreach ($po as $item)
                     @isset($ncrv)
                         @if ($item->no_po == $pib->no_po)
-                            <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
-                                code_po="{{ $item->code_po }}" address="{{ $item->vendor_address }}" selected>
+                            <option value="{{ $item->no_po }}" code_supplier="{{ $item->code_supplier }}"
+                                name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
+                                address="{{ $item->address_supplier }}" selected>
                                 {{ $item->no_po }}</option>
                         @endif
                     @endisset
                     @if ($item->no_po == old('no_po'))
-                        <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
-                            code_po="{{ $item->code_po }}" address="{{ $item->vendor_address }}" selected>
+                        <option value="{{ $item->no_po }}" code_supplier="{{ $item->code_supplier }}"
+                            name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
+                            address="{{ $item->address_supplier }}" selected>
                             {{ $item->no_po }}</option>
                     @else
-                        <option value="{{ $item->no_po }}" name_supplier="{{ $item->vendor_name }}"
-                            code_po="{{ $item->code_po }}" address="{{ $item->vendor_address }}">
+                        <option value="{{ $item->no_po }}" code_supplier="{{ $item->code_supplier }}"
+                            name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
+                            address="{{ $item->address_supplier }}">
                             {{ $item->no_po }}</option>
                     @endif
                 @endforeach
@@ -37,6 +40,7 @@
         <div class="form-group col">
             <label for="name_supplier">Vendor</label>
             <input type="hidden" name="code_po" id="code_po">
+            <input type="hidden" name="code_supplier" id="code_supplier">
             <input name="name_supplier" type="text" class="form-control" id="name_supplier"
                 value="{{ $ncrv->name_supplier ?? old('name_supplier') }}" required>
         </div>

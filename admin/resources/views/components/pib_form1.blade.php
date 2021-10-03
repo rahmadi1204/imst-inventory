@@ -126,16 +126,17 @@
                 <option selected disabled>Pilih</option>
                 @foreach ($seller as $item)
                     @isset($pib)
-                        @if ($item->name_supplier == $pib->name_shipper)
-                            <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
-                                selected>{{ $item->name_supplier }}</option>
+                        @if ($item->name_supplier == $pib->name_supplier)
+                            <option value="{{ $item->name_supplier }}" code="{{ $item->code_supplier }}"
+                                address="{{ $item->address_supplier }}" selected>{{ $item->name_supplier }}</option>
                         @endif
                     @endisset
                     @if ($item->name_supplier == old('name_seller'))
-                        <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
-                            selected>{{ $item->name_supplier }}</option>
+                        <option value="{{ $item->name_supplier }}" code="{{ $item->code_supplier }}"
+                            address="{{ $item->address_supplier }}" selected>{{ $item->name_supplier }}</option>
                     @else
-                        <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}">
+                        <option value="{{ $item->name_supplier }}" code="{{ $item->code_supplier }}"
+                            address="{{ $item->address_supplier }}">
                             {{ $item->name_supplier }}</option>
                     @endif
                 @endforeach
@@ -143,8 +144,10 @@
         </div>
         <div class="form-group col">
             <label for="address_shipper">Alamat Pengirim</label>
+            <input type="hidden" name="code_supplier" id="code_supplier"
+                value="{{ $pib->code_supplier ?? old('code_supplier') }}">
             <input name="address_shipper" type="text" class="form-control" id="address_shipper" readonly
-                value="{{ $pib->address_shipper ?? old('address_shipper') }}">
+                value="{{ $pib->address_supplier ?? old('address_supplier') }}">
         </div>
     </div>
     <div class="row">
@@ -155,7 +158,7 @@
 
                 @foreach ($seller as $item)
                     @isset($pib)
-                        @if ($item->name_supplier == $pib->name_shipper)
+                        @if ($item->name_supplier == $pib->name_supplier)
                             <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
                                 selected>{{ $item->name_supplier }}</option>
                         @endif

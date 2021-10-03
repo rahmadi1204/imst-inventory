@@ -95,39 +95,39 @@ class NcrcustomerController extends Controller
         // dd($attr);
         $count = count($prd['code_product']);
 
-        NcrCustomer::insert($attr);
-        for ($i = 0; $i < $count; $i++) {
-            NcrCustomerProduct::create([
-                'code_po' => null,
-                'code_ncrc' => $attr['code_ncrc'],
-                'code_ncrc_product' => $attr['code_ncrc'] . '-' . $request->code_product[$i],
-                'code_product' => $request->code_product[$i],
-                'qty_product' => -$request->qty_product[$i],
-                'unit_product' => $request->unit_product[$i],
-            ]);
-            HistoryProduct::create([
-                'code_po' => 0,
-                'code_ncrc' => $attr['code_ncrc'],
-                'code_po_product' => 0,
-                'code_ncrc_product' => $attr['code_ncrc'] . '-' . $request->code_product[$i],
-                'code_product' => $request->code_product[$i],
-                'unit_product' => $request->unit_product[$i],
-                'product_pabean' => 0,
-                'date_product' =>  $attr['date_ncrc'],
-                'type_history' =>  -1,
-                'from' =>  $request->name_warehouse,
-                'to' =>  $request->name_customer,
-                'qty_product' =>  -$request->qty_product[$i],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+
 
 
         DB::beginTransaction();
         try {
 
-
+            NcrCustomer::insert($attr);
+            for ($i = 0; $i < $count; $i++) {
+                NcrCustomerProduct::create([
+                    'code_po' => null,
+                    'code_ncrc' => $attr['code_ncrc'],
+                    'code_ncrc_product' => $attr['code_ncrc'] . '-' . $request->code_product[$i],
+                    'code_product' => $request->code_product[$i],
+                    'qty_product' => -$request->qty_product[$i],
+                    'unit_product' => $request->unit_product[$i],
+                ]);
+                HistoryProduct::create([
+                    'code_po' => 0,
+                    'code_ncrc' => $attr['code_ncrc'],
+                    'code_po_product' => null,
+                    'code_ncrc_product' => $attr['code_ncrc'] . '-' . $request->code_product[$i],
+                    'code_product' => $request->code_product[$i],
+                    'unit_product' => $request->unit_product[$i],
+                    'product_pabean' => 0,
+                    'date_product' =>  $attr['date_ncrc'],
+                    'type_history' =>  -1,
+                    'from' =>  $request->name_warehouse,
+                    'to' =>  $request->name_customer,
+                    'qty_product' =>  -$request->qty_product[$i],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
             DB::commit();
             // dd('ok');
             return redirect()->route('ncr_customer')->with('Ok', "Data Tersimpan");

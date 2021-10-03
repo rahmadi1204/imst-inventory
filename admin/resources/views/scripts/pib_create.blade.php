@@ -81,11 +81,13 @@
     });
 
     $('#name_shipper').change(function() {
-        let code = $(this).val();
+        let code = $('#name_shipper option:selected').attr("code");
         let name = $('#name_shipper option:selected').text();
         let address = $('#name_shipper option:selected').attr("address");
 
         $("#address_shipper").val(address);
+        $("#code_supplier").val(code);
+
 
     });
     $('#name_seller').change(function() {

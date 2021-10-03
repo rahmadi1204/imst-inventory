@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Models\PoProduct;
+use App\Models\PibProduct;
 use App\Models\TypeProduct;
 use Illuminate\Http\Request;
+use App\Models\NcrVendorProduct;
+use App\Models\NcrCustomerProduct;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Master\MasterProduct;
 
@@ -58,10 +63,29 @@ class MasterProductController extends Controller
     public function destroy()
     {
         $id = request('id');
-        $delete = MasterProduct::where('code_product', $id)->delete();
-        if ($delete) {
+        $cekPo = PoProduct::where('code_product', $id)->first();
+        $cekPib = PibProduct::where('code_product', $id)->first();
+        $cekVendor = NcrVendorProduct::where('code_product', $id)->first();
+        $cekCustomer = NcrCustomerProduct::where('code_product', $id)->first();
+        if ($cekPo != null) {
+            return redirect()->route('master.data')->with('Fail', 'Data Dipakai PO');
+        }
+        if ($cekPib != null) {
+            return redirect()->route('master.data')->with('Fail', 'Data Dipakai PIB');
+        }
+        if ($cekVendor != null) {
+            return redirect()->route('master.data')->with('Fail', 'Data Dipakai NCR Vendor');
+        }
+        if ($cekCustomer != null) {
+            return redirect()->route('master.data')->with('Fail', 'Data Dipakai NCR Customer');
+        }
+        DB::beginTransaction();
+        try {
+            MasterProduct::where('code_product', $id)->delete();
+            DB::commit();
             return redirect()->route('master.data')->with('Ok', 'Data Terhapus');
-        } else {
+        } catch (\Throwable $th) {
+            DB::rollback();
             return redirect()->route('master.data')->with('Fail', 'Data Tidak Terhapus');
         }
     }

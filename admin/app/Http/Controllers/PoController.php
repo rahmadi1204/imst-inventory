@@ -16,6 +16,8 @@ use App\Models\HistoryProduct;
 use App\Models\RecivedProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
+use App\Models\NcrCustomer;
+use App\Models\NcrVendor;
 use App\Models\Pib;
 
 class PoController extends Controller
@@ -26,10 +28,9 @@ class PoController extends Controller
             ->selectRaw('history_products.code_po_product, sum(qty_product) as qty_product')
             ->groupBy('code_po_product')
             ->pluck('qty_product', 'code_po_product');
-        $reset = DB::table('po_products')->update([
+        DB::table('po_products')->update([
             'qty_recived' => 0,
         ]);
-        $count = count($cek);
         foreach ($cek as $key => $value) {
             DB::table('po_products')->where('code_po_product', '=', $key)
                 ->update([
@@ -37,15 +38,17 @@ class PoController extends Controller
                 ]);
         }
         $data = DB::table('pos')
+            ->join('suppliers', 'suppliers.code_supplier', '=', 'pos.code_supplier')
             ->join('po_products', 'po_products.code_po', '=', 'pos.code_po')
             ->join('master_products', 'master_products.code_product', '=', 'po_products.code_product')
             ->get([
                 'pos.id',
                 'pos.no_po',
+                'pos.code_po',
                 'pos.project',
                 'pos.date_po',
-                'pos.vendor_name',
-                'pos.vendor_address',
+                'suppliers.name_supplier',
+                'suppliers.address_supplier',
                 'pos.send_address',
                 'pos.currency',
                 'pos.total_amount_po',
@@ -94,8 +97,7 @@ class PoController extends Controller
     {
         // dd($request);
         $request->validate([
-            'vendor_name' => 'required',
-            'vendor_address' => 'required',
+            'code_supplier' => 'required',
             'send_address' => 'required',
             'address_warehouse' => 'required',
             'no_po' => 'required',
@@ -109,7 +111,7 @@ class PoController extends Controller
             'total_amount_po' => 'nullable',
             'latest' => 'required',
         ]);
-
+        // dd($request);
         DB::beginTransaction();
 
         $count = count($request->code_product);
@@ -139,8 +141,7 @@ class PoController extends Controller
                 'code_po' => $code_po,
                 'project' => $request->project,
                 'date_po' => $request->date_po,
-                'vendor_name' => $request->vendor_name,
-                'vendor_address' => $request->vendor_address,
+                'code_supplier' => $request->code_supplier,
                 'send_address' => $request->send_address,
                 'address_warehouse' => $request->address_warehouse,
                 'currency' => $request->currency,
@@ -154,6 +155,7 @@ class PoController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollback();
+            dd('fail');
             return redirect()->route('po')->with('Fail', 'Data Tidak Disimpan');
         }
     }
@@ -161,20 +163,29 @@ class PoController extends Controller
     {
         $id = $request->id;
         // dd($id);
-        $cek = Pib::where('no_po', $id)->get();
-        if ($cek == "[]") {
-            DB::beginTransaction();
-            try {
-                Po::where('no_po', $id)->delete();
-                PoProduct::where('no_po', $id)->delete();
-                DB::commit();
-                return redirect()->route('po')->with('Ok', 'Data Dihapus');
-            } catch (\Throwable $th) {
-                DB::rollback();
-                return redirect()->route('po')->with('Fail', 'Data Gagal Dihapus');
-            }
-        } else {
-            return redirect()->route('po')->with('Fail', 'Data Gagal Dihapus, Data Berelasi Dengan Data PIB');
+        $cekPib = Pib::where('code_po', $id)->first();
+        $cekVendor = NcrVendor::where('code_po', $id)->first();
+        $cekCustomer = NcrCustomer::where('code_po', $id)->first();
+        // dd($cekPib);
+        if ($cekPib != null) {
+            return redirect()->route('po')->with('Fail', 'Data Digunakan PIB');
+        }
+        if ($cekVendor != null) {
+            return redirect()->route('po')->with('Fail', 'Data Digunakan NCR Vendor');
+        }
+        if ($cekCustomer != null) {
+            return redirect()->route('po')->with('Fail', 'Data Digunakan NCR Customer');
+        }
+        DB::beginTransaction();
+        try {
+            Po::where('code_po', $id)->delete();
+            PoProduct::where('code_po', $id)->delete();
+            DB::commit();
+            // dd('ok');
+            return redirect()->route('po')->with('Ok', 'Data Dihapus');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->route('po')->with('Fail', 'Data Gagal Dihapus');
         }
     }
 }

@@ -24,23 +24,23 @@
     <div class="row">
         <div class="form-group col">
             <label for="vendor_name">Vendor </label>
-            <select name="vendor_name" id="vendor_name" class="form-control custom-select">
+            <select name="code_supplier" id="vendor_name" class="form-control custom-select">
                 <option selected>Pilih</option>
                 @foreach ($supplier as $item)
 
                     @if (isset($po))
                         @if ($po->vendor_name == $item->name_supplier)
-                            <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}"
+                            <option value="{{ $item->code_supplier }}" address="{{ $item->address_supplier }}"
                                 selected>
                                 {{ $item->name_supplier }}
                             </option>
                         @else
-                            <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}">
+                            <option value="{{ $item->code_supplier }}" address="{{ $item->address_supplier }}">
                                 {{ $item->name_supplier }}
                             </option>
                         @endif
                     @else
-                        <option value="{{ $item->name_supplier }}" address="{{ $item->address_supplier }}">
+                        <option value="{{ $item->code_supplier }}" address="{{ $item->address_supplier }}">
                             {{ $item->name_supplier }}
                         </option>
                     @endif

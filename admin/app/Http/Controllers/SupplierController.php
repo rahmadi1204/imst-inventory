@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Po;
+use App\Models\Pib;
 use App\Models\Supplier;
+use App\Models\NcrVendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
 {
@@ -93,11 +97,26 @@ class SupplierController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->id;
-        $delete = Supplier::where('code_supplier', $id)->delete();
-        if ($delete) {
-            return redirect()->back()->with('Ok', 'Data Berhasil Dihapus');
-        } else {
-            return redirect()->back()->with('Fail', 'Data Gagal Dihapus');
+        $cekPo = Po::where('code_supplier', $id)->first();
+        $cekPib = Pib::where('code_supplier', $id)->first();
+        $cekVendor = NcrVendor::where('code_supplier', $id)->first();
+        if ($cekPo != null) {
+            return redirect()->route('supplier')->with('Fail', 'Data Dipakai PO');
+        }
+        if ($cekPib != null) {
+            return redirect()->route('supplier')->with('Fail', 'Data Dipakai PIB');
+        }
+        if ($cekVendor != null) {
+            return redirect()->route('supplier')->with('Fail', 'Data Dipakai NCR Vendor');
+        }
+        DB::beginTransaction();
+        try {
+            Supplier::where('code_supplier', $id)->delete();
+            DB::commit();
+            return redirect()->route('supplier')->with('Ok', 'Data Terhapus');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->route('supplier')->with('Fail', 'Data Tidak Terhapus');
         }
     }
 }

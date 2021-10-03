@@ -23,8 +23,7 @@ class CreatePibsTable extends Migration
             $table->string('type_pib')->nullable();
             $table->string('type_import')->nullable();
             $table->string('payment_method')->nullable();
-            $table->string('name_shipper')->nullable();
-            $table->string('address_shipper')->nullable();
+            $table->string('code_supplier')->nullable();
             $table->string('name_seller')->nullable();
             $table->string('address_seller')->nullable();
             $table->string('nik_importir')->nullable();

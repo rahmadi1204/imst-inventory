@@ -1,7 +1,8 @@
 <div class="form-group col">
     <label for="inputKdSupplier">Kode Supplier</label>
     <input name="code_supplier" type="text" class="form-control"
-        value="{{ $supplier->code_supplier ?? old('code_supplier') }}" id="inputKdSupplier" required>
+        value="{{ $supplier->code_supplier ?? old('code_supplier') }}" id="inputKdSupplier" required @isset($supplier)
+        readonly @endisset>
 </div>
 <div class="form-group col">
     <label for="inputNameSupplier">Nama Supplier</label>
