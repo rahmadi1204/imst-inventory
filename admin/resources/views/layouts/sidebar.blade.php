@@ -98,9 +98,9 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('supplier') }}" class="nav-link {{ $suplierActive ?? '' }}">
+                                <a href="{{ route('supplier') }}" class="nav-link {{ $supplierActive ?? '' }}">
                                     <i class="fa fa-truck nav-icon text-dark"></i>
-                                    <p class="text-dark">Suplier</p>
+                                    <p class="text-dark">Supplier</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -181,14 +181,6 @@
                                     <i class="nav-icon fa fa-file-alt text-dark"></i>
                                     <p>
                                         Barang Perdokumen
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link {{ $reportMutasi ?? '' }}">
-                                    <i class="nav-icon fa fa-sign-out-alt text-dark"></i>
-                                    <p>
-                                        Data Keluar
                                     </p>
                                 </a>
                             </li>

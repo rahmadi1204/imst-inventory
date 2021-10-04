@@ -74,7 +74,7 @@ class PibController extends Controller
     public function store(StorePibRequest $request)
     {
         $validate = $request->validated();
-        dd($validate);
+        // dd($request);
         $request->code_pib = date('ymdhis');
         $request->no_approval = str_replace('-', '', $request->no_approval);
         $request->invoice = str_replace('-', '', $request->invoice);

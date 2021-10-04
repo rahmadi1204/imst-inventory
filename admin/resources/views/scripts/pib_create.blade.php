@@ -18,12 +18,14 @@
         let name_supplier = $('#no_po option:selected').attr("name_supplier");
         let address_supplier = $('#no_po option:selected').attr("address");
         let code_po = $('#no_po option:selected').attr("code_po");
+        let code_supplier = $('#no_po option:selected').attr("code_supplier");
         // console.log(name_supplier)
         $("#code_po").val(code_po);
         $("#name_seller").val(name_supplier);
         $("#address_seller").val(address_supplier);
         $("#name_shipper").val(name_supplier);
         $("#address_shipper").val(address_supplier);
+        $("#code_supplier").val(code_supplier);
 
         if (code_po) {
             $.ajax({

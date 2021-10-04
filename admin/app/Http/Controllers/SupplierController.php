@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
+
 {
     public function index()
     {

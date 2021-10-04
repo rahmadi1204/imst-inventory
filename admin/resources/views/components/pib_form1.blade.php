@@ -17,38 +17,40 @@
                 data-inputmask='"mask": "999999-999999-99999999-999999"' data-mask id="no_approval"
                 value="{{ $pib->no_approval ?? (old('no_approval') ?? '00000000000000000000000000') }}">
         </div>
+    </div>
+    <div class="row">
         <div class="form-group col">
             <label for="no_po">Nomor Pre Order</label>
             <select name="no_po" id="no_po" class="form-control">
-                <option selected disabled>Pilih</option>
+                <option selected>Pilih</option>
                 @foreach ($po as $item)
                     @isset($pib)
                         @if ($item->no_po == $pib->no_po)
                             <option value="{{ $item->no_po }}" name_supplier="{{ $item->name_supplier }}"
-                                code_po="{{ $item->code_po }}" address="{{ $item->address_supplier }}" selected>
+                                code_supplier="{{ $item->code_supplier }}" code_po="{{ $item->code_po }}"
+                                address="{{ $item->address_supplier }}" selected>
                                 {{ $item->no_po }}</option>
                         @endif
                     @endisset
                     @if ($item->no_po == old('no_po'))
                         <option value="{{ $item->no_po }}" name_supplier="{{ $item->name_supplier }}"
-                            code_po="{{ $item->code_po }}" address="{{ $item->address_supplier }}" selected>
+                            code_supplier="{{ $item->code_supplier }}" code_po="{{ $item->code_po }}"
+                            address="{{ $item->address_supplier }}" selected>
                             {{ $item->no_po }}</option>
                     @else
                         <option value="{{ $item->no_po }}" name_supplier="{{ $item->name_supplier }}"
-                            code_po="{{ $item->code_po }}" address="{{ $item->address_supplier }}">
+                            code_supplier="{{ $item->code_supplier }}" code_po="{{ $item->code_po }}"
+                            address="{{ $item->address_supplier }}">
                             {{ $item->no_po }}</option>
                     @endif
                 @endforeach
             </select>
             <input type="hidden" name="code_po" id="code_po" value="{{ old('code_po') }}">
         </div>
-
-    </div>
-    <div class="row">
         <div class="form-group col">
             <label for="type_pib">Jenis PIB</label>
             <select name="type_pib" id="type_pib" class="form-control">
-                <option selected disabled>Pilih</option>
+                <option selected>Pilih</option>
                 @if (isset($pib->type_pib))
                     <option value="Biasa" {{ $pib->type_pib == 'Biasa' ? 'selected' : '' }}>1. Biasa</option>
                     <option value="Berkala" {{ $pib->type_pib == 'Berkala' ? 'selected' : '' }}>2. Berkala</option>
@@ -61,7 +63,7 @@
         <div class="form-group col">
             <label for="type_import">Jenis Import</label>
             <select name="type_import" id="type_import" class="form-control ">
-                <option selected disabled>Pilih</option>
+                <option selected>Pilih</option>
                 @if (isset($pib->type_pib))
                     <option value="Untuk Dipakai" {{ $pib->type_import == 'Untuk Dipakai' ? 'selected' : '' }}>1.
                         Untuk
@@ -93,7 +95,7 @@
         <div class="form-group col">
             <label for="payment_method">Cara Pembayaran</label>
             <select name="payment_method" id="payment_method" class="form-control ">
-                <option selected disabled>Pilih</option>
+                <option selected>Pilih</option>
                 @if (isset($pib->type_pib))
                     <option value="Biasa/Tunai" {{ $pib->payment_method == 'Biasa/Tunai' ? 'selected' : '' }}>1.
                         Biasa/Tunai</option>
@@ -123,7 +125,7 @@
         <div class="form-group col-md-4">
             <label for="name_shipper">Pengirim</label>
             <select name="name_shipper" id="name_shipper" class="form-control ">
-                <option selected disabled>Pilih</option>
+                <option selected>Pilih</option>
                 @foreach ($seller as $item)
                     @isset($pib)
                         @if ($item->name_supplier == $pib->name_supplier)
@@ -131,7 +133,7 @@
                                 address="{{ $item->address_supplier }}" selected>{{ $item->name_supplier }}</option>
                         @endif
                     @endisset
-                    @if ($item->name_supplier == old('name_seller'))
+                    @if ($item->name_supplier == old('name_shipper'))
                         <option value="{{ $item->name_supplier }}" code="{{ $item->code_supplier }}"
                             address="{{ $item->address_supplier }}" selected>{{ $item->name_supplier }}</option>
                     @else
@@ -154,7 +156,7 @@
         <div class="form-group col-md-4">
             <label for="name_seller">Penjual</label>
             <select name="name_seller" id="name_seller" class="form-control ">
-                <option selected disabled>Pilih</option>
+                <option selected>Pilih</option>
 
                 @foreach ($seller as $item)
                     @isset($pib)
@@ -183,7 +185,7 @@
         <div class="form-group col-md-4">
             <label for="name_importir">Importir</label>
             <select name="name_importir" id="name_importir" class="form-control ">
-                <option selected disabled>Pilih</option>
+                <option selected>Pilih</option>
                 @foreach ($importir as $item)
                     @isset($pib)
                         @if ($item->name_importir == $pib->name_importir)
@@ -231,7 +233,7 @@
         <div class="form-group col-md-4">
             <label for="name_owner">Pemilik</label>
             <select name="name_owner" id="name_owner" class="form-control">
-                <option selected disabled>Pilih</option>
+                <option selected>Pilih</option>
                 @foreach ($importir as $item)
                     @isset($pib)
                         @if ($item->name_importir == $pib->name_importir)
