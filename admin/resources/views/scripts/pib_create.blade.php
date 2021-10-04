@@ -1,4 +1,18 @@
 <script type="text/javascript">
+    let i = 0;
+    $("#dynamic-ar").click(function() {
+        ++i;
+        $("#containerAddRemove").append('<tr><td><input type="text" name="no_container[' + i +
+            ']" class="form-control" /></td><td>  <div class="input-group"><input type="text" name="size_container[' +
+            i +
+            ']" class="form-control" /><div class="input-group-prepand"><div class="form-control">FEET</div></div></div></td><td><input type="text" name="type_container[' +
+            i +
+            ']" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-field"><i class="fa fa-trash"></i></button></td></tr>'
+        );
+    });
+    $(document).on('click', '.remove-input-field', function() {
+        $(this).parents('tr').remove();
+    });
     $('#no_po').change(function() {
         let no_po = $(this).val();
         let name_supplier = $('#no_po option:selected').attr("name_supplier");
@@ -35,25 +49,7 @@
             $("#code_product0").empty();
         }
 
-
     });
-
-    let i = 0;
-    $("#dynamic-ar").click(function() {
-        ++i;
-        $("#containerAddRemove").append('<tr><td><input type="text" name="no_container[' + i +
-            ']" class="form-control" /></td><td>  <div class="input-group"><input type="text" name="size_container[' +
-            i +
-            ']" class="form-control" /><div class="input-group-prepand"><div class="form-control">FEET</div></div></div></td><td><input type="text" name="type_container[' +
-            i +
-            ']" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-field"><i class="fa fa-trash"></i></button></td></tr>'
-        );
-    });
-    $(document).on('click', '.remove-input-field', function() {
-        $(this).parents('tr').remove();
-    });
-</script>
-<script type="text/javascript">
     let j = 0;
     $("#code_product" + j).change(function() {
         let codeProduct = $(this).val();
@@ -66,6 +62,32 @@
     });
     $("#dynamic-pr").click(function() {
         ++j;
+        let code_po = $("#code_po").attr("value")
+        if (j > 0) {
+            $.ajax({
+                type: "GET",
+                url: "{{ url('/it-inventory/pib/list-po-product') }}/" + code_po,
+                success: function(ok) {
+                    console.log(code_po)
+                    if (ok) {
+                        $("#code_product" + j).empty();
+                        $("#code_product" + j).append(
+                            '<option>Pilih</option>');
+                        $.each(ok, function(key, value) {
+                            console.log(ok)
+                            $("#code_product" + j).append('<option value="' + key +
+                                '"name="' + value + '">' + key + '</option>');
+                        });
+
+                    } else {
+                        $("#code_product" + j).empty();
+                    }
+                }
+            });
+        } else {
+            $("#code_product" + j).empty();
+        }
+
         $("#productAddRemove").append('<tr><td><input type="text" name="pos_product[' +
             j +
             ']" class="form-control" /></td><td><select name="code_product[' + j +
@@ -89,6 +111,8 @@
             j +
             ']" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-product"><i class="fa fa-trash"></i></button></td></tr>'
         );
+
+
         $("#code_product" + j).change(function() {
             let codeProduct = $(this).val();
             let nameProduct = $('#code_product' + j + ' option:selected').attr("name");
