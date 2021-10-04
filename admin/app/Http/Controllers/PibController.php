@@ -19,6 +19,7 @@ use App\Models\HistoryProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
 use App\Http\Requests\StorePibRequest;
+use App\Models\PoProduct;
 use App\Models\ReportDocument;
 
 class PibController extends Controller
@@ -50,7 +51,8 @@ class PibController extends Controller
         $importir = Importir::all();
         $typeProduct = TypeProduct::all();
         $product = MasterProduct::all();
-        $po = Po::all();
+        $po = DB::table('pos')
+            ->join('suppliers', 'suppliers.code_supplier', '=', 'pos.code_supplier')->get();
         $unit = Unit::all();
         $currency = Currency::orderBy('name')->get();
         // dd($currency);
@@ -371,6 +373,21 @@ class PibController extends Controller
             'transaksiActive' => 'active',
             'pibActive' => 'active',
         ]);
+    }
+    public function getProduct($id)
+    {
+        // $id = $request->code_po;
+        $product = DB::table('po_products')->where('code_po', '=', $id)
+            ->join('master_products', 'master_products.code_product', '=', 'po_products.code_product')
+            ->pluck('master_products.name_product', 'master_products.code_product');
+        // ->get([
+        //     'po_products.code_po',
+        //     'master_products.code_product',
+        //     'master_products.type_product',
+        //     'master_products.name_product',
+        // ]);
+        // $product = $id;
+        return response()->json($product);
     }
 
     public function updateContainer($id)

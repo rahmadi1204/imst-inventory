@@ -116,6 +116,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pib/update/{pib:id}', [PibController::class, 'edit'])->name('pib.edit');
         Route::post('/pib/update/{pib:id}', [PibController::class, 'update'])->name('pib.update');
         Route::post('/pib/delete', [PibController::class, 'destroy'])->name('pib.destroy');
+        Route::get('/pib/list-po-product/{no_po}', [PibController::class, 'getProduct'])->name('pib.get');
+
 
         Route::post('/pib/update/container/{pib:id}', [PibController::class, 'updateContainer'])->name('container.update');
         Route::post('/pib/update/product-pib/{pib:id}', [PibController::class, 'updateProductPib'])->name('product_pib.update');

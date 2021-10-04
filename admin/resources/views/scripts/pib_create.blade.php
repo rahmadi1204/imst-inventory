@@ -1,4 +1,43 @@
 <script type="text/javascript">
+    $('#no_po').change(function() {
+        let no_po = $(this).val();
+        let name_supplier = $('#no_po option:selected').attr("name_supplier");
+        let address_supplier = $('#no_po option:selected').attr("address");
+        let code_po = $('#no_po option:selected').attr("code_po");
+        // console.log(name_supplier)
+        $("#code_po").val(code_po);
+        $("#name_seller").val(name_supplier);
+        $("#address_seller").val(address_supplier);
+        $("#name_shipper").val(name_supplier);
+        $("#address_shipper").val(address_supplier);
+
+        if (code_po) {
+            $.ajax({
+                type: "GET",
+                url: "{{ url('/it-inventory/pib/list-po-product') }}/" + code_po,
+                success: function(res) {
+                    if (res) {
+                        $("#code_product0").empty();
+                        $("#code_product0").append(
+                            '<option>Pilih</option>');
+                        $.each(res, function(key, value) {
+                            console.log(res)
+                            $("#code_product0").append('<option value="' + key +
+                                '"name="' + value + '">' + key + '</option>');
+                        });
+
+                    } else {
+                        $("#code_product0").empty();
+                    }
+                }
+            });
+        } else {
+            $("#code_product0").empty();
+        }
+
+
+    });
+
     let i = 0;
     $("#dynamic-ar").click(function() {
         ++i;
@@ -16,6 +55,15 @@
 </script>
 <script type="text/javascript">
     let j = 0;
+    $("#code_product" + j).change(function() {
+        let codeProduct = $(this).val();
+        let nameProduct = $('#code_product' + j + ' option:selected').attr("name");
+        let typeProduct = $('#code_product' + j + ' option:selected').attr("type");
+
+        $("#name_product" + j).val(nameProduct);
+        $("#type_product" + j).val(typeProduct);
+
+    });
     $("#dynamic-pr").click(function() {
         ++j;
         $("#productAddRemove").append('<tr><td><input type="text" name="pos_product[' +
@@ -42,12 +90,12 @@
             ']" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-product"><i class="fa fa-trash"></i></button></td></tr>'
         );
         $("#code_product" + j).change(function() {
-            let code = $(this).val();
-            let name = $('#code_product' + j + ' option:selected').attr("name");
-            let type = $('#code_product' + j + ' option:selected').attr("type");
+            let codeProduct = $(this).val();
+            let nameProduct = $('#code_product' + j + ' option:selected').attr("name");
+            let typeProduct = $('#code_product' + j + ' option:selected').attr("type");
 
-            $("#name_product" + j).val(name);
-            $("#type_product" + j).val(type);
+            $("#name_product" + j).val(nameProduct);
+            $("#type_product" + j).val(typeProduct);
 
         });
     });
@@ -56,30 +104,6 @@
     });
 </script>
 <script>
-    $("#code_product" + 0).change(function() {
-        let code = $(this).val();
-        let name = $('#code_product' + 0 + ' option:selected').attr("name");
-        let type = $('#code_product' + 0 + ' option:selected').attr("type");
-
-        $("#name_product" + 0).val(name);
-        $("#type_product" + 0).val(type);
-
-    });
-
-    $('#no_po').change(function() {
-        let code = $(this).val();
-        let name = $('#no_po option:selected').attr("name_supplier");
-        let address = $('#no_po option:selected').attr("address");
-        let code_po = $('#no_po option:selected').attr("code_po");
-
-        $("#code_po").val(code_po);
-        $("#name_seller").val(name);
-        $("#address_seller").val(address);
-        $("#name_shipper").val(name);
-        $("#address_shipper").val(address);
-
-    });
-
     $('#name_shipper').change(function() {
         let code = $('#name_shipper option:selected').attr("code");
         let name = $('#name_shipper option:selected').text();
