@@ -16,9 +16,10 @@ class CreateNcrCustomerProductsTable extends Migration
         Schema::create('ncr_customer_products', function (Blueprint $table) {
             $table->id();
             $table->string('code_po')->nullable();
+            $table->integer('type_ncrc');
             $table->string('code_ncrc');
             $table->string('code_ncrc_product');
-            $table->string('code_product');
+            $table->string('product_id');
             $table->bigInteger('qty_product');
             $table->string('unit_product');
             $table->timestamps();
