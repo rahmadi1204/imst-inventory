@@ -234,11 +234,6 @@
         </div>
     </section>
 
-    {{-- Delete Modal --}}
-    <form action="{{ route('ncr_vendor.destroy') }}" method="post">
-        @csrf
-        @include('components.delete_modal')
-    </form>
 
 @endsection
 @section('scripts')

@@ -49,14 +49,30 @@
                                         <td>
                                             @if ($item->type_history == 1)
                                                 <span class="btn btn-primary">Barang Masuk (PIB)</span>
-                                            @elseif ($item->type_history == 0)
+                                            @elseif ($item->type_history == -2)
                                                 <span class="btn btn-info">Barang Keluar (NCR VENDOR)</span>
+                                            @elseif ($item->type_history == 2)
+                                                <span class="btn btn-info">Barang Masuk (NCR VENDOR)</span>
+                                            @elseif ($item->type_history == -3)
+                                                <span class="btn btn-info">Barang Keluar (NCR CUSTOMER)</span>
                                             @else
-                                                <span class="btn btn-warning">Barang Keluar (NCR CUSTOMER)</span>
+                                                <span class="btn btn-warning">Barang Masuk (NCR CUSTOMER)</span>
                                             @endif
                                         </td>
-                                        <td>{{ $item->from }}</td>
-                                        <td>{{ $item->to }}</td>
+                                        <td>
+                                            @if ($item->type_history < 1)
+                                                {{ $item->name_warehouse }}
+                                            @else
+                                                {{ $item->name_supplier }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($item->type_history < 1)
+                                                {{ $item->name_supplier }}
+                                            @else
+                                                {{ $item->name_warehouse }}
+                                            @endif
+                                        </td>
                                         <td>{{ $item->qty_product }}</td>
                                     </tr>
                                 @endforeach

@@ -21,22 +21,22 @@
                 @foreach ($warehouse as $item)
                     @if (isset($ncrv))
                         @if ($ncrv->name_warehouse == $item->name_warehouse)
-                            <option value="{{ $item->name_warehouse }}" address="{{ $item->address_warehouse }}"
-                                selected>
+                            <option value="{{ $item->id }}" name="{{ $item->name_warehouse }}" selected>
                                 {{ $item->name_warehouse }}
                             </option>
                         @else
-                            <option value="{{ $item->name_warehouse }}" address="{{ $item->address_warehouse }}">
+                            <option value="{{ $item->id }}" name="{{ $item->name_warehouse }}">
                                 {{ $item->name_warehouse }}
                             </option>
                         @endif
                     @else
-                        <option value="{{ $item->name_warehouse }}" address="{{ $item->address_warehouse }}">
+                        <option value="{{ $item->id }}" name="{{ $item->name_warehouse }}">
                             {{ $item->name_warehouse }}
                         </option>
                     @endif
                 @endforeach
             </select>
+            <input type="hidden" name="warehouse" id="warehouse">
         </div>
     </div>
     <div class="row">
@@ -47,22 +47,22 @@
                 @foreach ($customer as $item)
                     @if (isset($ncrv))
                         @if ($ncrv->name_customer == $item->name_customer)
-                            <option value="{{ $item->name_customer }}" address="{{ $item->address_customer }}"
-                                selected>
+                            <option value="{{ $item->id }}" name="{{ $item->name_customer }}" selected>
                                 {{ $item->name_customer }}
                             </option>
                         @else
-                            <option value="{{ $item->name_customer }}" address="{{ $item->address_customer }}">
+                            <option value="{{ $item->id }}" name="{{ $item->name_customer }}">
                                 {{ $item->name_customer }}
                             </option>
                         @endif
                     @else
-                        <option value="{{ $item->name_customer }}" address="{{ $item->address_customer }}">
+                        <option value="{{ $item->id }}" name="{{ $item->name_customer }}">
                             {{ $item->name_customer }}
                         </option>
                     @endif
                 @endforeach
             </select>
+            <input type="hidden" name="customer" id="customer">
         </div>
         <div class="form-group col">
             <label for="way_transport">Via</label>
@@ -85,7 +85,7 @@
                 <select name="code_product[0]" id="code_product0" class="form-control">
                     <option value="" selected disabled>Pilih</option>
                     @foreach ($product as $item)
-                        <option value="{{ $item->code_product }}" type="{{ $item->type_product }}"
+                        <option value="{{ $item->id }}" type="{{ $item->type_product }}"
                             name="{{ $item->name_product }}">
                             {{ $item->code_product }}
                         </option>

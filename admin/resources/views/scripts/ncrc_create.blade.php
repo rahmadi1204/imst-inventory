@@ -1,4 +1,14 @@
 <script type="text/javascript">
+    $("#name_customer").change(function() {
+        let code = $(this).val();
+        let customer = $('#name_customer option:selected').attr("name");
+        $("#customer").val(customer);
+    });
+    $("#name_warehouse").change(function() {
+        let code = $(this).val();
+        let warehouse = $('#name_warehouse option:selected').attr("name");
+        $("#warehouse").val(warehouse);
+    });
     let j = 0;
     $("#code_product" + j).change(function() {
         let code = $(this).val();

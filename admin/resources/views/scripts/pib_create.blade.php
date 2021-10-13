@@ -19,14 +19,14 @@
         let address_supplier = $('#no_po option:selected').attr("address");
         let code_po = $('#no_po option:selected').attr("code_po");
         let code_supplier = $('#no_po option:selected').attr("code_supplier");
-        // console.log(name_supplier)
+        console.log(name_supplier)
         $("#code_po").val(code_po);
-        $("#name_seller").val(name_supplier);
+        $("#name_shipper").val(code_supplier);
+        $("#name_seller").val(code_supplier);
         $("#address_seller").val(address_supplier);
-        $("#name_shipper").val(name_supplier);
         $("#address_shipper").val(address_supplier);
         $("#code_supplier").val(code_supplier);
-
+        console.log(code_supplier)
         if (code_po) {
             $.ajax({
                 type: "GET",
@@ -95,7 +95,7 @@
             ']" class="form-control" /></td><td><select name="code_product[' + j +
             ']" id="code_product' +
             j +
-            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><input type="text" name="type_product[' +
+            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->id }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><input type="text" name="type_product[' +
             j +
             ']" class="form-control" id="type_product' + j +
             '"  readonly hidden/><input type="text" name="name_product[' +
@@ -134,7 +134,7 @@
         let code = $('#name_shipper option:selected').attr("code");
         let name = $('#name_shipper option:selected').text();
         let address = $('#name_shipper option:selected').attr("address");
-
+        console.log(code)
         $("#address_shipper").val(address);
         $("#code_supplier").val(code);
 
@@ -144,8 +144,9 @@
         let code = $(this).val();
         let name = $('#name_seller option:selected').text();
         let address = $('#name_seller option:selected').attr("address");
-
+        console.log(code)
         $("#address_seller").val(address);
+        $("#code_supplier").val(code);
 
     });
     $('#name_importir').change(function() {

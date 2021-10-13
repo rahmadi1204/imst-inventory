@@ -23,7 +23,7 @@ class CreatePibProductsTable extends Migration
             $table->string('no_po');
             $table->date('date_product');
             $table->bigInteger('pos_product');
-            $table->string('code_product');
+            $table->string('product_id');
             $table->string('country_product');
             $table->bigInteger('qty_product');
             $table->string('unit_product')->nullable();

@@ -53,7 +53,7 @@
                                             <td>{{ date('d F Y', strtotime($item->date_po)) }}</td>
                                             <td>{{ $item->name_supplier }}</td>
                                             <td>{{ $item->address_supplier }}</td>
-                                            <td>{{ $item->send_address }}</td>
+                                            <td>{{ $item->name_warehouse }}</td>
                                             <td>{{ $item->code_product }}</td>
                                             <td>{{ $item->description }}</td>
                                             <td>{{ number_format($item->qty_product) }}</td>

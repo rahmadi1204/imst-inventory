@@ -21,11 +21,11 @@ class DataProductController extends Controller
             'status_product' => "KOSONG",
         ]);
         $cek = DB::table('history_products')
-            ->selectRaw('history_products.code_product, sum(qty_product) as qty_product')
-            ->groupBy('code_product')
-            ->pluck('qty_product', 'code_product');
+            ->selectRaw('history_products.product_id, sum(qty_product) as qty_product')
+            ->groupBy('product_id')
+            ->pluck('qty_product', 'product_id');
         foreach ($cek as $key => $value) {
-            DB::table('master_products')->where('code_product', '=', $key)
+            DB::table('master_products')->where('id', '=', $key)
                 ->update([
                     'qty_product' => $value,
                     'status_product' => "OK",

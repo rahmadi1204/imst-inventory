@@ -23,13 +23,15 @@ class NcrcustomerController extends Controller
     {
         $data = DB::table('ncr_customers')
             ->join('ncr_customer_products', 'ncr_customer_products.code_ncrc', '=', 'ncr_customers.code_ncrc')
-            ->join('master_products', 'master_products.code_product', '=', 'ncr_customer_products.code_product')
+            ->join('master_products', 'master_products.id', '=', 'ncr_customer_products.product_id')
+            ->join('customers', 'customers.id', '=', 'ncr_customers.customer_id')
+            ->join('warehouses', 'warehouses.id', '=', 'ncr_customers.warehouse_id')
             ->get([
                 'ncr_customers.code_ncrc',
                 'ncr_customers.date_ncrc',
                 'ncr_customers.no_ncrc',
-                'ncr_customers.name_customer',
-                'ncr_customers.name_warehouse',
+                'customers.name_customer',
+                'warehouses.name_warehouse',
                 'master_products.name_product',
                 'ncr_customer_products.code_ncrc_product',
                 'ncr_customer_products.qty_product',
@@ -87,11 +89,6 @@ class NcrcustomerController extends Controller
             'qty_product' => 'required',
             'unit_product' => 'required',
         ]);
-        $attr['code_po'] = date('ymdhis');
-        $attr['no_ncrc'] = $request->no_ncrc;
-        $attr['code_ncrc'] = date('ymdhis');
-        $attr['created_at'] = now();
-        $attr['updated_at'] = now();
         // dd($attr);
         $count = count($prd['code_product']);
 
@@ -101,28 +98,38 @@ class NcrcustomerController extends Controller
         DB::beginTransaction();
         try {
 
-            NcrCustomer::insert($attr);
+            NcrCustomer::insert([
+                'code_po' => null,
+                'code_ncrc' => date('ymdhis'),
+                'date_ncrc' => $request->date_ncrc,
+                'no_ncrc' => $request->no_ncrc,
+                'warehouse_id' => $request->name_warehouse,
+                'customer_id' =>  $request->name_customer,
+                'way_transport' =>  $request->way_transport,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             for ($i = 0; $i < $count; $i++) {
                 NcrCustomerProduct::create([
                     'code_po' => null,
-                    'code_ncrc' => $attr['code_ncrc'],
-                    'code_ncrc_product' => $attr['code_ncrc'] . '-' . $request->code_product[$i],
-                    'code_product' => $request->code_product[$i],
-                    'qty_product' => -$request->qty_product[$i],
+                    'code_ncrc' => date('ymdhis'),
+                    'code_ncrc_product' => date('ymdhis') . '-' . $request->code_product[$i],
+                    'product_id' => $request->code_product[$i],
+                    'qty_product' => $request->qty_product[$i],
                     'unit_product' => $request->unit_product[$i],
                 ]);
                 HistoryProduct::create([
-                    'code_po' => 0,
-                    'code_ncrc' => $attr['code_ncrc'],
+                    'code_po' => null,
+                    'code_ncrc' => date('ymdhis'),
                     'code_po_product' => null,
-                    'code_ncrc_product' => $attr['code_ncrc'] . '-' . $request->code_product[$i],
-                    'code_product' => $request->code_product[$i],
+                    'code_ncrc_product' => date('ymdhis') . '-' . $request->code_product[$i],
+                    'product_id' => $request->code_product[$i],
                     'unit_product' => $request->unit_product[$i],
                     'product_pabean' => 0,
-                    'date_product' =>  $attr['date_ncrc'],
-                    'type_history' =>  -1,
-                    'from' =>  $request->name_warehouse,
-                    'to' =>  $request->name_customer,
+                    'date_product' =>  $request->date_ncrc,
+                    'type_history' =>  -3,
+                    'to' =>  $request->name_warehouse,
+                    'from' =>  $request->name_customer,
                     'qty_product' =>  -$request->qty_product[$i],
                     'created_at' => now(),
                     'updated_at' => now(),

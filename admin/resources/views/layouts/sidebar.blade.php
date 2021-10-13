@@ -142,7 +142,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('ncr_vendor') }}" class="nav-link {{ $NcrvendorActive ?? '' }}">
-                                    <i class="nav-icon fa fa-plus-square text-dark"></i>
+                                    <i class="nav-icon fa fa-plus-circle text-dark"></i>
                                     <p>
                                         NCR Vendor
                                     </p>
@@ -158,7 +158,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('ncr_customer') }}" class="nav-link {{ $NcrCustActive ?? '' }}">
-                                    <i class="nav-icon fa fa-plus-square text-dark"></i>
+                                    <i class="nav-icon fa fa-plus-circle text-dark"></i>
                                     <p>
                                         NCR Customer
                                     </p>
@@ -185,10 +185,10 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link {{ $reportOut ?? '' }}">
-                                    <i class="nav-icon fa fa-list-alt text-dark"></i>
+                                <a href="{{ route('report_mutasi') }}" class="nav-link {{ $reportMutasi ?? '' }}">
+                                    <i class="nav-icon fa fa-sync-alt text-dark"></i>
                                     <p>
-                                        Stok Barang
+                                        Mutasi Barang
                                     </p>
                                 </a>
                             </li>

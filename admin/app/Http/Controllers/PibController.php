@@ -28,13 +28,19 @@ class PibController extends Controller
     public function index()
     {
         $data = DB::table('pibs')
-            ->join('pib_loads', 'pib_loads.no_approval', '=', 'pibs.no_approval')
-            ->join('pib_invoices', 'pib_invoices.no_approval', '=', 'pibs.no_approval')
-            ->join('pib_devies', 'pib_devies.no_approval', '=', 'pibs.no_approval')
-            ->join('suppliers', 'suppliers.code_supplier', '=', 'pibs.code_supplier')
-            // ->join('pib_containers', 'pib_containers.no_approval', '=', 'pibs.no_approval')
-            // ->join('pib_products', 'pib_products.no_approval', '=', 'pibs.no_approval')
-            ->get();
+            ->join('pib_loads', 'pib_loads.code_pib', '=', 'pibs.code_pib')
+            ->join('pib_invoices', 'pib_invoices.code_pib', '=', 'pibs.code_pib')
+            ->join('suppliers', 'suppliers.id', '=', 'pibs.supplier_id')
+            ->get([
+                'pibs.office_pabean',
+                'pibs.no_approval',
+                'pibs.code_pib',
+                'pib_loads.no_register',
+                'pib_loads.load_place',
+                'pib_loads.load_destination',
+                'pib_loads.date_register',
+                'pib_invoices.invoice',
+            ]);
         // dd($data);
         return view('master_data.pib.pib_index', [
             'data' => $data,
@@ -52,7 +58,7 @@ class PibController extends Controller
         $typeProduct = TypeProduct::all();
         $product = MasterProduct::all();
         $po = DB::table('pos')
-            ->join('suppliers', 'suppliers.code_supplier', '=', 'pos.code_supplier')->get();
+            ->join('suppliers', 'suppliers.id', '=', 'pos.supplier_id')->get();
         $unit = Unit::all();
         $currency = Currency::orderBy('name')->get();
         // dd($currency);
@@ -96,7 +102,7 @@ class PibController extends Controller
 
 
             DB::commit();
-            // dd('OK');
+            dd('OK');
 
             return redirect()->route('pib')->withInput()->with('Ok', ' Data Tersimpan');
         } catch (\Throwable $th) {
@@ -117,16 +123,10 @@ class PibController extends Controller
             'type_pib' => $request->type_pib,
             'type_import' => $request->type_import,
             'payment_method' => $request->payment_method,
-            'code_supplier' => $request->code_supplier,
-            'name_seller' => $request->name_seller,
-            'address_seller' => $request->address_seller,
-            'nik_importir' => $request->nik_importir,
-            'name_importir' => $request->name_importir,
-            'address_importir' => $request->address_importir,
-            'status_importir' => $request->status_importir,
-            'apiu' => $request->apiu,
-            'name_owner' => $request->name_owner,
-            'address_owner' => $request->address_owner,
+            'supplier_id' => $request->name_shipper,
+            'seller_id' => $request->name_seller,
+            'importir_id' => $request->name_importir,
+            'owner_id' => $request->name_owner,
             'name_ppjk' => $request->name_ppjk,
             'npwp_ppjk' => $request->npwp_ppjk,
             'np_ppjk' => $request->np_ppjk,
@@ -218,7 +218,7 @@ class PibController extends Controller
                 'no_po' => $request->no_po,
                 'date_product' => $request->date_product,
                 'pos_product' => $request->pos_product[$i],
-                'code_product' => $request->code_product[$i],
+                'product_id' => $request->code_product[$i],
                 'country_product' => $request->country_product,
                 'qty_product' => $request->qty_product[$i],
                 'unit_product' => $request->unit_product[$i],
@@ -302,7 +302,7 @@ class PibController extends Controller
                 'code_pib' => $request->code_pib,
                 'code_po_product' => $request->code_po . '-' . $request->code_product[$i],
                 'code_pib_product' => $request->code_pib . '-' . $request->code_product[$i],
-                'code_product' => $request->code_product[$i],
+                'product_id' => $request->code_product[$i],
                 'unit_product' => $request->unit_product[$i],
                 'product_pabean' => $request->value_pabean[$i],
                 'date_product' =>  $request->date_product,
@@ -378,7 +378,7 @@ class PibController extends Controller
     {
         // $id = $request->code_po;
         $product = DB::table('po_products')->where('code_po', '=', $id)
-            ->join('master_products', 'master_products.code_product', '=', 'po_products.code_product')
+            ->join('master_products', 'master_products.id', '=', 'po_products.product_id')
             ->pluck('master_products.name_product', 'master_products.code_product');
         // ->get([
         //     'po_products.code_po',

@@ -23,10 +23,12 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Tanggal</th>
+                                        <th>No PO</th>
                                         <th>No Referensi</th>
                                         <th>Nama Vendor</th>
                                         <th>Nama Produk</th>
-                                        <th>Jumlah Diretur</th>
+                                        <th>Jumlah</th>
+                                        <th>Keterangan</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -39,9 +41,17 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ date('d F Y', strtotime($item->date_ncrv)) }}</td>
                                             <td>{{ $item->no_po }}</td>
+                                            <td>{{ $item->no_ref }}</td>
                                             <td>{{ $item->name_supplier }}</td>
                                             <td>{{ $item->name_product }}</td>
                                             <td>{{ $item->qty_product }}</td>
+                                            <td>
+                                                @if ($item->qty_product < 0)
+                                                    <div class="btn btn-warning">Keluar</div>
+                                                @else
+                                                    <div class="btn btn-primary">Masuk</div>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <a href="{{ route('ncr_vendor.edit', $item->code_ncrv) }}"
                                                     class="btn btn-success">

@@ -16,9 +16,10 @@ class CreateNcrVendorsTable extends Migration
         Schema::create('ncr_vendors', function (Blueprint $table) {
             $table->id();
             $table->string('code_ncrv')->unique();
+            $table->integer('type_ncrv');
             $table->string('code_po');
+            $table->string('no_ref');
             $table->date('date_ncrv');
-            $table->string('no_po');
             $table->string('code_supplier');
             // $table->string('name_supplier');
             $table->string('name_warehouse');

@@ -13,6 +13,12 @@
             "info": true,
             "autoWidth": false,
         });
+        $('#productAddRemove1').DataTable({
+            "searching": false,
+        });
+        $('#productAddRemove2').DataTable({
+            "searching": false,
+        });
         $('#containerAddRemove').DataTable({
             "searching": false,
         });

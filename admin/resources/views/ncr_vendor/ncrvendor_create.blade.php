@@ -21,21 +21,36 @@
                 <div class="col-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Tambah Return Pembelian</h3>
+                            <h3 class="card-title" id="ncrv_title">Tambah Return Ke Vendor</h3>
                             <div class="card-tools">
-
+                                <div class="btn btn-light" id="showMasuk">Return Dari Vendor</div>
+                                <div class="btn btn-secondary" id="showKeluar" style="display: none">Return Ke Vendor
+                                </div>
                             </div>
                         </div>
+                        <div id="to_vendor">
 
-                        <form action="{{ route('ncr_vendor.store') }}" method="post">
-                            @csrf
+                            <form action="{{ route('ncr_vendor.store') }}" method="post">
+                                @csrf
 
-                            @include('components.ncr_vendor_form')
+                                @include('components.ncr_vendor_form')
+                                <div class="card-footer ">
+                                    <button type="submit" class="btn btn-primary float-right">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="from_vendor" style="display: none">
 
-                            <div class="card-footer ">
-                                <button type="submit" class="btn btn-primary float-right">Simpan</button>
-                            </div>
-                        </form>
+                            <form action="{{ route('ncr_vendor_return.store') }}" method="post">
+                                @csrf
+
+                                @include('components.ncr_vendor_return_form')
+
+                                <div class="card-footer ">
+                                    <button type="submit" class="btn btn-primary float-right">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -110,4 +125,22 @@
 @endsection
 @section('scripts')
     @include('scripts.ncrv_create')
+    <script>
+        $(document).ready(function() {
+            $("#showMasuk").click(function() {
+                $("#showKeluar").toggle();
+                $("#showMasuk").toggle();
+                $("#to_vendor").toggle();
+                $("#from_vendor").toggle();
+                $("#ncrv_title").text("Tambah Return Dari Vendor");
+            });
+            $("#showKeluar").click(function() {
+                $("#showKeluar").toggle();
+                $("#showMasuk").toggle();
+                $("#to_vendor").toggle();
+                $("#from_vendor").toggle();
+                $("#ncrv_title").text("Tambah Return Ke Vendor");
+            });
+        });
+    </script>
 @endsection

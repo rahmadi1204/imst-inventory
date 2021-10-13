@@ -23,24 +23,23 @@
     </div>
     <div class="row">
         <div class="form-group col">
-            <label for="vendor_name">Vendor </label>
-            <select name="code_supplier" id="vendor_name" class="form-control custom-select">
+            <label for="name_supplier">Vendor </label>
+            <select name="name_supplier" id="name_supplier" class="form-control custom-select">
                 <option selected>Pilih</option>
                 @foreach ($supplier as $item)
 
                     @if (isset($po))
-                        @if ($po->vendor_name == $item->name_supplier)
-                            <option value="{{ $item->code_supplier }}" address="{{ $item->address_supplier }}"
-                                selected>
+                        @if ($po->supplier_id == $item->id)
+                            <option value="{{ $item->id }}" address="{{ $item->address_supplier }}" selected>
                                 {{ $item->name_supplier }}
                             </option>
                         @else
-                            <option value="{{ $item->code_supplier }}" address="{{ $item->address_supplier }}">
+                            <option value="{{ $item->id }}" address="{{ $item->address_supplier }}">
                                 {{ $item->name_supplier }}
                             </option>
                         @endif
                     @else
-                        <option value="{{ $item->code_supplier }}" address="{{ $item->address_supplier }}">
+                        <option value="{{ $item->id }}" address="{{ $item->address_supplier }}">
                             {{ $item->name_supplier }}
                         </option>
                     @endif
@@ -48,32 +47,32 @@
             </select>
         </div>
         <div class="form-group col">
-            <label for="vendor_address">Alamat Vendor</label>
-            <input name="vendor_address" type="text" class="form-control"
-                value="{{ $po->vendor_address ?? old('vendor_address') }}" id="vendor_address" required readonly>
+            <label for="address_supplier">Alamat Vendor</label>
+            <input name="address_supplier" type="text" class="form-control"
+                value="{{ $po->address_supplier ?? old('address_supplier') }}" id="address_supplier" required
+                readonly>
         </div>
     </div>
     <div class="row">
         <div class="form-group col">
-            <label for="send_address">Tujuan / Lokasi</label>
+            <label for="name_warehouse">Tujuan / Lokasi</label>
             <div class="input-group">
-                <select name="send_address" id="send_address" class="form-control custom-select">
+                <select name="name_warehouse" id="name_warehouse" class="form-control custom-select">
                     <option selected>Pilih</option>
                     @foreach ($tujuan as $item)
                         @if (isset($po))
-                            @if ($po->send_address == $item->name_warehouse)
-                                <option value="{{ $item->name_warehouse }}"
-                                    address="{{ $item->address_warehouse }}" selected>
+                            @if ($po->warehouse_id == $item->id)
+                                <option value="{{ $item->id }}" address="{{ $item->address_warehouse }}"
+                                    selected>
                                     {{ $item->name_warehouse }}
                                 </option>
                             @else
-                                <option value="{{ $item->name_warehouse }}"
-                                    address="{{ $item->address_warehouse }}">
+                                <option value="{{ $item->id }}" address="{{ $item->address_warehouse }}">
                                     {{ $item->name_warehouse }}
                                 </option>
                             @endif
                         @else
-                            <option value="{{ $item->name_warehouse }}" address="{{ $item->address_warehouse }}">
+                            <option value="{{ $item->id }}" address="{{ $item->address_warehouse }}">
                                 {{ $item->name_warehouse }}
                             </option>
                         @endif
@@ -113,7 +112,7 @@
         <thead class="thead-light">
             <tr>
                 <th>Kode Barang</th>
-                <th>Deskripsi (Tipe Barang, Nama Barang)</th>
+                <th>Deskripsi Barang (Tipe Barang dan Nama Barang)</th>
                 <th>Jumlah Barang</th>
                 <th>Harga Barang</th>
                 <th>Jumlah Total</th>
@@ -126,7 +125,7 @@
                 <select name="code_product[0]" id="code_product0" class="form-control">
                     <option value="" selected disabled>Pilih</option>
                     @foreach ($product as $item)
-                        <option value="{{ $item->code_product }}" type="{{ $item->type_product }}"
+                        <option value="{{ $item->id }}" type="{{ $item->type_product }}"
                             name="{{ $item->name_product }}">
                             {{ $item->code_product }}
                         </option>

@@ -17,7 +17,6 @@ class CreatePibContainersTable extends Migration
             $table->id();
             $table->string('code_pib');
             $table->string('no_approval')->nullable();
-            $table->string('no_register')->nullable();
             $table->string('no_container')->nullable();
             $table->string('size_container')->nullable();
             $table->string('type_container')->nullable();

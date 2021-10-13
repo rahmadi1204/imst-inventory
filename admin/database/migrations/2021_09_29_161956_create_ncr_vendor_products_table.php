@@ -16,6 +16,7 @@ class CreateNcrVendorProductsTable extends Migration
         Schema::create('ncr_vendor_products', function (Blueprint $table) {
             $table->id();
             $table->string('code_po');
+            $table->integer('type_ncrv');
             $table->string('code_ncrv');
             $table->string('code_ncrv_product');
             $table->string('code_product');

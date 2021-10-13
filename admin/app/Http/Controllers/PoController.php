@@ -31,6 +31,7 @@ class PoController extends Controller
         DB::table('po_products')->update([
             'qty_recived' => 0,
         ]);
+        // dd($cek);
         foreach ($cek as $key => $value) {
             DB::table('po_products')->where('code_po_product', '=', $key)
                 ->update([
@@ -38,9 +39,10 @@ class PoController extends Controller
                 ]);
         }
         $data = DB::table('pos')
-            ->join('suppliers', 'suppliers.code_supplier', '=', 'pos.code_supplier')
+            ->join('suppliers', 'suppliers.id', '=', 'pos.supplier_id')
+            ->join('warehouses', 'warehouses.id', '=', 'pos.warehouse_id')
             ->join('po_products', 'po_products.code_po', '=', 'pos.code_po')
-            ->join('master_products', 'master_products.code_product', '=', 'po_products.code_product')
+            ->join('master_products', 'master_products.id', '=', 'po_products.product_id')
             ->get([
                 'pos.id',
                 'pos.no_po',
@@ -49,16 +51,19 @@ class PoController extends Controller
                 'pos.date_po',
                 'suppliers.name_supplier',
                 'suppliers.address_supplier',
-                'pos.send_address',
+                'warehouses.name_warehouse',
+                'warehouses.address_warehouse',
                 'pos.currency',
                 'pos.total_amount_po',
-                'po_products.code_product',
                 'po_products.description',
                 'po_products.qty_product',
                 'po_products.qty_recived',
                 'po_products.unit_price',
                 'po_products.total_amount',
                 'po_products.latest',
+                'master_products.code_product',
+                'master_products.name_product',
+                'master_products.type_product',
             ]);
 
         return view('master_data.po.po_index', [
@@ -97,10 +102,9 @@ class PoController extends Controller
     {
         // dd($request);
         $request->validate([
-            'code_supplier' => 'required',
-            'send_address' => 'required',
-            'address_warehouse' => 'required',
             'no_po' => 'required',
+            'name_supplier' => 'required',
+            'name_warehouse' => 'required',
             'project' => 'required',
             'date_po' => 'required',
             'code_product' => 'required',
@@ -108,7 +112,6 @@ class PoController extends Controller
             'unit_price' => 'required',
             'currency' => 'required',
             'total_amount' => 'required',
-            'total_amount_po' => 'nullable',
             'latest' => 'required',
         ]);
         // dd($request);
@@ -123,7 +126,7 @@ class PoController extends Controller
                     'no_po' => $request->no_po,
                     'code_po' => $code_po,
                     'code_po_product' => $code_po . '-' . $request->code_product[$i],
-                    'code_product' => $request->code_product[$i],
+                    'product_id' => $request->code_product[$i],
                     'description' => $request->description[$i],
                     'latest' => $request->latest[$i],
                     'qty_product' => $request->qty_product[$i],
@@ -141,9 +144,8 @@ class PoController extends Controller
                 'code_po' => $code_po,
                 'project' => $request->project,
                 'date_po' => $request->date_po,
-                'code_supplier' => $request->code_supplier,
-                'send_address' => $request->send_address,
-                'address_warehouse' => $request->address_warehouse,
+                'supplier_id' => $request->name_supplier,
+                'warehouse_id' => $request->name_warehouse,
                 'currency' => $request->currency,
                 'total_amount_po' => $amount,
                 'created_at' => now(),

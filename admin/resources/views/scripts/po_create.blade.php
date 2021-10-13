@@ -1,16 +1,16 @@
 <script>
-    $('#send_address').change(function() {
+    $('#name_warehouse').change(function() {
         let codeSend = $(this).val();
-        let addressWarehouse = $('#send_address option:selected').attr("address");
+        let addressWarehouse = $('#name_warehouse option:selected').attr("address");
 
         $("#address_warehouse").val(addressWarehouse);
 
     });
-    $('#vendor_name').change(function() {
+    $('#name_supplier').change(function() {
         let codeVendor = $(this).val();
-        let addressVendor = $('#vendor_name option:selected').attr("address");
+        let addressVendor = $('#name_supplier option:selected').attr("address");
 
-        $("#vendor_address").val(addressVendor);
+        $("#address_supplier").val(addressVendor);
 
     });
     $('#currency').change(function() {
@@ -51,7 +51,7 @@
         $("#productAddRemove").append('<tr><td><select name="code_product[' + j +
             ']" id="code_product' +
             j +
-            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->code_product }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><input type="text" name="description[' +
+            '" class="form-control"><option value="" selected disabled>Pilih</option>@foreach ($product as $item)<option value="{{ $item->id }}" type="{{ $item->type_product }}" name="{{ $item->name_product }}">{{ $item->code_product }}</option>@endforeach</select></td><td><input type="text" name="description[' +
             j +
             ']" id="description' +
             j +

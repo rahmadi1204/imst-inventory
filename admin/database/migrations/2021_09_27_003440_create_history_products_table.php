@@ -23,7 +23,7 @@ class CreateHistoryProductsTable extends Migration
             $table->string('code_pib_product')->nullable();
             $table->string('code_ncrv_product')->nullable();
             $table->string('code_ncrc_product')->nullable();
-            $table->string('code_product');
+            $table->string('product_id');
             $table->string('date_product');
             $table->double('product_pabean')->nullable();
             $table->bigInteger('type_history');

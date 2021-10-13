@@ -21,6 +21,7 @@ use App\Http\Controllers\ReportDocumentController;
 use App\Http\Controllers\Data\DataProductController;
 use App\Http\Controllers\Data\MasterProductController;
 use App\Http\Controllers\Data\HistoryProductController;
+use App\Http\Controllers\MutationDocumentController;
 
 // Route Buelum Login
 Route::middleware(['guest'])->group(function () {
@@ -134,6 +135,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/ncr_vendor', [NcrVendorController::class, 'index'])->name('ncr_vendor');
         Route::get('/ncr_vendor/add', [NcrVendorController::class, 'create'])->name('ncr_vendor.create');
         Route::post('/ncr_vendor/add', [NcrVendorController::class, 'store'])->name('ncr_vendor.store');
+        Route::post('/ncr_vendor/add_return', [NcrVendorController::class, 'storeVendor'])->name('ncr_vendor_return.store');
         Route::get('/ncr_vendor/update/{po:id}', [NcrVendorController::class, 'edit'])->name('ncr_vendor.edit');
         Route::post('/ncr_vendor/update/{po:id}', [NcrVendorController::class, 'update'])->name('ncr_vendor.update');
         Route::post('/ncr_vendor/delete', [NcrVendorController::class, 'destroy'])->name('ncr_vendor.destroy');
@@ -141,10 +143,8 @@ Route::middleware(['auth'])->group(function () {
         #report
         #barang perdokumen
         Route::get('/report_document', [ReportDocumentController::class, 'index'])->name('report_document');
-        Route::get('/report_document/add', [ReportDocumentController::class, 'create'])->name('report_document.create');
-        Route::post('/report_document/add', [ReportDocumentController::class, 'store'])->name('report_document.store');
-        Route::get('/report_document/update/{report_document:id}', [ReportDocumentController::class, 'edit'])->name('report_document.edit');
-        Route::post('/report_document/update/{report_document:id}', [ReportDocumentController::class, 'update'])->name('report_document.update');
-        Route::post('/report_document/delete', [ReportDocumentController::class, 'destroy'])->name('report_document.destroy');
+
+        #barang mutasi
+        Route::get('/report_mutasi', [MutationDocumentController::class, 'index'])->name('report_mutasi');
     });
 });

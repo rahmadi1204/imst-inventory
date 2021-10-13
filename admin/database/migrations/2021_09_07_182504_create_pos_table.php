@@ -19,9 +19,8 @@ class CreatePosTable extends Migration
             $table->string('code_po')->unique();
             $table->string('project');
             $table->date('date_po');
-            $table->string('code_supplier');
-            $table->string('send_address');
-            $table->string('address_warehouse');
+            $table->string('supplier_id');
+            $table->string('warehouse_id');
             $table->string('currency');
             $table->integer('total_amount_po');
             $table->timestamps();

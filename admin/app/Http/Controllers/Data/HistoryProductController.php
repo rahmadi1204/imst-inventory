@@ -14,15 +14,17 @@ class HistoryProductController extends Controller
     {
         $typeProduct = TypeProduct::all();
         $data = DB::table('history_products')
-            ->LeftJoin('master_products', 'master_products.code_product', '=', 'history_products.code_product')
+            ->LeftJoin('master_products', 'master_products.id', '=', 'history_products.product_id')
+            ->LeftJoin('suppliers', 'suppliers.id', '=', 'history_products.from')
+            ->LeftJoin('warehouses', 'warehouses.id', '=', 'history_products.to')
             ->orderBy('date_product', 'desc')->get([
                 'master_products.code_product',
                 'master_products.type_product',
                 'master_products.name_product',
                 'history_products.date_product',
                 'history_products.type_history',
-                'history_products.from',
-                'history_products.to',
+                'suppliers.name_supplier',
+                'warehouses.name_warehouse',
                 'history_products.unit_product',
                 'history_products.product_pabean',
                 'history_products.qty_product'
