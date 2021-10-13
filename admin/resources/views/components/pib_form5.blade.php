@@ -1,15 +1,5 @@
 <div id="step5-part" class="content" role="tabpanel" aria-labelledby="step5-part-trigger">
     <div class="row">
-        {{-- <div class="form-group col">
-        <label for="type_product">Tipe Produk</label>
-        <select name="type_product" id="type_product" class="form-control">
-            <option selected disabled>Pilih</option>
-            @foreach ($typeProduct as $item)
-                <option value="{{ $item->type_product }}">
-                    {{ $item->type_product }}</option>
-            @endforeach
-        </select>
-    </div> --}}
         <div class="form-group col">
             <label for="country_product">Negara Asal Produk</label>
             <input name="country_product" type="text" class="form-control" id="country_product"

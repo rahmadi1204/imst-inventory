@@ -36,10 +36,12 @@
                         $("#code_product0").empty();
                         $("#code_product0").append(
                             '<option>Pilih</option>');
-                        $.each(res, function(key, value) {
-                            console.log(res)
-                            $("#code_product0").append('<option value="' + key +
-                                '"name="' + value + '">' + key + '</option>');
+                        $.each(res.data, function(k, l) {
+                            console.log(l)
+                            $("#code_product0").append('<option value="' + this['id'] +
+                                '"name="' + this['name_product'] + '">' + this[
+                                    'code_product'] +
+                                '</option>');
                         });
 
                     } else {
@@ -75,10 +77,12 @@
                         $("#code_product" + j).empty();
                         $("#code_product" + j).append(
                             '<option>Pilih</option>');
-                        $.each(ok, function(key, value) {
-                            console.log(ok)
-                            $("#code_product" + j).append('<option value="' + key +
-                                '"name="' + value + '">' + key + '</option>');
+                        $.each(ok.data, function(k, l) {
+                            console.log(l)
+                            $("#code_product" + j).append('<option value="' + this['id'] +
+                                '"name="' + this['name_product'] + '">' + this[
+                                    'code_product'] +
+                                '</option>');
                         });
 
                     } else {

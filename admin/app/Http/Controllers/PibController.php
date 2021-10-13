@@ -80,7 +80,7 @@ class PibController extends Controller
     public function store(StorePibRequest $request)
     {
         $validate = $request->validated();
-        // dd($request);
+        dd($request);
         $request->code_pib = date('ymdhis');
         $request->no_approval = str_replace('-', '', $request->no_approval);
         $request->invoice = str_replace('-', '', $request->invoice);
@@ -379,7 +379,12 @@ class PibController extends Controller
         // $id = $request->code_po;
         $product = DB::table('po_products')->where('code_po', '=', $id)
             ->join('master_products', 'master_products.id', '=', 'po_products.product_id')
-            ->pluck('master_products.name_product', 'master_products.code_product');
+            // ->pluck('master_products.name_product', 'master_products.id');
+            ->get([
+                'master_products.id',
+                'master_products.code_product',
+                'master_products.name_product',
+            ]);
         // ->get([
         //     'po_products.code_po',
         //     'master_products.code_product',
@@ -387,7 +392,9 @@ class PibController extends Controller
         //     'master_products.name_product',
         // ]);
         // $product = $id;
-        return response()->json($product);
+        return response()->json([
+            'data' => $product
+        ]);
     }
 
     public function updateContainer($id)

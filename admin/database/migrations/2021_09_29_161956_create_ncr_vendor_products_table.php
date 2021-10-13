@@ -19,7 +19,7 @@ class CreateNcrVendorProductsTable extends Migration
             $table->integer('type_ncrv');
             $table->string('code_ncrv');
             $table->string('code_ncrv_product');
-            $table->string('code_product');
+            $table->string('product_id');
             $table->bigInteger('qty_product');
             $table->string('unit_product');
             $table->timestamps();

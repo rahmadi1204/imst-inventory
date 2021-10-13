@@ -114,7 +114,6 @@ class NcrVendorController extends Controller
                 'code_po' => $request->code_po,
                 'no_ref' => $request->no_ref,
                 'date_ncrv' => $request->date_ncrv,
-                'no_po' => $request->no_po,
                 'supplier_id' => $request->code_supplier,
                 'warehouse_id' => $request->name_warehouse,
                 'way_transport' => $request->way_transport,
@@ -156,7 +155,7 @@ class NcrVendorController extends Controller
             return redirect()->route('ncr_vendor')->with('Ok', "Data Tersimpan");
         } catch (\Throwable $th) {
             DB::rollback();
-            // dd('fail');
+            dd('fail');
             return redirect()->route('ncr_vendor')->with('Fail', "Data Tidak Tersimpan");
         }
     }

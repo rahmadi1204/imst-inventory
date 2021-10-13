@@ -20,9 +20,9 @@ class CreateNcrVendorsTable extends Migration
             $table->string('code_po');
             $table->string('no_ref');
             $table->date('date_ncrv');
-            $table->string('code_supplier');
+            $table->string('supplier_id');
             // $table->string('name_supplier');
-            $table->string('name_warehouse');
+            $table->string('warehouse_id');
             $table->string('way_transport');
             $table->timestamps();
         });
