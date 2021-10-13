@@ -29,7 +29,7 @@ class NcrcustomerController extends Controller
             ->get([
                 'ncr_customers.code_ncrc',
                 'ncr_customers.date_ncrc',
-                'ncr_customers.no_ncrc',
+                'ncr_customers.no_ref',
                 'customers.name_customer',
                 'warehouses.name_warehouse',
                 'master_products.name_product',
@@ -54,13 +54,11 @@ class NcrcustomerController extends Controller
         $typeProduct = TypeProduct::all();
         $product = MasterProduct::all();
         $po = Po::all();
-        $pib = Pib::all();
         $unit = Unit::all();
         $currency = Currency::orderBy('name')->get();
         return view('ncr_customer.ncrcustomer_create', [
             'title' => 'Data NCR Customer',
             'po' => $po,
-            'pib' => $pib,
             'unit' => $unit,
             'currency' => $currency,
             'typeProduct' => $typeProduct,
@@ -92,9 +90,6 @@ class NcrcustomerController extends Controller
         // dd($attr);
         $count = count($prd['code_product']);
 
-
-
-
         DB::beginTransaction();
         try {
 
@@ -102,7 +97,8 @@ class NcrcustomerController extends Controller
                 'code_po' => null,
                 'code_ncrc' => date('ymdhis'),
                 'date_ncrc' => $request->date_ncrc,
-                'no_ncrc' => $request->no_ncrc,
+                'no_ref' => $request->no_ref,
+                'type_ncrc' => 0,
                 'warehouse_id' => $request->name_warehouse,
                 'customer_id' =>  $request->name_customer,
                 'way_transport' =>  $request->way_transport,
@@ -112,10 +108,11 @@ class NcrcustomerController extends Controller
             for ($i = 0; $i < $count; $i++) {
                 NcrCustomerProduct::create([
                     'code_po' => null,
+                    'type_ncrc' => 0,
                     'code_ncrc' => date('ymdhis'),
                     'code_ncrc_product' => date('ymdhis') . '-' . $request->code_product[$i],
                     'product_id' => $request->code_product[$i],
-                    'qty_product' => $request->qty_product[$i],
+                    'qty_product' => -$request->qty_product[$i],
                     'unit_product' => $request->unit_product[$i],
                 ]);
                 HistoryProduct::create([

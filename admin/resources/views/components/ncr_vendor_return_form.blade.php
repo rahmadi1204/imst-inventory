@@ -17,7 +17,7 @@
 
                 @foreach ($codeNcrv as $item)
                     @isset($ncrv)
-                        @if ($item->code_ncrv == $ncrv->code->ncrv)
+                        @if ($item->code_ncrv == $ncrv->code_ncrv)
                             <option value="{{ $item->no_ref }}" code_supplier="{{ $item->id }}"
                                 name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
                                 address="{{ $item->address_supplier }}" selected>
@@ -105,7 +105,7 @@
             <td><input type="number" step="0.01" name="qty_product[0]" class="form-control" />
             </td>
             <td>
-                <select name="unit_product[0]" id="unit_product2" class="form-control">
+                <select name="unit_product[0]" id="unit_product20" class="form-control">
                     <option value="" selected disabled>Pilih</option>
                     @foreach ($unit as $item)
                         <option value="{{ $item->unit }}">{{ $item->unit }}

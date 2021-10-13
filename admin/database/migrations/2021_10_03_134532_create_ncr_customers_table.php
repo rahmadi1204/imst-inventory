@@ -17,8 +17,9 @@ class CreateNcrCustomersTable extends Migration
             $table->id();
             $table->string('code_ncrc')->unique();
             $table->string('code_po')->nullable();
+            $table->integer('type_ncrc');
             $table->date('date_ncrc');
-            $table->string('no_ncrc')->nullable();
+            $table->string('no_ref')->nullable();
             $table->string('warehouse_id');
             $table->string('customer_id');
             $table->string('way_transport');

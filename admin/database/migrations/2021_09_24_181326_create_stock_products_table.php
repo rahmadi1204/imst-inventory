@@ -17,7 +17,7 @@ class CreateStockProductsTable extends Migration
             $table->id();
             $table->string('code_stock')->unique();
             $table->bigInteger('type_stock');
-            $table->string('code_product');
+            $table->string('product_id');
             $table->string('unit_product');
             $table->bigInteger('qty_product');
             $table->double('product_pabean');

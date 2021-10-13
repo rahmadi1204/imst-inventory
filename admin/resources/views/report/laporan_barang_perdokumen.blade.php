@@ -87,8 +87,10 @@
                                                 <td>{{ $noMasuk++ }}</td>
                                                 @if ($item->type_history == 1)
                                                     <td>PIB</td>
+                                                @elseif($item->type_history == 2)
+                                                    <td>NCR Vendor</td>
                                                 @else
-                                                    <td></td>
+                                                    <td>NCR Customer</td>
                                                 @endif
                                                 <td>{{ $item->no_in }}</td>
                                                 <td>{{ $item->date_product }}</td>
@@ -130,7 +132,7 @@
                                         @foreach ($keluar as $item)
                                             <tr>
                                                 <td>{{ $noKeluar++ }}</td>
-                                                @if ($item->type_history == 0)
+                                                @if ($item->type_history == -2)
                                                     <td>NCR Vendor</td>
                                                 @else
                                                     <td>NCR Customer</td>

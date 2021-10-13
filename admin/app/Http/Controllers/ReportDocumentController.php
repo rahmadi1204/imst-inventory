@@ -11,7 +11,7 @@ class ReportDocumentController extends Controller
     {
         $masuk = DB::table('history_products')
             ->join('master_products', function ($join) {
-                $join->on('master_products.id', '=', 'history_products.product_id')->where('type_history', '=', 1);
+                $join->on('master_products.id', '=', 'history_products.product_id')->where('type_history', '>', 0);
             })
             ->get([
                 'master_products.code_product',
