@@ -12,54 +12,75 @@
                         <div class="card-header">
                             <div class="col-12">
                                 <div class="d-flex justify-content-between">
-                                    <div class="form-group">
-                                        <label>Periode Bebas</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
+                                    <form action="{{ route('report_document.filter') }}" method="post">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label>
+                                                @if (isset($range))
+                                                    {{ $range }}
+                                                @else
+                                                    Semua Tanggal
+                                                @endif
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="far fa-calendar-alt"></i>
+                                                    </span>
+                                                </div>
+                                                <input name="filter" type="text" class="form-control" id="reservation">
                                             </div>
-                                            <input type="text" class="form-control" id="reservation">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" onclick="">
-                                                    <i class="fa fa-check"></i>
-                                                </span>
-                                            </div>
+                                            <button class="form-control  btn btn-success mt-2" type="submit">
+                                                Cari Tanggal
+                                            </button>
                                         </div>
                                         <!-- /.input group -->
-                                    </div>
-                                    <div class="form-group ml-3">
-                                        <label>Periode Pilihan</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
+                                    </form>
+                                    <form action="{{ route('report_document.periode') }}" method="post">
+                                        @csrf
+                                        <div class="form-group ml-3">
+                                            <label>
+                                                @if (isset($titlePeriode))
+                                                    {{ $titlePeriode }}
+                                                @else
+                                                    Semua Periode
+                                                @endif
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="far fa-calendar-alt"></i>
+                                                    </span>
+                                                </div>
+                                                <select name="periode" id="periode" class="form-control">
+                                                    <option value="" selected disabled>Pilih</option>
+                                                    <option value="1">Periode I (Jan - Apr)</option>
+                                                    <option value="2">Periode II (Mei - Ags)</option>
+                                                    <option value="3">Periode III (Sep - Des)</option>
+                                                </select>
                                             </div>
-                                            <select name="periode" id="periode" class="form-control">
-                                                <option value="" selected disabled>Pilih</option>
-                                                <option value="1">Periode I (Jan - Apr)</option>
-                                                <option value="2">Periode II (Mei - Ags)</option>
-                                                <option value="3">Periode III (Sep - Des)</option>
-                                            </select>
+                                            <!-- /.input group -->
+                                            <button class="form-control  btn btn-success mt-2" type="submit">
+                                                Cari Periode
+                                            </button>
                                         </div>
-                                        <!-- /.input group -->
-                                    </div>
+                                    </form>
                                     <!-- /.form group -->
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-body">
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="btn btn-primary" id="showMasuk">Tampilkan Data Masuk</div>
                                         <div class="btn btn-warning ml-3" id="showKeluar">Tampilkan Data Keluar</div>
                                         <div class="btn btn-danger ml-3" id="pdf"><i class="fa fa-print"></i></div>
+                                        <a href="{{ route('report_document') }}" class="btn btn-warning ml-3"
+                                            id="refresh"><i class="fa fa-sync"></i></a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-body">
                             <div class="col-12 mb-5" id="tabelMasuk" style="display: none">
                                 <table id="masuk" class="table table-bordered table-hover nowrap">
                                     <thead class="thead-light">

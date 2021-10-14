@@ -144,6 +144,8 @@ Route::middleware(['auth'])->group(function () {
         #report
         #barang perdokumen
         Route::get('/report_document', [ReportDocumentController::class, 'index'])->name('report_document');
+        Route::post('/report_document/filter', [ReportDocumentController::class, 'docFilter'])->name('report_document.filter');
+        Route::post('/report_document/periode', [ReportDocumentController::class, 'docPeriode'])->name('report_document.periode');
 
         #barang mutasi
         Route::get('/report_mutasi', [MutationDocumentController::class, 'index'])->name('report_mutasi');
