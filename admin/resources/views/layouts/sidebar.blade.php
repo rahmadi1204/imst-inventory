@@ -166,35 +166,34 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item {{ $reportOpen ?? '' }}">
-                        <a href="#" class="nav-link {{ $reportActive ?? '' }}">
-                            <i class="nav-icon fas fa-clipboard-list"></i>
-                            <p>
-                                Laporan
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('report_document') }}"
-                                    class="nav-link {{ $reportDocument ?? '' }}">
-                                    <i class="nav-icon fa fa-file-alt text-dark"></i>
-                                    <p>
-                                        Barang Perdokumen
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('report_mutasi') }}" class="nav-link {{ $reportMutasi ?? '' }}">
-                                    <i class="nav-icon fa fa-sync-alt text-dark"></i>
-                                    <p>
-                                        Mutasi Barang
-                                    </p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
                 @endif
+                <li class="nav-item {{ $reportOpen ?? '' }}">
+                    <a href="#" class="nav-link {{ $reportActive ?? '' }}">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                            Laporan
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('report_document') }}" class="nav-link {{ $reportDocument ?? '' }}">
+                                <i class="nav-icon fa fa-file-alt text-dark"></i>
+                                <p>
+                                    Barang Perdokumen
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('report_mutasi') }}" class="nav-link {{ $reportMutasi ?? '' }}">
+                                <i class="nav-icon fa fa-sync-alt text-dark"></i>
+                                <p>
+                                    Mutasi Barang
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
             </ul>
         </nav>
