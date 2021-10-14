@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\HistoryProduct;
 use Illuminate\Support\Facades\DB;
-
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ReportDocumentController extends Controller
 {
@@ -167,6 +168,7 @@ class ReportDocumentController extends Controller
                 'report_documents.updated_at',
             ]);
         // dd($data);
+
         return view('report.laporan_barang_perdokumen', [
             'masuk' => $masuk,
             'keluar' => $keluar,
@@ -193,6 +195,7 @@ class ReportDocumentController extends Controller
         $dataKeluar = null;
         $masuk =  $this->masuk($date1, $date2);
         $keluar = $this->keluar($date1, $date2);
+        $range = "Tanggal " . date('d F Y', strtotime($date1)) . " Sampai " . date('d F Y', strtotime($date2));
         // dd($masuk);
         $sumMasuk  = DB::table('history_products')
             ->whereBetween('history_products.date_product', [$date1, $date2])
@@ -249,7 +252,7 @@ class ReportDocumentController extends Controller
             'dataMasuk' => $dataMasuk,
             'dataKeluar' => $dataKeluar,
             'data' => $data,
-            'range' => "Tanggal " . $date1 . " Sampai " . $date2,
+            'range' => $range,
             'title' => "Laporan Barang Perdokumen",
             'noMasuk' => 1,
             'noKeluar' => 1,

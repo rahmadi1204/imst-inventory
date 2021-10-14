@@ -1,9 +1,14 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('head')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Laporan Perdokumen</title>
+</head>
 
-@endsection
-@section('content')
+<body>
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -11,77 +16,9 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="col-12">
-                                <div class="d-flex justify-content-between">
-                                    <form action="{{ route('report_document.filter') }}" method="get">
-
-                                        <div class="form-group">
-                                            <label>
-                                                @if (isset($range))
-                                                    {{ $range }}
-                                                @else
-                                                    Semua Tanggal
-                                                @endif
-                                            </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="far fa-calendar-alt"></i>
-                                                    </span>
-                                                </div>
-                                                <input name="filter" type="text" class="form-control" id="reservation">
-                                            </div>
-                                            <button class="form-control  btn btn-success mt-2" type="submit">
-                                                Cari Tanggal
-                                            </button>
-                                        </div>
-                                        <!-- /.input group -->
-                                    </form>
-                                    <form action="{{ route('report_document.periode') }}" method="get">
-
-                                        <div class="form-group ml-3">
-                                            <label>
-                                                @if (isset($titlePeriode))
-                                                    {{ $titlePeriode }}
-                                                @else
-                                                    Semua Periode
-                                                @endif
-                                            </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="far fa-calendar-alt"></i>
-                                                    </span>
-                                                </div>
-                                                <select name="periode" id="periode" class="form-control">
-                                                    <option value="" selected disabled>Pilih</option>
-                                                    <option value="1">Periode I (Jan - Apr)</option>
-                                                    <option value="2">Periode II (Mei - Ags)</option>
-                                                    <option value="3">Periode III (Sep - Des)</option>
-                                                </select>
-                                            </div>
-                                            <!-- /.input group -->
-                                            <button class="form-control  btn btn-success mt-2" type="submit">
-                                                Cari Periode
-                                            </button>
-                                        </div>
-                                    </form>
-                                    <!-- /.form group -->
-                                </div>
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="btn btn-primary" id="showMasuk">Tampilkan Data Masuk</div>
-                                        <div class="btn btn-warning ml-3" id="showKeluar">Tampilkan Data Keluar</div>
-                                        {{-- <a href="{{ route('report_document.pdf') }}"
-                                            class="btn btn-danger ml-3" id="pdf"><i class="fa fa-print"></i></a> --}}
-                                        <a href="{{ route('report_document') }}" class="btn btn-warning ml-3"
-                                            id="refresh"><i class="fa fa-sync"></i></a>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-12 mb-5" id="tabelMasuk" style="display: none">
                                 <table id="masuk" class="table table-bordered table-hover nowrap">
                                     <thead class="thead-light">
@@ -258,17 +195,6 @@
         </div>
     </section>
 
+</body>
 
-@endsection
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $("#showMasuk").click(function() {
-                $("#tabelMasuk").toggle();
-            });
-            $("#showKeluar").click(function() {
-                $("#tabelKeluar").toggle();
-            });
-        });
-    </script>
-@endsection
+</html>
