@@ -21,84 +21,40 @@
                 <div class="col-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Tambah Kirim Customer</h3>
+                            <h3 class="card-title" id="ncrc_title">Tambah Kirim Ke Customer</h3>
                             <div class="card-tools">
-
+                                <div class="btn btn-light" id="showMasuk">Return Dari Customer</div>
+                                <div class="btn btn-secondary" id="showKeluar" style="display: none">Kirim Ke Customer
+                                </div>
                             </div>
                         </div>
+                        <div id="to_customer">
+                            <form action="{{ route('ncr_customer.store') }}" method="post">
+                                @csrf
 
-                        <form action="{{ route('ncr_customer.store') }}" method="post">
-                            @csrf
+                                @include('components.ncr_customer_form')
 
-                            @include('components.ncr_customer_form')
+                                <div class="card-footer ">
+                                    <button type="submit" class="btn btn-primary float-right">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
 
-                            <div class="card-footer ">
-                                <button type="submit" class="btn btn-primary float-right">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- /.card -->
-            </div>
-        </div>
-        {{-- <div class="row">
-            <div class="col-12">
-                <div class="card card-secondary">
-                    <div class="card-header">
-                        <h3 class="card-title">Hari Ini</h3>
-                        <div class="card-tools">
+                        <div id="from_customer" style="display: none">
+                            <form action="{{ route('ncr_customer_return.store') }}" method="post">
+                                @csrf
+
+                                @include('components.ncr_customer_return_form')
+
+                                <div class="card-footer ">
+                                    <button type="submit" class="btn btn-primary float-right">Simpan</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="tableSearch" class="table table-bordered table-hover">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Barang & No. Lot</th>
-                                    <th>Jumlah</th>
-                                    <th>Satuan</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $no = 1;
-                                @endphp
-                                @foreach ($data as $item)
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>{{ $item->no_po }}</td>
-                                        <td>
-                                            <a href="{{ route('po.edit', $item->id) }}" class="btn btn-success">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <div class="btn btn-danger delete-modal" data-toggle="modal"
-                                                data-target="#modal-delete-user" data-id="{{ $item->id }}"
-                                                data-name="{{ $item->no_po }}"><i class="fa fa-trash"></i>
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                    <!-- /.card -->
                 </div>
             </div>
-        </div> --}}
         </div>
     </section>
     {{-- Delete Modal --}}
@@ -110,4 +66,22 @@
 @endsection
 @section('scripts')
     @include('scripts.ncrc_create')
+    <script>
+        $(document).ready(function() {
+            $("#showMasuk").click(function() {
+                $("#showKeluar").toggle();
+                $("#showMasuk").toggle();
+                $("#to_customer").toggle();
+                $("#from_customer").toggle();
+                $("#ncrc_title").text("Tambah Return Dari Customer");
+            });
+            $("#showKeluar").click(function() {
+                $("#showKeluar").toggle();
+                $("#showMasuk").toggle();
+                $("#to_customer").toggle();
+                $("#from_customer").toggle();
+                $("#ncrc_title").text("Tambah Kirim Ke Customer");
+            });
+        });
+    </script>
 @endsection

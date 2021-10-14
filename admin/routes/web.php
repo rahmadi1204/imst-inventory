@@ -127,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/ncr_customer', [NcrCustomerController::class, 'index'])->name('ncr_customer');
         Route::get('/ncr_customer/add', [NcrCustomerController::class, 'create'])->name('ncr_customer.create');
         Route::post('/ncr_customer/add', [NcrCustomerController::class, 'store'])->name('ncr_customer.store');
+        Route::post('/ncr_customer/add_return', [NcrCustomerController::class, 'storeCustomer'])->name('ncr_customer_return.store');
         Route::get('/ncr_customer/update/{po:id}', [NcrCustomerController::class, 'edit'])->name('ncr_customer.edit');
         Route::post('/ncr_customer/update/{po:id}', [NcrCustomerController::class, 'update'])->name('ncr_customer.update');
         Route::post('/ncr_customer/delete', [NcrCustomerController::class, 'destroy'])->name('ncr_customer.destroy');

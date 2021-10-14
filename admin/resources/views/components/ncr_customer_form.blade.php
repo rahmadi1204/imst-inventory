@@ -12,11 +12,11 @@
         </div>
         <div class="form-group col">
             <label for="no_ref">No. Referensi</label>
-            <input name="no_ref" id="no_ref" class="form-control">
+            <input name="no_ref" class="form-control" required>
         </div>
         <div class="form-group col">
             <label for="name_warehouse">Gudang</label>
-            <select name="name_warehouse" id="name_warehouse" class="form-control custom-select">
+            <select name="name_warehouse" id="name_warehouse" class="form-control custom-select" required>
                 <option selected>Pilih</option>
                 @foreach ($warehouse as $item)
                     @if (isset($ncrv))
@@ -42,7 +42,7 @@
     <div class="row">
         <div class="form-group col">
             <label for="name_customer">Customer</label>
-            <select name="name_customer" id="name_customer" class="form-control custom-select">
+            <select name="name_customer" id="name_customer" class="form-control custom-select" required>
                 <option selected>Pilih</option>
                 @foreach ($customer as $item)
                     @if (isset($ncrv))
@@ -82,7 +82,7 @@
         </thead>
         <tr>
             <td>
-                <select name="code_product[0]" id="code_product0" class="form-control">
+                <select name="code_product[0]" id="code_product0" class="form-control" required>
                     <option value="" selected disabled>Pilih</option>
                     @foreach ($product as $item)
                         <option value="{{ $item->id }}" type="{{ $item->type_product }}"

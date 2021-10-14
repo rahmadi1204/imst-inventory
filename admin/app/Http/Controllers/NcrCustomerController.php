@@ -56,10 +56,21 @@ class NcrcustomerController extends Controller
         $po = Po::all();
         $unit = Unit::all();
         $currency = Currency::orderBy('name')->get();
+        $codeNcrc = DB::table('ncr_customers')
+            ->join('customers', 'customers.id', '=', 'ncr_customers.customer_id')
+            ->where('type_ncrc', '=', 0)
+            ->get([
+                'customers.id',
+                'customers.name_customer',
+                'customers.address_customer',
+                'ncr_customers.no_ref',
+                'ncr_customers.code_po',
+            ]);
         return view('ncr_customer.ncrcustomer_create', [
             'title' => 'Data NCR Customer',
             'po' => $po,
             'unit' => $unit,
+            'codeNcrc' => $codeNcrc,
             'currency' => $currency,
             'typeProduct' => $typeProduct,
             'customer' => $customer,
@@ -128,6 +139,65 @@ class NcrcustomerController extends Controller
                     'to' =>  $request->name_warehouse,
                     'from' =>  $request->name_customer,
                     'qty_product' =>  -$request->qty_product[$i],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+            DB::commit();
+            // dd('ok');
+            return redirect()->route('ncr_customer')->with('Ok', "Data Tersimpan");
+        } catch (\Throwable $th) {
+            DB::rollback();
+            // dd('fail');
+            return redirect()->route('ncr_customer')->with('Fail', "Data Tidak Tersimpan");
+        }
+    }
+
+    public function storeCustomer(Request $request)
+    {
+        // dd($request);
+
+        $count = count($request->code_product);
+        $code = date('ymdhis');
+
+        DB::beginTransaction();
+        try {
+
+            NcrCustomer::insert([
+                'code_po' => null,
+                'code_ncrc' => $code,
+                'date_ncrc' => $request->date_ncrc,
+                'no_ref' => $request->no_ref,
+                'type_ncrc' => 1,
+                'warehouse_id' => $request->name_warehouse,
+                'customer_id' =>  $request->code_customer,
+                'way_transport' =>  $request->way_transport,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            for ($i = 0; $i < $count; $i++) {
+                NcrCustomerProduct::create([
+                    'code_po' => null,
+                    'type_ncrc' => 1,
+                    'code_ncrc' => $code,
+                    'code_ncrc_product' => $code . '-' . $request->code_product[$i],
+                    'product_id' => $request->code_product[$i],
+                    'qty_product' => $request->qty_product[$i],
+                    'unit_product' => $request->unit_product[$i],
+                ]);
+                HistoryProduct::create([
+                    'code_po' => null,
+                    'code_ncrc' => $code,
+                    'code_po_product' => null,
+                    'code_ncrc_product' => $code . '-' . $request->code_product[$i],
+                    'product_id' => $request->code_product[$i],
+                    'unit_product' => $request->unit_product[$i],
+                    'product_pabean' => 0,
+                    'date_product' =>  $request->date_ncrc,
+                    'type_history' =>  3,
+                    'to' =>  $request->name_warehouse,
+                    'from' =>  $request->code_customer,
+                    'qty_product' =>  $request->qty_product[$i],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

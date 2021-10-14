@@ -43,10 +43,7 @@
         $("#type_product2" + 0).val(type);
 
     });
-</script>
 
-
-<script type="text/javascript">
     let j = 0;
     $("#dynamic-pr").click(function() {
         ++j;

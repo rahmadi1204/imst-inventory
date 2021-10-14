@@ -51,7 +51,7 @@ class ReportDocumentController extends Controller
         $sumMasuk  = DB::table('history_products')
             ->selectRaw('history_products.product_id, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
             ->groupBy('history_products.product_id')
-            ->where('type_history', '=', 1)
+            ->where('type_history', '>', 0)
             ->get();
         // ->pluck('qty_product', 'code_product');
         // dd($sumMasuk);
@@ -105,7 +105,7 @@ class ReportDocumentController extends Controller
         $sumKeluar  = DB::table('history_products')
             ->selectRaw('history_products.product_id, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
             ->groupBy('product_id')
-            ->where('type_history', '<', 1)
+            ->where('type_history', '<', 0)
             ->get();
         // ->pluck('qty_product', 'code_product');
         // dd($sumKeluar);
