@@ -186,6 +186,7 @@
     @include('scripts.delete_modal')
     @include('scripts.form_jquery')
     @include('scripts.datatable')
+     @include('scripts.clock')
     @yield('scripts')
     <x-alert></x-alert>
 </body>

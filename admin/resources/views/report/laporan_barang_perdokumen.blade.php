@@ -12,6 +12,11 @@
                         <div class="card-header">
                             <div class="col-12">
                                 <div class="d-flex justify-content-between">
+                                    @php
+                                        $uri_path = $_SERVER['REQUEST_URI'];
+                                        $uri_parts = explode('/', $uri_path);
+                                        $request_url = end($uri_parts);
+                                    @endphp
                                     <form action="{{ route('report_document.filter') }}" method="get">
 
                                         <div class="form-group">
@@ -37,7 +42,6 @@
                                         <!-- /.input group -->
                                     </form>
                                     <form action="{{ route('report_document.periode') }}" method="get">
-
                                         <div class="form-group ml-3">
                                             <label>
                                                 @if (isset($titlePeriode))
@@ -52,7 +56,7 @@
                                                         <i class="far fa-calendar-alt"></i>
                                                     </span>
                                                 </div>
-                                                <select name="periode" id="periode" class="form-control">
+                                                <select name="filter" id="periode" class="form-control">
                                                     <option value="" selected disabled>Pilih</option>
                                                     <option value="1">Periode I (Jan - Apr)</option>
                                                     <option value="2">Periode II (Mei - Ags)</option>
@@ -75,15 +79,15 @@
                                     <div class="input-group">
                                         <div class="btn btn-primary" id="showMasuk">Tampilkan Data Masuk</div>
                                         <div class="btn btn-warning ml-3" id="showKeluar">Tampilkan Data Keluar</div>
-                                        {{-- <a href="{{ route('report_document.pdf') }}"
-                                            class="btn btn-danger ml-3" id="pdf"><i class="fa fa-print"></i></a> --}}
+                                        <a href="{{ route('report_document.pdf', $request_url) }}" target="_blank"
+                                            class="btn btn-danger ml-3" id="pdf"><i class="fa fa-print"></i></a>
                                         <a href="{{ route('report_document') }}" class="btn btn-warning ml-3"
                                             id="refresh"><i class="fa fa-sync"></i></a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 mb-5" id="tabelMasuk" style="display: none">
-                                <table id="masuk" class="table table-bordered table-hover nowrap">
+                                <table id="masuk" class="table table-bordered table-hover nowrap" style="width: 100%">
                                     <thead class="thead-light">
                                         <tr>
                                             <th class="text-center bg-primary"></th>
@@ -97,7 +101,7 @@
                                             <th>TGL MASUK</th>
                                             <th>KODE BARANG</th>
                                             <th>SERI BARANG</th>
-                                            <th>NAMA BARANG</th>
+                                            <th style="width: 300px">NAMA BARANG</th>
                                             <th>SATUAN</th>
                                             <th>JUMLAH</th>
                                             <th>NILAI PABEAN</th>

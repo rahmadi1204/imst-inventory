@@ -26,6 +26,7 @@
                                         <th>No PO Vendor</th>
                                         <th>Project</th>
                                         <th>Tanggal</th>
+                                        <th>Latest</th>
                                         <th>Nama Vendor</th>
                                         <th>Alamat Vendor</th>
                                         <th>Alamat Pengiriman</th>
@@ -36,7 +37,6 @@
                                         <th>Mata Uang</th>
                                         <th>Satuan Harga</th>
                                         <th>Jumlah</th>
-                                        <th>Latest</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -51,6 +51,7 @@
                                             <td>{{ $item->no_po }}</td>
                                             <td>{{ $item->project }}</td>
                                             <td>{{ date('d F Y', strtotime($item->date_po)) }}</td>
+                                            <td>{{ date('d F Y', strtotime($item->latest)) }}</td>
                                             <td>{{ $item->name_supplier }}</td>
                                             <td>{{ $item->address_supplier }}</td>
                                             <td>{{ $item->name_warehouse }}</td>
@@ -61,7 +62,6 @@
                                             <td>{{ $item->currency }}</td>
                                             <td>{{ number_format($item->unit_price, 3, ',', '.') }} </td>
                                             <td>{{ number_format($item->total_amount, 3, ',', '.') }}</td>
-                                            <td>{{ $item->latest }}</td>
                                             <td>
                                                 @if ($item->qty_recived == $item->qty_product)
                                                     <span class="btn btn-success">

@@ -212,6 +212,49 @@ class NcrcustomerController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $customer = Customer::all();
+        $warehouse = Warehouse::all();
+        $typeProduct = TypeProduct::all();
+        $product = MasterProduct::all();
+        $po = Po::all();
+        $unit = Unit::all();
+        $currency = Currency::orderBy('name')->get();
+        $codeNcrc = DB::table('ncr_customers')
+            ->join('customers', 'customers.id', '=', 'ncr_customers.customer_id')
+            ->where('type_ncrc', '=', 0)
+            ->get([
+                'customers.id',
+                'customers.name_customer',
+                'customers.address_customer',
+                'ncr_customers.no_ref',
+                'ncr_customers.code_po',
+            ]);
+        $data = NcrCustomer::where('code_ncrc', $id)
+            ->join('warehouses', 'warehouses.id', '=', 'ncr_customers.warehouse_id')
+            ->join('customers', 'customers.id', '=', 'ncr_customers.customer_id')
+            ->get();
+        // dd($data);
+        $id = NcrCustomer::where('code_ncrc', $id)->value('code_ncrc');
+        return view('ncr_customer.ncrcustomer_edit', [
+            'title' => 'Data NCR Customer',
+            'po' => $po,
+            'data' => $data,
+            'id' => $id,
+            'unit' => $unit,
+            'codeNcrc' => $codeNcrc,
+            'currency' => $currency,
+            'typeProduct' => $typeProduct,
+            'customer' => $customer,
+            'product' => $product,
+            'warehouse' => $warehouse,
+            'transaksiOpen' => "active",
+            'transaksiOpen' => "menu-open",
+            'transaksiActive' => "active",
+            'NcrCustActive' => "active",
+        ]);
+    }
     public function destroy(Request $request)
     {
         $id = $request->id;

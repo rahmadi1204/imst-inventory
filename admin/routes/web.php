@@ -22,6 +22,8 @@ use App\Http\Controllers\Data\DataProductController;
 use App\Http\Controllers\Data\MasterProductController;
 use App\Http\Controllers\Data\HistoryProductController;
 use App\Http\Controllers\MutationDocumentController;
+use App\Http\Controllers\poProductController;
+use App\Models\PoProduct;
 
 // Route Buelum Login
 Route::middleware(['guest'])->group(function () {
@@ -110,6 +112,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/po/update/{po:id}', [PoController::class, 'update'])->name('po.update');
         Route::post('/po/delete', [PoController::class, 'destroy'])->name('po.destroy');
 
+        #poProduct
+        Route::post('/po/update/product', [poProductController::class, 'update'])->name('poProduct.update');
+        Route::post('/po/delete/product/{id}', [poProductController::class, 'destroy'])->name('poProduct.destroy');
+
         #pib
         Route::get('/pib', [PibController::class, 'index'])->name('pib');
         Route::get('/pib/add', [PibController::class, 'create'])->name('pib.create');
@@ -143,8 +149,8 @@ Route::middleware(['auth'])->group(function () {
 
         #report
         #barang perdokumen
-        Route::get('/report_document', [ReportDocumentController::class, 'index'])->name('report_document');
-        // Route::get('/report_document/{id}', [ReportDocumentController::class, 'createPDF'])->name('report_document.pdf');
+        Route::get('/report_document/all', [ReportDocumentController::class, 'index'])->name('report_document');
+        Route::get('/report_document/pdf/{id}', [ReportDocumentController::class, 'createPDF'])->name('report_document.pdf');
         Route::get('/report_document/filter', [ReportDocumentController::class, 'docFilter'])->name('report_document.filter');
         Route::get('/report_document/periode', [ReportDocumentController::class, 'docPeriode'])->name('report_document.periode');
 

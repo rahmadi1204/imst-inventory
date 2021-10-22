@@ -263,7 +263,7 @@ class ReportDocumentController extends Controller
     }
     public function docPeriode()
     {
-        $periode = request('periode');
+        $periode = request('filter');
         if ($periode == 1) {
             $date1 = date('Y') . "-01-01";
             $date2 = date('Y') . "-04-30";
@@ -346,6 +346,143 @@ class ReportDocumentController extends Controller
             'reportActive' => 'active',
             'reportDocument' => 'active',
         ]);
+    }
+    public function createPDF($id)
+    {
+        $filter = request('filter');
+        if ($filter < 4) {
+            if ($filter == 1) {
+                $date1 = date('Y') . "-01-01";
+                $date2 = date('Y') . "-04-30";
+                $titlefilter =  "Bulan Januari Sampai April";
+            } elseif ($filter == 12) {
+                $date1 = date('Y') . "-05-01";
+                $date2 = date('Y') . "-08-31";
+                $titlePeriode =  "Bulan Mei Sampai Agustus";
+            } else {
+                $date1 = date('Y') . "-09-01";
+                $date2 = date('Y') . "-12-31";
+                $titlePeriode =  "Bulan September Sampai Desember";
+            }
+            $dataMasuk = null;
+            $dataKeluar = null;
+            $masuk =  $this->masuk($date1, $date2);
+            $keluar = $this->keluar($date1, $date2);
+            // dd($masuk);
+            $sumMasuk  = DB::table('history_products')
+                ->whereBetween('history_products.date_product', [$date1, $date2])
+                ->selectRaw('history_products.product_id, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
+                ->groupBy('history_products.product_id')
+                ->where('type_history', '>', 0)
+                ->get();
+
+            if ($sumMasuk != "[]") {
+                $dataMasuk =  $this->dataMasuk($sumMasuk);
+            }
+            $sumKeluar  = DB::table('history_products')
+                ->whereBetween('history_products.date_product', [$date1, $date2])
+                ->selectRaw('history_products.product_id, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
+                ->groupBy('product_id')
+                ->where('type_history', '<', 0)
+                ->get();
+
+            if ($sumKeluar != "[]") {
+                $dataKeluar =  $this->dataKeluar($sumKeluar);
+            }
+            if ($sumMasuk && $sumKeluar == "[]") {
+                DB::table('report_documents')
+                    ->update(
+                        [
+                            'qty_product_in' => 0,
+                            'qty_product_out' => 0,
+                            'unit_product_out' => null,
+                            'product_pabean_in' => 0,
+                            'product_pabean_out' => 0,
+                            'updated_at' => now(),
+                        ]
+                    );
+            }
+            $data = DB::table('report_documents')
+                ->join('master_products', 'master_products.id', '=', 'report_documents.product_id')
+                ->get([
+                    'master_products.code_product',
+                    'master_products.type_product',
+                    'master_products.name_product',
+                    'report_documents.qty_product_in',
+                    'report_documents.qty_product_out',
+                    'report_documents.unit_product_in',
+                    'report_documents.unit_product_out',
+                    'report_documents.product_pabean_in',
+                    'report_documents.product_pabean_out',
+                    'report_documents.updated_at',
+                ]);
+        } else {
+            $date =  str_replace(' ', '', $filter);
+            $date1 = mb_substr($date, 0, 10);
+            $date2 = mb_substr($date, 11, 10);
+            $dataMasuk = null;
+            $dataKeluar = null;
+            $masuk =  $this->masuk($date1, $date2);
+            $keluar = $this->keluar($date1, $date2);
+            $range = "Tanggal " . date('d F Y', strtotime($date1)) . " Sampai " . date('d F Y', strtotime($date2));
+            // dd($masuk);
+            $sumMasuk  = DB::table('history_products')
+                ->whereBetween('history_products.date_product', [$date1, $date2])
+                ->selectRaw('history_products.product_id, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
+                ->groupBy('history_products.product_id')
+                ->where('type_history', '>', 0)
+                ->get();
+
+            if ($sumMasuk != "[]") {
+                $dataMasuk =  $this->dataMasuk($sumMasuk);
+            }
+            $sumKeluar  = DB::table('history_products')
+                ->whereBetween('history_products.date_product', [$date1, $date2])
+                ->selectRaw('history_products.product_id, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
+                ->groupBy('product_id')
+                ->where('type_history', '<', 0)
+                ->get();
+
+            if ($sumKeluar != "[]") {
+                $dataKeluar =  $this->dataKeluar($sumKeluar);
+            }
+            if ($sumMasuk && $sumKeluar == "[]") {
+                DB::table('report_documents')
+                    ->update(
+                        [
+                            'qty_product_in' => 0,
+                            'qty_product_out' => 0,
+                            'unit_product_out' => null,
+                            'product_pabean_in' => 0,
+                            'product_pabean_out' => 0,
+                            'updated_at' => now(),
+                        ]
+                    );
+            }
+            $data = DB::table('report_documents')
+                ->join('master_products', 'master_products.id', '=', 'report_documents.product_id')
+                ->get([
+                    'master_products.code_product',
+                    'master_products.type_product',
+                    'master_products.name_product',
+                    'report_documents.qty_product_in',
+                    'report_documents.qty_product_out',
+                    'report_documents.unit_product_in',
+                    'report_documents.unit_product_out',
+                    'report_documents.product_pabean_in',
+                    'report_documents.product_pabean_out',
+                    'report_documents.updated_at',
+                ]);
+
+            // dd($data);
+        }
+        // dd($masuk);
+        view()->share('masuk', $masuk);
+        view()->share('keluar', $keluar);
+        view()->share('data', $data);
+        $pdf = PDF::loadView('pdf.report_document_pdf', [$masuk, $keluar, $data])->setPaper('a4', 'landscape');;
+        // download PDF file with download method
+        return $pdf->stream();
     }
     public function masuk($date1, $date2)
     {

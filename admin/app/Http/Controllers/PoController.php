@@ -91,11 +91,9 @@ class PoController extends Controller
             'currency' => $currency,
             'typeProduct' => $typeProduct,
             'title' => 'Data PO',
-            'menuOpen' => "menu-open",
-            'menuActive' => "active",
-            'PoPib' => "menu-open",
-            'PoPibActive' => "active",
-            'PoActive' => "active",
+            'transaksiOpen' => "menu-open",
+            'transaksiActive' => "active",
+            'poActive' => "active",
         ]);
     }
     public function store(Request $request)
@@ -123,7 +121,6 @@ class PoController extends Controller
         try {
             for ($i = 0; $i < $count; $i++) {
                 PoProduct::insert([
-                    'no_po' => $request->no_po,
                     'code_po' => $code_po,
                     'code_po_product' => $code_po . '-' . $request->code_product[$i],
                     'product_id' => $request->code_product[$i],
@@ -134,6 +131,7 @@ class PoController extends Controller
                     'unit_price' => $request->unit_price[$i],
                     'total_amount' => $request->total_amount[$i],
                     'created_at' => now(),
+                    'updated_at' => now(),
                 ]);
                 $amount = $request->total_amount[$i];
                 $amount++;
@@ -149,6 +147,95 @@ class PoController extends Controller
                 'currency' => $request->currency,
                 'total_amount_po' => $amount,
                 'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('po')->with('Ok', 'Data Disimpan');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            dd('fail');
+            return redirect()->route('po')->with('Fail', 'Data Tidak Disimpan');
+        }
+    }
+    public function edit($id)
+    {
+        // dd($id);
+        $code = DB::table('pos')->where('id', '=', $id)->value('code_po');
+        $po = Po::find($id);
+        $poSupplier = PO::find($id)->supplier;
+        $poWarehouse = PO::find($id)->warehouse;
+        $poProduct = DB::table('po_products')->where('code_po', '=', $code)
+            ->join('master_products', 'master_products.id', '=', 'po_products.product_id')->get();
+        // dd($poProduct);
+        $supplier = Supplier::all();
+        $typeProduct = TypeProduct::all();
+        $warehouse = Warehouse::all();
+        $currency = Currency::all();
+        return view(
+            'master_data.po.po_edit',
+            [
+                'po' => $po,
+                'poSupplier' => $poSupplier,
+                'poWarehouse' => $poWarehouse,
+                'product' => $poProduct,
+                'typeProduct' => $typeProduct,
+                'supplier' => $supplier,
+                'tujuan' => $warehouse,
+                'currency' => $currency,
+                'title' => 'Edit Data Pre Order',
+                'transaksiOpen' => "menu-open",
+                'transaksiActive' => "active",
+                'poActive' => "active",
+            ]
+        );
+    }
+    public function update(Request $request, $id)
+    {
+        // dd($id);
+        DB::beginTransaction();
+        $code_po = $id;
+        try {
+            $amount = 0;
+            if (isset($request->code_product)) {
+                $count = count($request->code_product);
+                for ($i = 0; $i < $count; $i++) {
+                    PoProduct::insert([
+                        'code_po' => $code_po,
+                        'code_po_product' => $code_po . '-' . $request->code_product[$i],
+                        'product_id' => $request->code_product[$i],
+                        'description' => $request->description[$i],
+                        'latest' => $request->latest[$i],
+                        'qty_product' => $request->qty_product[$i],
+                        'qty_recived' => 0,
+                        'unit_price' => $request->unit_price[$i],
+                        'total_amount' => $request->total_amount[$i],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    $amount = $request->total_amount[$i];
+                    $amount++;
+                }
+            }
+            $cek = DB::table('po_products')
+                ->where('code_po', '=', $code_po)
+                ->selectRaw('po_products.code_po, sum(total_amount) as total_amount')
+                ->groupBy('code_po')
+                ->first('total_amount');
+            // dd($cek);
+            $amount1 = (float)$cek->total_amount;
+            Po::where('code_po', '=', $code_po)->update([
+                'no_po' => $request->no_po,
+                'project' => $request->project,
+                'date_po' => $request->date_po,
+                'supplier_id' => $request->name_supplier,
+                'warehouse_id' => $request->name_warehouse,
+                'currency' => $request->currency,
+                'total_amount_po' => $amount + $amount1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             DB::commit();

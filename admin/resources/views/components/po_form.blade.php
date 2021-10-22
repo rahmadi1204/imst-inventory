@@ -49,7 +49,7 @@
         <div class="form-group col">
             <label for="address_supplier">Alamat Vendor</label>
             <input name="address_supplier" type="text" class="form-control"
-                value="{{ $po->address_supplier ?? old('address_supplier') }}" id="address_supplier" required
+                value="{{ $poSupplier->address_supplier ?? old('address_supplier') }}" id="address_supplier" required
                 readonly>
         </div>
     </div>
@@ -78,7 +78,8 @@
                         @endif
                     @endforeach
                 </select>
-                <input type="text" name="address_warehouse" class="form-control" id="address_warehouse" readonly>
+                <input type="text" name="address_warehouse" class="form-control" id="address_warehouse" @isset($po)
+                    value="{{ $poWarehouse->address_warehouse }}" @endisset readonly>
             </div>
         </div>
     </div>
@@ -120,50 +121,52 @@
                 <th></th>
             </tr>
         </thead>
-        <tr>
-            <td>
-                <select name="code_product[0]" id="code_product0" class="form-control">
-                    <option value="" selected disabled>Pilih</option>
-                    @foreach ($product as $item)
-                        <option value="{{ $item->id }}" type="{{ $item->type_product }}"
-                            name="{{ $item->name_product }}">
-                            {{ $item->code_product }}
-                        </option>
-                    @endforeach
-                </select>
-            </td>
-            <td>
-                <div class="input-group">
-                    <input type="text" name="description[0]" id="description0" class="form-control">
-                </div>
-            </td>
+        <tbody>
+            <tr>
+                <td>
+                    <select name="code_product[0]" id="code_product0" class="form-control">
+                        <option value="" selected disabled>Pilih</option>
+                        @foreach ($product as $item)
+                            <option value="{{ $item->id }}" type="{{ $item->type_product }}"
+                                name="{{ $item->name_product }}">
+                                {{ $item->code_product }}
+                            </option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input type="text" name="description[0]" id="description0" class="form-control">
+                    </div>
+                </td>
 
-            <td><input type="number" name="qty_product[0]" id="qty_product0" class="form-control" />
-            </td>
-            <td>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text curr">$</span>
+                <td><input type="number" name="qty_product[0]" id="qty_product0" class="form-control" />
+                </td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text curr">$</span>
+                        </div>
+                        <input name="unit_price[0]" type="number" step="0.01" class="form-control" id="unit_price0"
+                            value="{{ $po->unit_price ?? old('unit_price') }}">
                     </div>
-                    <input name="unit_price[0]" type="number" step="0.01" class="form-control" id="unit_price0"
-                        value="{{ $po->unit_price ?? old('unit_price') }}" required>
-                </div>
-            </td>
-            <td>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text curr">$</span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text curr">$</span>
+                        </div>
+                        <input name="total_amount[0]" type="number" step="0.01" class="form-control mata-uang"
+                            id="total_amount0" value="{{ $po->total_amount ?? old('total_amount') }}" readonly>
                     </div>
-                    <input name="total_amount[0]" type="number" step="0.01" class="form-control mata-uang"
-                        id="total_amount0" value="{{ $po->total_amount ?? old('total_amount') }}" required readonly>
-                </div>
-            </td>
-            <td>
-                <input type="text" name="latest[0]" id="latest0" class="form-control" data-inputmask-alias="datetime"
-                    data-inputmask-inputformat="yyyy/mm/dd" data-mask>
-            </td>
-            <td><button type="button" name="add" id="dynamic-pr" class="btn btn-outline-primary"><i
-                        class="fa fa-plus"></i></button></td>
-        </tr>
+                </td>
+                <td>
+                    <input type="text" name="latest[0]" id="latest0" class="form-control"
+                        data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy/mm/dd" data-mask>
+                </td>
+                <td><button type="button" name="add" id="dynamic-pr" class="btn btn-outline-primary"><i
+                            class="fa fa-plus"></i></button></td>
+            </tr>
+        </tbody>
     </table>
 </div>

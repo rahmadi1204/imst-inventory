@@ -25,4 +25,16 @@ class Po extends Model
         'total_amount',
         'latest',
     ];
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+    public function poProduct()
+    {
+        return $this->hasMany(PoProduct::class, 'code_po');
+    }
 }
