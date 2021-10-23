@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Master\MasterProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -9,12 +10,11 @@ class AppController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->role == 'dev') {
-            return view('dev.dashboard');
-        } elseif (Auth::user()->role == 'admin') {
-            return view('admin.dashboard');
-        } else {
-            return view('guest.dashboard');
-        }
+        $countProduct = MasterProduct::count('code_product');
+        // dd($countProduct);
+        return view('admin.dashboard', [
+            'dashboardActive' => "active",
+            'countProduct' => $countProduct,
+        ]);
     }
 }

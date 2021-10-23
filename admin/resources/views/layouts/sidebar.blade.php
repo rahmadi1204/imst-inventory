@@ -26,8 +26,8 @@
 
         <!-- SidebarSearch Form -->
         <div class="form-inline">
-             <div class="input-group" data-widget="sidebar-search">
-                <label class="form-control form-control-sidebar text-center">{{ date('D, d F Y')}}</label>
+            <div class="input-group" data-widget="sidebar-search">
+                <label class="form-control form-control-sidebar text-center">{{ date('D, d F Y') }}</label>
             </div>
             <div class="input-group" data-widget="sidebar-search">
                 <label id="clock" class="form-control form-control-sidebar text-center"></label>
@@ -46,7 +46,7 @@
        with font-awesome or any other icon font library -->
 
                 <li class="nav-item">
-                    <a href="{{ route('home') }}" class="nav-link {{ $mutasiActive ?? '' }}">
+                    <a href="{{ route('home') }}" class="nav-link {{ $dashboardActive ?? '' }}">
                         <i class="nav-icon fa fa-desktop"></i>
                         <p>
                             Dashboard
