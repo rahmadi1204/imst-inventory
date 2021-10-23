@@ -4,16 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Currency;
 use App\Models\Po;
-use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\PoProduct;
 use App\Models\Warehouse;
-use App\Models\PibProduct;
 use App\Models\TypeProduct;
-use App\Models\Data\Product;
 use Illuminate\Http\Request;
-use App\Models\HistoryProduct;
-use App\Models\RecivedProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\MasterProduct;
 use App\Models\NcrCustomer;
@@ -167,9 +162,9 @@ class PoController extends Controller
         $po = Po::find($id);
         $poSupplier = PO::find($id)->supplier;
         $poWarehouse = PO::find($id)->warehouse;
-        $poProduct = DB::table('po_products')->where('code_po', '=', $code)
-            ->join('master_products', 'master_products.id', '=', 'po_products.product_id')->get();
+        $poProduct = PoProduct::with('product')->where('code_po', $code)->get();
         // dd($poProduct);
+        $product = MasterProduct::all();
         $supplier = Supplier::all();
         $typeProduct = TypeProduct::all();
         $warehouse = Warehouse::all();
@@ -180,11 +175,12 @@ class PoController extends Controller
                 'po' => $po,
                 'poSupplier' => $poSupplier,
                 'poWarehouse' => $poWarehouse,
-                'product' => $poProduct,
+                'poProduct' => $poProduct,
                 'typeProduct' => $typeProduct,
                 'supplier' => $supplier,
                 'tujuan' => $warehouse,
                 'currency' => $currency,
+                'product' => $product,
                 'title' => 'Edit Data Pre Order',
                 'transaksiOpen' => "menu-open",
                 'transaksiActive' => "active",
@@ -202,6 +198,10 @@ class PoController extends Controller
             if (isset($request->code_product)) {
                 $count = count($request->code_product);
                 for ($i = 0; $i < $count; $i++) {
+                    $cek = PoProduct::where('code_po_product', $code_po . '-' . $request->code_product[$i],)->first();
+                    if ($cek != null) {
+                        return redirect()->back()->with('Fail', 'Data Produk Sudah Ada');
+                    }
                     PoProduct::insert([
                         'code_po' => $code_po,
                         'code_po_product' => $code_po . '-' . $request->code_product[$i],
@@ -244,7 +244,7 @@ class PoController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollback();
-            dd('fail');
+            dd('gagal');
             return redirect()->route('po')->with('Fail', 'Data Tidak Disimpan');
         }
     }

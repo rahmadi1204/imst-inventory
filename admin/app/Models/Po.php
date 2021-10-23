@@ -33,8 +33,4 @@ class Po extends Model
     {
         return $this->belongsTo(Warehouse::class);
     }
-    public function poProduct()
-    {
-        return $this->hasMany(PoProduct::class, 'code_po');
-    }
 }

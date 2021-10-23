@@ -68,18 +68,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($product as $item)
+                                        @foreach ($poProduct as $item)
                                             <tr>
-                                                <td>{{ $item->code_product }}</td>
-                                                <td>{{ $item->type_product }} - {{ $item->name_product }}</td>
+                                                <td>{{ $item->product->code_product }}</td>
+                                                <td>{{ $item->product->type_product }} - {{ $item->product->name_product }}
+                                                </td>
                                                 <td>{{ $item->qty_product }}</td>
                                                 <td>{{ $item->unit_price }}</td>
                                                 <td>{{ $item->total_amount }}</td>
                                                 <td>{{ date('d F Y', strtotime($item->latest)) }}</td>
-                                                <td> <a href="{{ route('poProduct.update', $item->code_po_product) }}"
-                                                        class="btn btn-success">
+                                                <td> <button data-toggle="modal" data-target="#modal-update"
+                                                        data-code="{{ $item->code_po_product }}"
+                                                        data-qty="{{ $item->qty_product }}"
+                                                        data-latest="{{ $item->latest }}"
+                                                        data-price="{{ $item->unit_price }}"
+                                                        class="btn btn-success update-modal">
                                                         <i class="fa fa-edit"></i>
-                                                    </a>
+                                                    </button>
                                                     <div class="btn btn-danger delete-modal" data-toggle="modal"
                                                         data-target="#modal-delete" data-id="{{ $item->code_po_product }}"
                                                         data-name="{{ $item->description }}"><i class="fa fa-trash"></i>
@@ -101,33 +106,34 @@
     {{-- Create Modal --}}
     <form action="{{ route('master.store') }}" method="post">
         @csrf
-        <div class="modal fade" id="modal-default">
+        @include('components.modal.master_create')
+        <!-- /.modal -->
+    </form>
+    <form action="{{ route('poProduct.update') }}" method="post">
+        @csrf
+        <div class="modal fade" id="modal-update">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Master Barang</h4>
+                        <h4 class="modal-title">Update Barang PO</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group col">
-                            <label for="type_product">Tipe Produk</label>
-                            <select name="type_product" class="form-control">
-                                <option selected>Pilih</option>
-                                @foreach ($typeProduct as $item)
-                                    <option value="{{ $item->type_product }}">
-                                        {{ $item->type_product }}</option>
-                                @endforeach
-                            </select>
+                            <label for="qty">Jumlah</label>
+                            <input name="code" type="hidden" id="code-update" class="form-control" required>
+                            <input name="qty" type="text" id="qty-update" class="form-control" required>
                         </div>
                         <div class="form-group col">
-                            <label for="code_product">Kode Produk</label>
-                            <input name="code_product" type="text" class="form-control" required>
+                            <label for="price">Harga</label>
+                            <input name="price" type="text" id="price-update" class="form-control" required>
                         </div>
                         <div class="form-group col">
-                            <label for="name_product">Nama Produk</label>
-                            <input name="name_product" type="text" class="form-control" required>
+                            <label for="latest">Latest Of Shipment</label>
+                            <input type="text" name="latest" id="latest-update" class="form-control"
+                                data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy/mm/dd" data-mask>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -139,9 +145,7 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal -->
     </form>
-
     {{-- Delete Modal --}}
     <form action="{{ route('poProduct.destroy', $po->id) }}" method="post">
         @csrf
@@ -150,4 +154,17 @@
 @endsection
 @section('scripts')
     @include('scripts.po_create')
+    <script>
+        $(document).on("click", ".update-modal", function() {
+            const updateCode = $(this).data('code');
+            const updateQty = $(this).data('qty');
+            const updateLatest = $(this).data('latest');
+            const updatePrice = $(this).data('price');
+            console.log(updatePrice);
+            $("#qty-update").val(updateQty);
+            $("#latest-update").val(updateLatest);
+            $("#code-update").val(updateCode);
+            $("#price-update").val(updatePrice);
+        });
+    </script>
 @endsection

@@ -113,8 +113,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/po/delete', [PoController::class, 'destroy'])->name('po.destroy');
 
         #poProduct
-        Route::post('/po/update/product', [poProductController::class, 'update'])->name('poProduct.update');
-        Route::post('/po/delete/product/{id}', [poProductController::class, 'destroy'])->name('poProduct.destroy');
+        Route::post('/po-product/update/', [poProductController::class, 'update'])->name('poProduct.update');
+        Route::post('/po-product/delete/{id}', [poProductController::class, 'destroy'])->name('poProduct.destroy');
 
         #pib
         Route::get('/pib', [PibController::class, 'index'])->name('pib');

@@ -13,10 +13,6 @@ class PoProduct extends Model
 
     public function product()
     {
-        return $this->belongsTo(MasterProduct::class);
-    }
-    public function po()
-    {
-        return $this->belongsToMany(Po::class, 'code_po');
+        return $this->belongsTo(MasterProduct::class, 'product_id', 'id');
     }
 }
