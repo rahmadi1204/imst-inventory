@@ -103,9 +103,26 @@
         </div>
     </section>
 
+    {{-- Update Modal --}}
+    <form action="{{ route('container.update') }}" method="post">
+        @csrf
+        @include('components.modal.update_container')
+    </form>
+    {{-- Update Modal --}}
+    <form action="{{ route('pib.product.update') }}" method="post">
+        @csrf
+        @include('components.modal.update_pib_product')
+    </form>
+
+    {{-- Delete Modal --}}
+    <form action="{{ route('container.destroy') }}" method="post">
+        @csrf
+        @include('components.delete_modal')
+    </form>
 @endsection
 @section('scripts')
     @include('scripts.pib_create')
     @include('scripts.pib_form')
-
+    @include('scripts.delete_modal')
+    @include('scripts.update_pib')
 @endsection

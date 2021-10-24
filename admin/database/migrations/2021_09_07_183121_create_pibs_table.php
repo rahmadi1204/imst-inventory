@@ -20,7 +20,6 @@ class CreatePibsTable extends Migration
             $table->string('office_pabean')->nullable();
             $table->string('no_approval')->unique();
             $table->string('code_po')->nullable();
-            $table->string('no_po')->nullable();
             $table->string('type_pib')->nullable();
             $table->string('type_import')->nullable();
             $table->string('payment_method')->nullable();

@@ -14,6 +14,7 @@
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <input type="hidden" name="id" id="data-target-delete-id">
+                <input type="hidden" name="code" id="data-target-delete-code">
                 <button type="submit" class="btn btn-danger">
                     <i class="fa fa-trash"></i> Hapus
                 </button>

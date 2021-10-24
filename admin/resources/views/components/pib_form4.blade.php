@@ -36,7 +36,7 @@
     <div class="btn btn-primary" onclick="stepper.next()">Next</div>
     <div class="btn btn-secondary" onclick="stepper.previous()">Kembali</div>
 
-    @isset($containers)
+    @isset($pib)
         <table class="table table-bordered table-hover nowrap mt-5">
             <thead class="thead-light">
                 <tr>
@@ -51,20 +51,25 @@
                 @php
                     $no = 1;
                 @endphp
-                @foreach ($containers as $item)
+                @foreach ($pib->pibContainer as $item)
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $item->no_container }}</td>
                         <td>{{ $item->size_container }}</td>
                         <td>{{ $item->type_container }}</td>
                         <td>
-                            <a href="{{ route('container.update', $item->id) }}" class=" btn btn-success">
+                            <div class=" btn btn-success update-modal" data-toggle="modal"
+                                data-target="#modal-update-container" data-id="{{ $item->id }}"
+                                data-no="{{ $item->no_container }}" data-type="{{ $item->type_container }}"
+                                data-size="{{ $item->size_container }}">
                                 <i class="fa fa-edit"></i>
-                            </a>
-                            <div class="btn btn-danger delete-modal" data-toggle="modal" data-target="#modal-delete-user"
-                                data-id="{{ $item->id }}" data-name="{{ $item->no_container }}"><i
-                                    class="fa fa-trash"></i>
                             </div>
+
+                            <div class="btn btn-danger delete-modal" data-toggle="modal" data-target="#modal-delete"
+                                id="delete-container" data-id="{{ $item->id }}" data-code="{{ $pib->code_pib }}"
+                                data-name="{{ $item->no_container }}"><i class="fa fa-trash"></i>
+                            </div>
+
                         </td>
                     </tr>
                 @endforeach

@@ -50,8 +50,8 @@
                                             <td>{{ $item->load_destination }}</td>
                                             <td>
                                                 <a href="{{ route('pib.edit', $item->no_approval) }}"
-                                                    class=" btn btn-info">
-                                                    <i class="fa fa-search"></i>
+                                                    class=" btn btn-success">
+                                                    <i class="fa fa-edit"></i>
                                                 </a>
                                                 <div class="btn btn-danger delete-modal" data-toggle="modal"
                                                     data-target="#modal-delete" data-id="{{ $item->code_pib }}"

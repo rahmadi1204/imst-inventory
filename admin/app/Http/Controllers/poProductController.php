@@ -13,10 +13,12 @@ class poProductController extends Controller
         $code = $request->code;
         $qty = $request->qty;
         $latest = $request->latest;
+        $price = $request->price;
         $total = $qty * $request->price;
         $update = PoProduct::where('code_po_product', $code)->update([
             'qty_product' => $qty,
             'latest' => $latest,
+            'unit_price' => $price,
             'total_amount' => $total,
         ]);
         if ($update) {

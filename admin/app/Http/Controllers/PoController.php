@@ -237,6 +237,10 @@ class PoController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            Pib::where('code_po', '=', $code_po)->update([
+                'supplier_id' => $request->name_supplier,
+                'seller_id' =>  $request->name_supplier,
+            ]);
 
             DB::commit();
 

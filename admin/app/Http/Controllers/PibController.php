@@ -119,7 +119,6 @@ class PibController extends Controller
             'office_pabean' => $request->office_pabean,
             'no_approval' => $request->no_approval,
             'code_po' => $request->code_po,
-            'no_po' => $request->no_po,
             'type_pib' => $request->type_pib,
             'type_import' => $request->type_import,
             'payment_method' => $request->payment_method,
@@ -326,41 +325,25 @@ class PibController extends Controller
         $po = Po::all();
         $unit = Unit::all();
         $currency = Currency::orderBy('name')->get();
-        $pib = DB::table('pibs')
-            ->join('pib_loads', function ($join) {
-                $join->on('pibs.code_pib', '=', 'pib_loads.code_pib');
-            })
-            ->join('pib_invoices', function ($join) {
-                $join->on('pibs.code_pib', '=', 'pib_invoices.code_pib');
-            })
-            ->join('suppliers', function ($join) {
-                $join->on('pibs.code_supplier', '=', 'suppliers.code_supplier');
-            })
-            ->join('pib_devies', function ($join) use ($id) {
-                $join->on('pibs.code_pib', '=', 'pib_devies.code_pib')
-                    ->where('pibs.no_approval', '=', $id);
-            })
+        // $pib = DB::table('pibs')
+        //     ->join('pib_loads', function ($join) {
+        //         $join->on('pibs.code_pib', '=', 'pib_loads.code_pib');
+        //     })
+        //     ->join('pib_invoices', function ($join) {
+        //         $join->on('pibs.code_pib', '=', 'pib_invoices.code_pib');
+        //     })
+        //     ->join('suppliers', function ($join) {
+        //         $join->on('pibs.supplier_id', '=', 'suppliers.id');
+        //     })
+        //     ->join('pib_devies', function ($join) use ($id) {
+        //         $join->on('pibs.code_pib', '=', 'pib_devies.code_pib')
+        //             ->where('pibs.no_approval', '=', $id);
+        //     })
+        //     ->first();
+        $pib = Pib::with(['po', 'supplier', 'importir', 'pibLoad', 'pibInvoice', 'pibContainer', 'pibProduct.master', 'pibDevy'])
             ->first();
-        // dd($pib);
-        $containers =  DB::table('pibs')
-            ->join('pib_containers', function ($join) use ($id) {
-                $join->on('pibs.code_pib', '=', 'pib_containers.code_pib')
-                    ->where('pibs.no_approval', '=', $id);
-            })
-            ->get();
-        $products =  DB::table('pibs')
-            ->join('pib_products', function ($join) {
-                $join->on('pibs.code_pib', '=', 'pib_products.code_pib');
-            })
-            ->join('master_products', function ($join) use ($id) {
-                $join->on('master_products.code_product', '=', 'pib_products.code_product')
-                    ->where('pibs.no_approval', '=', $id);
-            })
-            ->get();
-        return view('master_data.pib.pib_detail', [
+        return view('master_data.pib.pib_edit', [
             'pib' => $pib,
-            'containers' => $containers,
-            'products' => $products,
             'seller' => $seller,
             'currency' => $currency,
             'unit' => $unit,
@@ -397,13 +380,34 @@ class PibController extends Controller
         ]);
     }
 
-    public function updateContainer($id)
+    public function updateContainer(Request $request)
     {
-        # code...
+        // dd($request);
+        $id = $request->id;
+        $update = PibContainer::where('id', $id)->update([
+            'no_container' => $request->no_container,
+            'size_container' => $request->size_container,
+            'type_container' => $request->type_container,
+        ]);
+        if ($update) {
+            return redirect()->back()->with('Ok', 'Data  Container Diupdate');
+        } else {
+            return redirect()->back()->with('Fail', 'Data  Container Tidak Diupdate');
+        }
     }
-    public function deleteContaainer(Request $request)
+    public function destroyContainer(Request $request)
     {
-        # code...
+        $cek = count(PibContainer::where('code_pib', $request->code)->select('no_container')->get());
+        // dd($cek);
+        if ($cek <= 1) {
+            return redirect()->back()->with('Fail', 'Data Tidak Boleh Kosong');
+        }
+        $delete = PibContainer::find($request->id)->delete();
+        if ($delete) {
+            return redirect()->back()->with('Ok', 'Data  Container Dihapus');
+        } else {
+            return redirect()->back()->with('Fail', 'Data  Container Tidak Dihapus');
+        }
     }
 
     public function destroy(Request $request)
