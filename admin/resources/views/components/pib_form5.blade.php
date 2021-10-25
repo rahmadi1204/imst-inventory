@@ -170,7 +170,7 @@
                         <td>
                             <div class=" btn btn-success" data-toggle="modal" id="update-modal-product"
                                 data-target="#modal-update-product" data-id="{{ $item->master->id }}"
-                                data-code="{{ $item->master->code_product }}" data-pos="{{ $item->pos_product }}"
+                                data-code="{{ $item->code_pib_product }}" data-pos="{{ $item->pos_product }}"
                                 data-type="{{ $item->master->type_product }}"
                                 data-name="{{ $item->master->name_product }}" data-qty="{{ $item->qty_product }}"
                                 data-unit="{{ $item->unit_product }}" data-netto="{{ $item->netto_product }}"
@@ -179,9 +179,11 @@
                                 <i class="fa fa-edit"></i>
                             </div>
 
-                            <div class="btn btn-danger delete-modal" data-toggle="modal" data-target="#modal-delete"
-                                data-id="{{ $item->code_pib_product }}" data-name="{{ $item->code_product }}"><i
-                                    class="fa fa-trash"></i>
+                            <div class="btn btn-danger modal-delete1" data-toggle="modal"
+                                data-target="#modal-delete-product" data-id="{{ $item->code_pib }}"
+                                data-code="{{ $item->code_pib_product }}"
+                                data-name="{{ $item->master->name_product }}">
+                                <i class="fa fa-trash"></i>
                             </div>
 
                         </td>

@@ -22,17 +22,18 @@
         let productQtyPack = $(this).data('qty-pack');
         let productTypePack = $(this).data('type-pack');
         let productProductPabean = $(this).data('product-pabean');
-        console.log(productUnit)
-        $("#data-update-id").val(productId);
+        console.log(productCode)
+
+        $('#data-update-id option[value="' + productId + '"]').prop('selected', true)
         $("#data-update-code").val(productCode);
         $("#data-update-pos").val(productPos);
         $("#data-update-type").val(productType);
         $("#data-update-name").val(productName);
         $("#data-update-qty").val(productQty);
-        $("#data-update-unit").val(productUnit);
+        $('#data-update-unit option[value="' + productUnit + '"]').prop('selected', true)
         $("#data-update-netto").val(productNetto);
         $("#data-update-qty-pack").val(productQtyPack);
-        $("#data-update-type-pack").val(productTypePack);
+        $('#data-update-type-pack option[value="' + productTypePack + '"]').prop('selected', true)
         $("#data-update-product-pabean").val(productProductPabean);
     });
 </script>

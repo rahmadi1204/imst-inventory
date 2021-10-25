@@ -23,7 +23,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Input PIB</h3>
                         </div>
-                        <form action="{{ route('pib.store') }}" method="post">
+                        <form action="{{ route('pib.update', $pib->code_pib) }}" method="post">
                             @csrf
                             <div class="card-body p-0">
                                 <div class="bs-stepper">
@@ -102,6 +102,14 @@
             <!-- /.row -->
         </div>
     </section>
+    <form action="{{ route('container.destroy') }}" method="post">
+        @csrf
+        @include('components.delete_modal')
+    </form>
+    <form action="{{ route('pib.product.destroy') }}" method="post">
+        @csrf
+        @include('components.modal.delete_modal1')
+    </form>
 
     {{-- Update Modal --}}
     <form action="{{ route('container.update') }}" method="post">
@@ -114,15 +122,13 @@
         @include('components.modal.update_pib_product')
     </form>
 
-    {{-- Delete Modal --}}
-    <form action="{{ route('container.destroy') }}" method="post">
-        @csrf
-        @include('components.delete_modal')
-    </form>
+
+
 @endsection
 @section('scripts')
     @include('scripts.pib_create')
     @include('scripts.pib_form')
     @include('scripts.delete_modal')
+    @include('scripts.delete_modal1')
     @include('scripts.update_pib')
 @endsection
