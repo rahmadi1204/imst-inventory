@@ -15,7 +15,7 @@
             <label for="no_approval">Nomor Pengajuan</label>
             <input name="no_approval" type="text" class="form-control"
                 data-inputmask='"mask": "999999-999999-99999999-999999"' data-mask id="no_approval"
-                value="{{ $pib->no_approval ?? (old('no_approval') ?? '00000000000000000000000000') }}">
+                value="{{ $pib->no_approval ?? (old('no_approval') ?? '000000000000' . date('Ymdhis')) }}">
         </div>
     </div>
     <div class="row">
@@ -26,25 +26,31 @@
                 @foreach ($po as $item)
                     @if (isset($pib))
                         @if ($item->code_po == $pib->code_po)
-                            <option value="{{ $pib->po->no_po }}"
+                            <option value="{{ $pib->po->code_po }}"
                                 name_supplier="{{ $pib->supplier->name_supplier }}"
                                 code_supplier="{{ $pib->supplier_id }}" code_po="{{ $pib->code_po }}"
                                 address="{{ $pib->supplier->address_supplier }}" selected>
                                 {{ $pib->po->no_po }}</option>
                         @else
-                            @if ($item->no_po == old('no_po'))
-                                <option value="{{ $item->po->no_po }}"
-                                    name_supplier="{{ $item->supplier->name_supplier }}"
-                                    code_supplier="{{ $item->supplier_id }}" code_po="{{ $item->code_po }}"
-                                    address="{{ $item->supplier->address_supplier }}" selected>
-                                    {{ $item->po->no_po }}</option>
-                            @else
-                                <option value="{{ $item->no_po }}"
-                                    name_supplier="{{ $item->supplier->name_supplier }}"
-                                    code_supplier="{{ $item->supplier_id }}" code_po="{{ $item->code_po }}"
-                                    address="{{ $item->supplier->address_supplier }}">
-                                    {{ $item->no_po }}</option>
-                            @endif
+                            <option value="{{ $pib->po->code_po }}"
+                                name_supplier="{{ $pib->supplier->name_supplier }}"
+                                code_supplier="{{ $pib->supplier_id }}" code_po="{{ $pib->code_po }}"
+                                address="{{ $pib->supplier->address_supplier }}">
+                                {{ $pib->po->no_po }}</option>
+                        @endif
+                    @else
+                        @if ($item->no_po == old('no_po'))
+                            <option value="{{ $item->po->code_po }}"
+                                name_supplier="{{ $item->supplier->name_supplier }}"
+                                code_supplier="{{ $item->supplier_id }}" code_po="{{ $item->code_po }}"
+                                address="{{ $item->supplier->address_supplier }}" selected>
+                                {{ $item->po->no_po }}</option>
+                        @else
+                            <option value="{{ $item->code_po }}"
+                                name_supplier="{{ $item->supplier->name_supplier }}"
+                                code_supplier="{{ $item->supplier_id }}" code_po="{{ $item->code_po }}"
+                                address="{{ $item->supplier->address_supplier }}">
+                                {{ $item->no_po }}</option>
                         @endif
                     @endif
                 @endforeach
@@ -137,14 +143,17 @@
                                 address="{{ $pib->supplier->address_supplier }}" selected>
                                 {{ $pib->supplier->name_supplier }}</option>
                         @else
-                            @if ($item->id == old('name_shipper'))
-                                <option value="{{ $item->id }}" address="{{ $item->address_supplier }}"
-                                    selected>
-                                    {{ $item->name_supplier }}</option>
-                            @else
-                                <option value="{{ $item->id }}" address="{{ $item->address_supplier }}">
-                                    {{ $item->name_supplier }}</option>
-                            @endif
+                            <option value="{{ $pib->supplier_id }}"
+                                address="{{ $pib->supplier->address_supplier }}">
+                                {{ $pib->supplier->name_supplier }}</option>
+                        @endif
+                    @else
+                        @if ($item->id == old('name_shipper'))
+                            <option value="{{ $item->id }}" address="{{ $item->address_supplier }}" selected>
+                                {{ $item->name_supplier }}</option>
+                        @else
+                            <option value="{{ $item->id }}" address="{{ $item->address_supplier }}">
+                                {{ $item->name_supplier }}</option>
                         @endif
                     @endif
                 @endforeach
@@ -168,14 +177,17 @@
                                 address="{{ $pib->supplier->address_supplier }}" selected>
                                 {{ $pib->supplier->name_supplier }}</option>
                         @else
-                            @if ($item->id == old('name_shipper'))
-                                <option value="{{ $item->id }}" address="{{ $item->address_supplier }}"
-                                    selected>
-                                    {{ $item->name_supplier }}</option>
-                            @else
-                                <option value="{{ $item->id }}" address="{{ $item->address_supplier }}">
-                                    {{ $item->name_supplier }}</option>
-                            @endif
+                            <option value="{{ $pib->supplier_id }}"
+                                address="{{ $pib->supplier->address_supplier }}">
+                                {{ $pib->supplier->name_supplier }}</option>
+                        @endif
+                    @else
+                        @if ($item->id == old('name_shipper'))
+                            <option value="{{ $item->id }}" address="{{ $item->address_supplier }}" selected>
+                                {{ $item->name_supplier }}</option>
+                        @else
+                            <option value="{{ $item->id }}" address="{{ $item->address_supplier }}">
+                                {{ $item->name_supplier }}</option>
                         @endif
                     @endif
                 @endforeach
@@ -202,17 +214,23 @@
                                 selected>
                                 {{ $pib->importir->name_importir }}</option>
                         @else
-                            @if ($item->id == old('name_importir'))
-                                <option value="{{ $item->id }}" address="{{ $item->address_importir }}"
-                                    nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
-                                    apiu="{{ $item->apiu }}" selected>
-                                    {{ $item->name_importir }}</option>
-                            @else
-                                <option value="{{ $item->id }}" address="{{ $item->address_importir }}"
-                                    nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
-                                    apiu="{{ $item->apiu }}">
-                                    {{ $item->name_importir }}</option>
-                            @endif
+                            <option value="{{ $pib->importir_id }}"
+                                address="{{ $pib->importir->address_importir }}"
+                                nik="{{ $pib->importir->nik_importir }}"
+                                status="{{ $pib->importir->status_importir }}" apiu="{{ $pib->importir->apiu }}">
+                                {{ $pib->importir->name_importir }}</option>
+                        @endif
+                    @else
+                        @if ($item->id == old('name_importir'))
+                            <option value="{{ $item->id }}" address="{{ $item->address_importir }}"
+                                nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                                apiu="{{ $item->apiu }}" selected>
+                                {{ $item->name_importir }}</option>
+                        @else
+                            <option value="{{ $item->id }}" address="{{ $item->address_importir }}"
+                                nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                                apiu="{{ $item->apiu }}">
+                                {{ $item->name_importir }}</option>
                         @endif
                     @endif
                 @endforeach
@@ -254,17 +272,24 @@
                                 selected>
                                 {{ $pib->importir->name_importir }}</option>
                         @else
-                            @if ($item->id == old('name_importir'))
-                                <option value="{{ $item->id }}" address="{{ $item->address_importir }}"
-                                    nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
-                                    apiu="{{ $item->apiu }}" selected>
-                                    {{ $item->name_importir }}</option>
-                            @else
-                                <option value="{{ $item->id }}" address="{{ $item->address_importir }}"
-                                    nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
-                                    apiu="{{ $item->apiu }}">
-                                    {{ $item->name_importir }}</option>
-                            @endif
+                            <option value="{{ $pib->importir_id }}"
+                                address="{{ $pib->importir->address_importir }}"
+                                nik="{{ $pib->importir->nik_importir }}"
+                                status="{{ $pib->importir->status_importir }}"
+                                apiu="{{ $pib->importir->apiu }}">
+                                {{ $pib->importir->name_importir }}</option>
+                        @endif
+                    @else
+                        @if ($item->id == old('name_importir'))
+                            <option value="{{ $item->id }}" address="{{ $item->address_importir }}"
+                                nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                                apiu="{{ $item->apiu }}" selected>
+                                {{ $item->name_importir }}</option>
+                        @else
+                            <option value="{{ $item->id }}" address="{{ $item->address_importir }}"
+                                nik="{{ $item->nik_importir }}" status="{{ $item->status_importir }}"
+                                apiu="{{ $item->apiu }}">
+                                {{ $item->name_importir }}</option>
                         @endif
                     @endif
                 @endforeach

@@ -57,8 +57,8 @@ class PibController extends Controller
         $importir = Importir::all();
         $typeProduct = TypeProduct::all();
         $product = MasterProduct::all();
-        $po = DB::table('pos')
-            ->join('suppliers', 'suppliers.id', '=', 'pos.supplier_id')->get();
+        $po = Po::join('suppliers', 'suppliers.id', '=', 'pos.supplier_id')
+            ->join('warehouses', 'warehouses.id', '=', 'pos.warehouse_id')->get();
         $unit = Unit::all();
         $currency = Currency::orderBy('name')->get();
         // dd($currency);
@@ -340,8 +340,9 @@ class PibController extends Controller
         //             ->where('pibs.no_approval', '=', $id);
         //     })
         //     ->first();
-        $pib = Pib::with(['po', 'supplier', 'importir', 'pibLoad', 'pibInvoice', 'pibContainer', 'pibProduct.master', 'pibDevy'])
+        $pib = Pib::where('code_pib', $id)->with(['po', 'supplier', 'importir', 'pibLoad', 'pibInvoice', 'pibContainer', 'pibProduct.master', 'pibDevy'])
             ->first();
+        // dd($pib);
         return view('master_data.pib.pib_edit', [
             'pib' => $pib,
             'seller' => $seller,
@@ -410,10 +411,9 @@ class PibController extends Controller
         }
     }
 
-    public function updateProduct(Request $request)
+    public function updateProduct(Request $request, $id)
     {
         // dd($request);
-        $id = $request->id;
         DB::beginTransaction();
         try {
             PibProduct::where('code_pib_product', $id)->update([
@@ -462,8 +462,11 @@ class PibController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request);
+        // dd($request);
+        $request->code_pib = $id;
+        $request->code_po = $request->no_po;
         DB::beginTransaction();
+
         Pib::where('code_pib', $id)->update([
             'type_document_pabean' => $request->type_document_pabean,
             'office_pabean' => $request->office_pabean,
@@ -489,6 +492,7 @@ class PibController extends Controller
             'load_place' => $request->load_place,
             'load_transit' => $request->load_transit,
             'load_destination' => $request->load_destination,
+            'updated_at' => now(),
         ]);
         PibInvoice::where('code_pib', $id)->update([
             'invoice' => $request->invoice,
@@ -508,100 +512,75 @@ class PibController extends Controller
             'insurance' => $request->insurance,
             'freight' => $request->freight,
             'pabean_value' => $request->pabean_value,
-            'update_at' => now(),
+            'updated_at' => now(),
         ]);
-        $containers = count($request->no_container);
-        for ($i = 0; $i < $containers; $i++) {
-            PibContainer::where('code_pib', $id)->update([
-                'no_container' => $request->no_container,
-                'size_container' => $request->size_container,
-                'type_container' => $request->type_container,
-                'qty_container' => $request->qty_container,
-                'updated_at' => now(),
-            ]);
-            $products = count($request->code_product);
-            for ($i = 0; $i < $products; $i++) {
-                PibProduct::where('code_pib', $id)->update([
-                    'country_product' => $request->country_product,
-                    'date_product' => $request->date_product,
-                    'type_pabean' => $request->type_pabean,
-                    'product_id' => $request->code_product[$i],
-                    'pos_product' => $request->pos_product[$i],
-                    'qty_product' => $request->qty_product[$i],
-                    'unit_product' => $request->unit_product[$i],
-                    'netto_product' => $request->netto_product[$i],
-                    'qty_pack' => $request->qty_pack[$i],
-                    'type_pack' => $request->type_pack[$i],
-                    'product_pabean' => $request->product_pabean[$i],
-                    'qty_type_product' => $request->qty_type_product[$i],
-                    'update_at' => now(),
-                ]);
-            }
-            PibDevy::where('code_pib', $id)->update([
+        if ($request->no_container[0] != null) {
 
-                'code_pib' => $request->code_pib,
-                'bm_paid' => $request->bm_paid,
-                'bm_borne' => $request->bm_borne,
-                'bm_delay' => $request->bm_delay,
-                'bm_taxfree' => $request->bm_taxfree,
-                'bm_free' => $request->bm_free,
-                'bm_paidoff' => $request->bm_paidoff,
-                'bmt_paid' => $request->bmt_paid,
-                'bmt_borne' => $request->bmt_borne,
-                'bmt_delay' => $request->bmt_delay,
-                'bmt_taxfree' => $request->bmt_taxfree,
-                'bmt_free' => $request->bmt_free,
-                'bmt_paidoff' => $request->bmt_paidoff,
-                'cukai_paid' => $request->cukai_paid,
-                'cukai_borne' => $request->cukai_borne,
-                'cukai_delay' => $request->cukai_delay,
-                'cukai_taxfree' => $request->cukai_taxfree,
-                'cukai_free' => $request->cukai_free,
-                'cukai_paidoff' => $request->cukai_paidoff,
-                'ppn_paid' => $request->ppn_paid,
-                'ppn_borne' => $request->ppn_borne,
-                'ppn_delay' => $request->ppn_delay,
-                'ppn_taxfree' => $request->ppn_taxfree,
-                'ppn_free' => $request->ppn_free,
-                'ppn_paidoff' => $request->ppn_paidoff,
-                'ppnbm_paid' => $request->ppnbm_paid,
-                'ppnbm_borne' => $request->ppnbm_borne,
-                'ppnbm_delay' => $request->ppnbm_delay,
-                'ppnbm_taxfree' => $request->ppnbm_taxfree,
-                'ppnbm_free' => $request->ppnbm_free,
-                'ppnbm_paidoff' => $request->ppnbm_paidoff,
-                'pph_paid' => $request->pph_paid,
-                'pph_borne' => $request->pph_borne,
-                'pph_delay' => $request->pph_delay,
-                'pph_taxfree' => $request->pph_taxfree,
-                'pph_free' => $request->pph_free,
-                'pph_paidoff' => $request->pph_paidoff,
-                'total_paid' => $request->total_paid,
-                'total_borne' => $request->total_borne,
-                'total_delay' => $request->total_delay,
-                'total_taxfree' => $request->total_taxfree,
-                'total_free' => $request->total_free,
-                'total_paidoff' => $request->total_paidoff,
-            ]);
-            $count = count($request->code_product);
-            for ($i = 0; $i < $count; $i++) {
-                HistoryProduct::where('code_pib_product', $request->code_pib_product[$i])->update([
-                    'code_po' => $request->code_po,
-                    'code_pib' => $request->code_pib,
-                    'code_po_product' => $request->code_po . '-' . $request->code_product[$i],
-                    'code_pib_product' => $request->code_pib . '-' . $request->code_product[$i],
-                    'product_id' => $request->code_product[$i],
-                    'unit_product' => $request->unit_product[$i],
-                    'product_pabean' => $request->value_pabean[$i],
-                    'date_product' =>  $request->date_product,
-                    'type_history' =>  1,
-                    'from' =>  $request->name_shipper,
-                    'to' =>  $request->name_importir,
-                    'qty_product' =>  $request->qty_product[$i],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+            $this->addContainer($request);
+        }
+        PibProduct::where('code_pib', $id)->update([
+            'country_product' => $request->country_product,
+            'date_product' => $request->date_product,
+            'type_pabean' => $request->type_pabean,
+            'updated_at' => now(),
+        ]);
+        if ($request->name_product[0] != null) {
+            $this->addProduct($request);
+        }
+        PibDevy::where('code_pib', $id)->update([
+
+            'bm_paid' => $request->bm_paid,
+            'bm_borne' => $request->bm_borne,
+            'bm_delay' => $request->bm_delay,
+            'bm_taxfree' => $request->bm_taxfree,
+            'bm_free' => $request->bm_free,
+            'bm_paidoff' => $request->bm_paidoff,
+            'bmt_paid' => $request->bmt_paid,
+            'bmt_borne' => $request->bmt_borne,
+            'bmt_delay' => $request->bmt_delay,
+            'bmt_taxfree' => $request->bmt_taxfree,
+            'bmt_free' => $request->bmt_free,
+            'bmt_paidoff' => $request->bmt_paidoff,
+            'cukai_paid' => $request->cukai_paid,
+            'cukai_borne' => $request->cukai_borne,
+            'cukai_delay' => $request->cukai_delay,
+            'cukai_taxfree' => $request->cukai_taxfree,
+            'cukai_free' => $request->cukai_free,
+            'cukai_paidoff' => $request->cukai_paidoff,
+            'ppn_paid' => $request->ppn_paid,
+            'ppn_borne' => $request->ppn_borne,
+            'ppn_delay' => $request->ppn_delay,
+            'ppn_taxfree' => $request->ppn_taxfree,
+            'ppn_free' => $request->ppn_free,
+            'ppn_paidoff' => $request->ppn_paidoff,
+            'ppnbm_paid' => $request->ppnbm_paid,
+            'ppnbm_borne' => $request->ppnbm_borne,
+            'ppnbm_delay' => $request->ppnbm_delay,
+            'ppnbm_taxfree' => $request->ppnbm_taxfree,
+            'ppnbm_free' => $request->ppnbm_free,
+            'ppnbm_paidoff' => $request->ppnbm_paidoff,
+            'pph_paid' => $request->pph_paid,
+            'pph_borne' => $request->pph_borne,
+            'pph_delay' => $request->pph_delay,
+            'pph_taxfree' => $request->pph_taxfree,
+            'pph_free' => $request->pph_free,
+            'pph_paidoff' => $request->pph_paidoff,
+            'total_paid' => $request->total_paid,
+            'total_borne' => $request->total_borne,
+            'total_delay' => $request->total_delay,
+            'total_taxfree' => $request->total_taxfree,
+            'total_free' => $request->total_free,
+            'total_paidoff' => $request->total_paidoff,
+            'updated_at' => now(),
+        ]);
+        HistoryProduct::where('code_pib', $id)->update([
+            'date_product' =>  $request->date_product,
+            'type_history' =>  1,
+            'from' =>  $request->name_shipper,
+            'to' =>  $request->name_importir,
+        ]);
+        if ($request->name_product[0] != null) {
+            $this->addHistory($request);
         }
         try {
             DB::commit();

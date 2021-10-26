@@ -49,7 +49,7 @@
                                             <td>{{ $item->load_place }}</td>
                                             <td>{{ $item->load_destination }}</td>
                                             <td>
-                                                <a href="{{ route('pib.edit', $item->no_approval) }}"
+                                                <a href="{{ route('pib.edit', $item->code_pib) }}"
                                                     class=" btn btn-success">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
