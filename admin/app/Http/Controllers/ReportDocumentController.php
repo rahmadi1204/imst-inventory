@@ -75,6 +75,7 @@ class ReportDocumentController extends Controller
                 ['qty_product', 'unit_product']
             );
         }
+        // dd($getUnit);
         $dataMasuk =   DB::table('stock_products')->where('type_stock', '=', 1)
             ->join('master_products', 'master_products.id', '=', 'stock_products.product_id')
             ->get([

@@ -21,4 +21,13 @@ class NcrVendor extends Model
         'qty_product',
         'unit_product',
     ];
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
 }

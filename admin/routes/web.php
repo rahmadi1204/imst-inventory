@@ -148,7 +148,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/ncr_vendor/add_return', [NcrVendorController::class, 'storeVendor'])->name('ncr_vendor_return.store');
         Route::get('/ncr_vendor/update/{po:id}', [NcrVendorController::class, 'edit'])->name('ncr_vendor.edit');
         Route::post('/ncr_vendor/update/{po:id}', [NcrVendorController::class, 'update'])->name('ncr_vendor.update');
+        Route::post('/ncr_vendor/return/update/{po:id}', [NcrVendorController::class, 'updateReturn'])->name('ncr_vendor.return.update');
         Route::post('/ncr_vendor/delete', [NcrVendorController::class, 'destroy'])->name('ncr_vendor.destroy');
+        Route::post('/ncr_vendor/update-product/{po:id}', [NcrVendorController::class, 'updateProduct'])->name('ncrv.product.update');
+        Route::post('/ncr_vendor/delete-product/{id}', [NcrVendorController::class, 'destroyProduct'])->name('ncrv.product.destroy');
 
         #report
         #barang perdokumen

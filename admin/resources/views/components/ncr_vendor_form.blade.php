@@ -4,7 +4,7 @@
             <label for="date_ncrv">Tanggal Return</label>
             <div class="input-group date" id="reservationdate" data-target-input="nearest">
                 <input name="date_ncrv" type="text" class="form-control datetimepicker-input"
-                    data-target="#reservationdate" required value="{{ $ncrv->date_ncrv ?? old('date_ncrv') }} " />
+                    data-target="#reservationdate" required value="{{ $data->date_ncrv ?? old('date_ncrv') }} " />
                 <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
@@ -15,38 +15,45 @@
             <select name="no_po" id="no_po" class="form-control">
                 <option selected disabled>Pilih</option>
                 @foreach ($po as $item)
-                    @isset($ncrv)
-                        @if ($item->no_po == $ncrv->code_po)
+                    @if (isset($data))
+                        @if ($item->code_po == $data->code_po)
+                            <option value="{{ $item->code_po }}" code_supplier="{{ $item->id }}"
+                                name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
+                                address="{{ $item->address_supplier }}" selected>
+                                {{ $item->no_po }}</option>
+                        @else
+                            <option value="{{ $item->code_po }}" code_supplier="{{ $item->id }}"
+                                name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
+                                address="{{ $item->address_supplier }}">
+                                {{ $item->no_po }}</option>
+                        @endif
+                    @else
+                        @if ($item->no_po == old('no_po'))
+                            <option value="{{ $item->code_po }}" code_supplier="{{ $item->id }}"
+                                name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
+                                address="{{ $item->address_supplier }}" selected>
+                                {{ $item->no_po }}</option>
+                        @else
                             <option value="{{ $item->code_po }}" code_supplier="{{ $item->id }}"
                                 name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
                                 address="{{ $item->address_supplier }}" selected>
                                 {{ $item->no_po }}</option>
                         @endif
-                    @endisset
-                    @if ($item->no_po == old('no_po'))
-                        <option value="{{ $item->code_po }}" code_supplier="{{ $item->id }}"
-                            name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
-                            address="{{ $item->address_supplier }}" selected>
-                            {{ $item->no_po }}</option>
-                    @else
-                        <option value="{{ $item->code_po }}" code_supplier="{{ $item->id }}"
-                            name_supplier="{{ $item->name_supplier }}" code_po="{{ $item->code_po }}"
-                            address="{{ $item->address_supplier }}">
-                            {{ $item->no_po }}</option>
                     @endif
                 @endforeach
             </select>
         </div>
         <div class="form-group col">
             <label for="no_ref">No. Referensi</label>
-            <input type="text" name="no_ref" class="form-control">
+            <input type="text" name="no_ref" class="form-control" value="{{ $data->no_ref ?? old('no_ref') }}">
         </div>
         <div class="form-group col">
             <label for="name_supplier">Vendor</label>
-            <input type="hidden" name="code_po" id="code_po" required>
-            <input type="hidden" name="code_supplier" id="code_supplier" required>
+            <input type="hidden" name="code_po" id="code_po" value="{{ $data->code_po ?? old('code_po') }}" required>
+            <input type="hidden" name="code_supplier" id="code_supplier"
+                value="{{ $data->supplier_id ?? old('code_supplier') }}" required>
             <input name="name_supplier" type="text" class="form-control" id="name_supplier"
-                value="{{ $ncrv->name_supplier ?? old('name_supplier') }}" required readonly>
+                value="{{ $data->supplier->name_supplier ?? old('name_supplier') }}" required readonly>
         </div>
     </div>
     <div class="row">
@@ -55,8 +62,8 @@
             <select name="name_warehouse" id="name_warehouse" class="form-control custom-select">
                 <option selected>Pilih</option>
                 @foreach ($warehouse as $item)
-                    @if (isset($ncrv))
-                        @if ($ncrv->warehouse_id == $item->id)
+                    @if (isset($data))
+                        @if ($data->warehouse_id == $item->id)
                             <option value="{{ $item->id }}" address="{{ $item->address_warehouse }}" selected>
                                 {{ $item->name_warehouse }}
                             </option>
@@ -66,9 +73,15 @@
                             </option>
                         @endif
                     @else
-                        <option value="{{ $item->id }}" address="{{ $item->address_warehouse }}">
-                            {{ $item->name_warehouse }}
-                        </option>
+                        @if (old('name_warehouse') == $item->id)
+                            <option value="{{ $item->id }}" address="{{ $item->address_warehouse }}" selected>
+                                {{ $item->name_warehouse }}
+                            </option>
+                        @else
+                            <option value="{{ $item->id }}" address="{{ $item->address_warehouse }}">
+                                {{ $item->name_warehouse }}
+                            </option>
+                        @endif
                     @endif
                 @endforeach
             </select>
@@ -76,122 +89,10 @@
         <div class="form-group col">
             <label for="way_transport">Via</label>
             <input name="way_transport" id="way_transport" type="text" class="form-control"
-                value="{{ $ncrv->way_transport ?? old('way_transport') }}" required>
+                value="{{ $data->way_transport ?? old('way_transport') }}" required>
         </div>
     </div>
-    {{-- <div class="row">
-        <li class="form-group col">
-            <input class="form-check-input me-1" type="checkbox">
-            Return Terima Barang
-        </li>
-    </div>` --}}
-    {{-- <div class="row">
-        <div class="form-group col">
-            <label for="no_pib">No Terima Barang</label>
-            <select name="no_pib" id="no_pib" class="form-control">
-                <option selected disabled>Pilih</option>
-                @foreach ($pib as $item)
-                    @isset($ncrv)
-                        @if ($item->no_approval == $pib->no_approval)
-                            <option value="{{ $item->no_approval }}" name_supplier="{{ $item->name_seller }}"
-                                address="{{ $item->address_seller }}" selected>
-                                {{ $item->no_approval }}</option>
-                        @endif
-                    @endisset
-                    @if ($item->no_approval == old('no_approval'))
-                        <option value="{{ $item->no_approval }}" name_supplier="{{ $item->name_seller }}"
-                            address="{{ $item->address_seller }}" selected>
-                            {{ $item->no_approval }}</option>
-                    @else
-                        <option value="{{ $item->no_approval }}" name_supplier="{{ $item->name_seller }}"
-                            address="{{ $item->address_seller }}">
-                            {{ $item->no_approval }}</option>
-                    @endif
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group col">
-            <label for="product_code">Tipe Barang</label>
-            <select name="type_product" id="type_product" class="form-control">
-                <option selected disabled>Pilih</option>
-                @foreach ($typeProduct as $item)
-                    @isset($ncrv)
-                        @if ($item->type_product == $pib->type_product)
-                            <option value="{{ $item->type_product }}" selected>
-                                {{ $item->type_product }}</option>
-                        @endif
-                    @endisset
-                    @if ($item->type_product == old('type_product'))
-                        <option value="{{ $item->type_product }}" selected>
-                            {{ $item->type_product }}</option>
-                    @else
-                        <option value="{{ $item->type_product }}">
-                            {{ $item->type_product }}</option>
-                    @endif
-                @endforeach
-            </select>
-        </div>
-    </div> --}}
-    {{-- <div class="row">
-        <div class="form-group col">
-            <label for="product_code">Kode Barang</label>
-            <select name="code_product" id="code_product" class="form-control">
-                <option value="" selected disabled>Pilih</option>
-                @foreach ($product as $item)
-                    <option value="{{ $item->code_product }}" type="{{ $item->type_product }}"
-                        name="{{ $item->name_product }}">
-                        {{ $item->code_product }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group col">
-            <label for="product_name">Nama Barang</label>
-            <input name="product_name" type="text" class="form-control" id="product_name"
-                value="{{ $ncrv->product_name ?? old('product_name') }}" required readonly>
-        </div>
-        <div class="form-group col">
-            <label for="value">Jumlah Barang</label>
-            <input name="value" type="number" class="form-control" id="value"
-                value="{{ $ncrv->stock ?? old('stock') }}" required>
-        </div>
-    </div> --}}
-    {{-- <div class="row">
-        <div class="form-group col-md-4">
-            <label for="unit_price">Mata Uang</label>
-            <select name="product_code" id="product_code" class="form-control custom-select">
-                <option value="" selected disabled>Pilih</option>
-                @foreach ($currency as $item)
-                    @if (isset($ncrv))
-                        @if ($pib->currency == $item->code)
-                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}" selected>
-                                {{ $item->symbol }} {{ $item->name }}
-                            </option>
-                        @else
-                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}">
-                                {{ $item->symbol }} {{ $item->name }}
-                            </option>
-                        @endif
-                    @else
-                        @if (old('valuta') == $item->code)
-                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}" selected>
-                                {{ $item->symbol }} {{ $item->name }}
-                            </option>
-                        @else
-                            <option value="{{ $item->code }}" symbol="{{ $item->symbol }}">
-                                {{ $item->symbol }} {{ $item->name }}
-                            </option>
-                        @endif
-                    @endif
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group col-md-1">
-            <label for="value">Kurs</label>
-            <input name="value" type="number" class="form-control" id="value"
-                value="{{ $ncrv->stock ?? old('stock') }}" required>
-        </div>
-    </div> --}}
+
     <table class="table table-bordered nowrap" id="productAddRemove1">
         <thead class="thead-light">
             <tr>

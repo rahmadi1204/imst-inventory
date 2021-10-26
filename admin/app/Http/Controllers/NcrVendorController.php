@@ -57,8 +57,7 @@ class NcrVendorController extends Controller
         $warehouse = Warehouse::all();
         $typeProduct = TypeProduct::all();
         $product = MasterProduct::all();
-        $codeNcrv = DB::table('ncr_vendors')
-            ->join('suppliers', 'suppliers.id', '=', 'ncr_vendors.supplier_id')
+        $codeNcrv = NcrVendor::join('suppliers', 'suppliers.id', '=', 'ncr_vendors.supplier_id')
             ->where('type_ncrv', '=', 0)
             ->get([
                 'suppliers.id',
@@ -68,7 +67,7 @@ class NcrVendorController extends Controller
                 'ncr_vendors.code_po',
             ]);
         // dd($codeNcrv);
-        $po = DB::table('pos')->join('suppliers', 'suppliers.id', '=', 'pos.supplier_id')
+        $po = Po::join('suppliers', 'suppliers.id', '=', 'pos.supplier_id')
             ->get([
                 'suppliers.id',
                 'suppliers.code_supplier',
@@ -217,6 +216,245 @@ class NcrVendorController extends Controller
             DB::rollback();
             dd('fail');
             return redirect()->route('ncr_vendor')->with('Fail', "Data Tidak Tersimpan");
+        }
+    }
+    public function edit($id)
+    {
+        $supplier = Supplier::all();
+        $warehouse = Warehouse::all();
+        $typeProduct = TypeProduct::all();
+        $product = MasterProduct::all();
+        $cek = NcrVendor::where('code_ncrv', $id)->value('type_ncrv');
+
+        $codeNcrv = NcrVendor::join('suppliers', 'suppliers.id', '=', 'ncr_vendors.supplier_id')
+            ->where('type_ncrv', '=', $cek)
+            ->get([
+                'suppliers.id',
+                'suppliers.name_supplier',
+                'suppliers.address_supplier',
+                'ncr_vendors.no_ref',
+                'ncr_vendors.code_po',
+                'ncr_vendors.code_ncrv',
+            ]);
+        // dd($codeNcrv);
+        $po = Po::join('suppliers', 'suppliers.id', '=', 'pos.supplier_id')
+            ->get([
+                'suppliers.id',
+                'suppliers.code_supplier',
+                'suppliers.name_supplier',
+                'suppliers.address_supplier',
+                'pos.code_po',
+                'pos.no_po',
+            ]);
+        $pib = Pib::all();
+        $unit = Unit::all();
+        $currency = Currency::orderBy('name')->get();
+        $data = NcrVendor::where('code_ncrv', $id)->with(['supplier', 'warehouse'])
+            ->first();
+        $ncrvProduct = NcrVendorProduct::where('code_ncrv', $id)->with(['product'])->get();
+        // dd($codeNcrv);
+        if ($cek == 0) {
+            return view('ncr_vendor.ncrvendor_return_edit', [
+                'title' => 'NCR Vendor',
+                'po' => $po,
+                'pib' => $pib,
+                'unit' => $unit,
+                'codeNcrv' => $codeNcrv,
+                'currency' => $currency,
+                'typeProduct' => $typeProduct,
+                'supplier' => $supplier,
+                'product' => $product,
+                'warehouse' => $warehouse,
+                'data' => $data,
+                'ncrvProduct' => $ncrvProduct,
+                'transaksiOpen' => "active",
+                'transaksiOpen' => "menu-open",
+                'transaksiActive' => "active",
+                'NcrvendorActive' => "active",
+            ]);
+        } else {
+            return view('ncr_vendor.ncrvendor_edit', [
+                'title' => 'NCR Vendor',
+                'po' => $po,
+                'pib' => $pib,
+                'unit' => $unit,
+                'codeNcrv' => $codeNcrv,
+                'currency' => $currency,
+                'typeProduct' => $typeProduct,
+                'supplier' => $supplier,
+                'product' => $product,
+                'warehouse' => $warehouse,
+                'data' => $data,
+                'ncrvProduct' => $ncrvProduct,
+                'transaksiOpen' => "active",
+                'transaksiOpen' => "menu-open",
+                'transaksiActive' => "active",
+                'NcrvendorActive' => "active",
+            ]);
+        }
+    }
+    public function update(Request $request, $id)
+    {
+
+        // dd($request);
+        DB::beginTransaction();
+
+        try {
+            NcrVendor::where('code_ncrv', $id)->update([
+                'date_ncrv' => $request->date_ncrv,
+                'code_po' => $request->code_po,
+                'no_ref' => $request->no_ref,
+                'no_ref' => $request->no_ref,
+                'supplier_id' => $request->code_supplier,
+                'warehouse_id' => $request->name_warehouse,
+                'way_transport' => $request->way_transport,
+                'way_transport' => $request->way_transport,
+                'updated_at' => now(),
+            ]);
+            if ($request->name_product[0] != null) {
+                $count = count($request->name_product);
+                for ($i = 0; $i < $count; $i++) {
+                    NcrVendorProduct::insert([
+                        'code_po' => $request->code_po,
+                        'type_ncrv' => 1,
+                        'code_ncrv' => $id,
+                        'code_ncrv_product' => $id . '-' . $request->code_product[$i],
+                        'product_id' => $request->code_product[$i],
+                        'qty_product' => $request->qty_product[$i],
+                        'unit_product' => $request->unit_product[$i],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    HistoryProduct::insert([
+                        'code_po' => $request->code_po,
+                        'code_ncrv' => $id,
+                        'code_po_product' => $request->code_po . '-' . $request->code_product[$i],
+                        'code_ncrv_product' => $id . '-' . $request->code_product[$i],
+                        'product_id' => $request->code_product[$i],
+                        'unit_product' => $request->unit_product[$i],
+                        'product_pabean' => 0,
+                        'date_product' => $request->date_ncrv,
+                        'type_history' =>  2,
+                        'to' =>  $request->name_warehouse,
+                        'from' =>  $request->code_supplier,
+                        'qty_product' =>  $request->qty_product[$i],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('ncr_vendor')->with('Ok', 'Data Berhasil Di Update');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            dd('fail');
+            return redirect()->route('ncr_vendor')->with('Fail', 'Data Gagal Di Update');
+        }
+    }
+    public function updateReturn(Request $request, $id)
+    {
+        // dd($request);
+        DB::beginTransaction();
+
+        try {
+            NcrVendor::where('code_ncrv', $id)->update([
+                'date_ncrv' => $request->date_ncrv,
+                'code_po' => $request->code_po,
+                'no_ref' => $request->no_ref,
+                'no_ref' => $request->no_ref,
+                'supplier_id' => $request->code_supplier,
+                'warehouse_id' => $request->name_warehouse,
+                'way_transport' => $request->way_transport,
+                'way_transport' => $request->way_transport,
+                'updated_at' => now(),
+            ]);
+            if ($request->name_product[0] != null) {
+                $count = count($request->name_product);
+                for ($i = 0; $i < $count; $i++) {
+                    NcrVendorProduct::insert([
+                        'code_po' => $request->code_po,
+                        'type_ncrv' => 1,
+                        'code_ncrv' => $id,
+                        'code_ncrv_product' => $id . '-' . $request->code_product[$i],
+                        'product_id' => $request->code_product[$i],
+                        'qty_product' => $request->qty_product[$i],
+                        'unit_product' => $request->unit_product[$i],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    HistoryProduct::insert([
+                        'code_po' => $request->code_po,
+                        'code_ncrv' => $id,
+                        'code_po_product' => $request->code_po . '-' . $request->code_product[$i],
+                        'code_ncrv_product' => $id . '-' . $request->code_product[$i],
+                        'product_id' => $request->code_product[$i],
+                        'unit_product' => $request->unit_product[$i],
+                        'product_pabean' => 0,
+                        'date_product' => $request->date_ncrv,
+                        'type_history' =>  -2,
+                        'to' =>  $request->name_warehouse,
+                        'from' =>  $request->code_supplier,
+                        'qty_product' =>  $request->qty_product[$i],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('ncr_vendor')->with('Ok', 'Data Berhasil Di Update');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            dd('fail');
+            return redirect()->route('ncr_vendor')->with('Fail', 'Data Gagal Di Update');
+        }
+    }
+    public function updateProduct(Request $request, $id)
+    {
+        // dd($request);
+        DB::beginTransaction();
+        NcrVendorProduct::where('code_ncrv_product', $request->id)->update([
+            'product_id' => $request->code_product,
+            'qty_product' => $request->qty_product,
+            'unit_product' => $request->unit,
+            'updated_at' => now(),
+        ]);
+        HistoryProduct::where('code_ncrv_product', $request->id)->update([
+            'product_id' => $request->code_product,
+            'qty_product' => $request->qty_product,
+            'unit_product' => $request->unit,
+            'updated_at' => now(),
+        ]);
+        try {
+            DB::commit();
+            return redirect()->back()->with('Ok', 'Data  Product Diupdate');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            dd('gagal');
+            return redirect()->back()->with('Fail', 'Data  Product Tidak Diupdate');
+        }
+    }
+    public function destroyProduct(Request $request, $id)
+    {
+        // dd($id);
+        $cek = count(NcrVendorProduct::where('code_ncrv', $id)->select('product_id')->get());
+        // dd($cek);
+        if ($cek <= 1) {
+            return redirect()->back()->with('Fail', 'Data Tidak Boleh Kosong');
+        }
+
+        DB::beginTransaction();
+        try {
+
+            NcrVendorProduct::where('code_ncrv_product', $request->code)->delete();
+            HistoryProduct::where('code_ncrv_product', $request->code)->delete();
+            DB::commit();
+            return redirect()->back()->with('Ok', 'Data  Berhasil Dihapus');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            dd('gagal');
+            return redirect()->back()->with('Fail', 'Data Gagal Dihapus');
         }
     }
     public function destroy(Request $request)
