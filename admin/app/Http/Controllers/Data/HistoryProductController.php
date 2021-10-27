@@ -30,7 +30,7 @@ class HistoryProductController extends Controller
                 'history_products.qty_product'
             ]);
         // dd($data);
-        return view('master_data.barang.history_barang.history_index', [
+        return view('master_data.barang.history_index', [
             'data' => $data,
             'typeProduct' => $typeProduct,
             'no' => 1,

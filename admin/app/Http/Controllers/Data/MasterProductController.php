@@ -21,7 +21,7 @@ class MasterProductController extends Controller
         $data = DB::table('master_products')->get();
         // dd($data);
         $typeProduct = TypeProduct::all();
-        return view('master_data.barang.master_barang.master_index', [
+        return view('master_data.barang.master_index', [
             'data' => $data,
             'typeProduct' => $typeProduct,
             'no' => 1,

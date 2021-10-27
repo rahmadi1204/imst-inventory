@@ -21,6 +21,7 @@ use App\Http\Controllers\ReportDocumentController;
 use App\Http\Controllers\Data\DataProductController;
 use App\Http\Controllers\Data\MasterProductController;
 use App\Http\Controllers\Data\HistoryProductController;
+use App\Http\Controllers\Data\MutationProductController;
 use App\Http\Controllers\MutationDocumentController;
 use App\Http\Controllers\poProductController;
 use App\Models\PoProduct;
@@ -58,19 +59,13 @@ Route::middleware(['auth'])->group(function () {
 
         #data produk
         Route::get('/products/data', [DataProductController::class, 'index'])->name('data');
-        Route::get('/products/data/add', [DataProductController::class, 'create'])->name('data.create');
-        Route::post('/products/data/add', [DataProductController::class, 'store'])->name('data.store');
-        Route::get('/products/data/update/{id}', [DataProductController::class, 'edit'])->name('data.edit');
-        Route::post('/products/data/update/{id}', [DataProductController::class, 'update'])->name('data.update');
-        Route::post('/products/data/delete', [DataProductController::class, 'destroy'])->name('data.destroy');
 
         #history produk
         Route::get('/products/history', [HistoryProductController::class, 'index'])->name('history');
-        Route::get('/products/history/add', [HistoryProductController::class, 'create'])->name('history.create');
-        Route::post('/products/history/add', [HistoryProductController::class, 'store'])->name('history.store');
-        Route::get('/products/history/update/{id}', [HistoryProductController::class, 'edit'])->name('history.edit');
-        Route::post('/products/history/update/{id}', [HistoryProductController::class, 'update'])->name('history.update');
-        Route::post('/products/history/delete', [HistoryProductController::class, 'destroy'])->name('history.destroy');
+
+        #mutasi product
+        Route::get('/products/mutasi', [MutationProductController::class, 'index'])->name('mutation');
+
 
         #supplier
         Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');

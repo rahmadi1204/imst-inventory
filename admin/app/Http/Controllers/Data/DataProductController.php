@@ -13,7 +13,7 @@ class DataProductController extends Controller
         app('App\Http\Controllers\CalculateController')->calculating();
         $data = DB::table('master_products')->get();
         // dd($data);
-        return view('master_data.barang.data_barang.data_index', [
+        return view('master_data.barang.data_index', [
             'data' => $data,
             'no' => 1,
             'title' => 'Stok Data Barang',

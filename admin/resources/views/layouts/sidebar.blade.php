@@ -92,10 +92,17 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ route('history') }}" class="nav-link"
-                                            {{ $historyActive ?? '' }}>
+                                        <a href="{{ route('history') }}"
+                                            class="nav-link {{ $historyActive ?? '' }}">
                                             <i class="fa fa-caret-right nav-icon"></i>
                                             <p>History Barang</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('mutation') }}"
+                                            class="nav-link {{ $mutasiActive ?? '' }}">
+                                            <i class="fa fa-caret-right nav-icon"></i>
+                                            <p>Barang Mutasi</p>
                                         </a>
                                     </li>
                                 </ul>

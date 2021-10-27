@@ -50,11 +50,7 @@
         </div>
     </section>
 
-    {{-- Delete Modal --}}
-    <form action="{{ route('data.destroy') }}" method="post">
-        @csrf
-        @include('components.delete_modal')
-    </form>
+
 
 @endsection
 @section('scripts')
