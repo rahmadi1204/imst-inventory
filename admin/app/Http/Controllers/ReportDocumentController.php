@@ -11,6 +11,7 @@ class ReportDocumentController extends Controller
 {
     public function index()
     {
+        app('App\Http\Controllers\CalculateController')->calculating();
         $masuk = DB::table('history_products')
             ->join('master_products', function ($join) {
                 $join->on('master_products.id', '=', 'history_products.product_id')->where('type_history', '>', 0);
@@ -55,27 +56,14 @@ class ReportDocumentController extends Controller
             ->groupBy('history_products.product_id')
             ->where('type_history', '>', 0)
             ->get();
-        // ->pluck('qty_product', 'code_product');
-        // dd($sumMasuk);
-        foreach ($sumMasuk as $value) {
-            $getUnit = HistoryProduct::where('product_id', $value->product_id)->value('unit_product');
-            // dd($getUnit);
-            DB::table('stock_products')->upsert(
-                [
-                    'type_stock' => 1,
-                    'product_id' => $value->product_id,
-                    'code_stock' => "1" . $value->product_id,
-                    'qty_product' => $value->qty_product,
-                    'unit_product' => $getUnit,
-                    'product_pabean' => $value->product_pabean,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ],
-                ['code_stock'],
-                ['qty_product', 'unit_product']
-            );
+        DB::table('stock_products')->update(['qty_product' => 0]);
+        if ($sumMasuk != "[]") {
+            foreach ($sumMasuk as $value) {
+                $value->unit = HistoryProduct::where('product_id', $value->product_id)->value('unit_product');
+
+                app('App\Http\Controllers\CalculateController')->sumMasuk($value);
+            }
         }
-        // dd($getUnit);
         $dataMasuk =   DB::table('stock_products')->where('type_stock', '=', 1)
             ->join('master_products', 'master_products.id', '=', 'stock_products.product_id')
             ->get([
@@ -89,46 +77,24 @@ class ReportDocumentController extends Controller
                 'stock_products.unit_product',
 
             ]);
-        // dd($dataMasuk);
         foreach ($dataMasuk as  $value) {
-            DB::table('report_documents')->upsert(
-                [
-                    'product_id' => $value->id,
-                    'qty_product_in' => $value->qty_product,
-                    'unit_product_in' => $getUnit,
-                    'product_pabean_in' => $value->product_pabean,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ],
-                ['product_id'],
-                ['qty_product_in', 'unit_product_in', 'updated_at']
-            );
+            $value->unit = HistoryProduct::where('type_history', '>', 0)->latest('updated_at')->value('unit_product');
+            app('App\Http\Controllers\CalculateController')->reportMasuk($value);
         }
-        // dd($dataMasuk);
+
         $sumKeluar  = DB::table('history_products')
             ->selectRaw('history_products.product_id, sum(qty_product) as qty_product, sum(product_pabean) as product_pabean')
             ->groupBy('product_id')
             ->where('type_history', '<', 0)
             ->get();
-        // ->pluck('qty_product', 'code_product');
-        // dd($sumKeluar);
-        foreach ($sumKeluar as $value) {
-            $getUnit = HistoryProduct::where('product_id', $value->product_id)->value('unit_product');
-            // dd($getUnit);
-            DB::table('stock_products')->upsert(
-                [
-                    'type_stock' => 0,
-                    'product_id' => $value->product_id,
-                    'code_stock' => "0" . $value->product_id,
-                    'qty_product' => $value->qty_product,
-                    'unit_product' => $getUnit,
-                    'product_pabean' => $value->product_pabean,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ],
-                ['code_stock'],
-                ['qty_product', 'unit_product']
-            );
+
+        $value->unit = HistoryProduct::where('type_history', '<', 0)->latest('updated_at')->value('unit_product');
+        if ($sumKeluar != "[]") {
+            foreach ($sumKeluar as $value) {
+                $value->unit = HistoryProduct::where('product_id', $value->product_id)->value('unit_product');
+
+                app('App\Http\Controllers\CalculateController')->sumKeluar($value);
+            }
         }
         $dataKeluar =   DB::table('stock_products')->where('type_stock', '=', 0)
             ->join('master_products', 'master_products.id', '=', 'stock_products.product_id')
@@ -142,17 +108,9 @@ class ReportDocumentController extends Controller
                 'stock_products.product_pabean',
                 'stock_products.unit_product',
             ]);
-        // dd($dataKeluar);
         foreach ($dataKeluar as  $value) {
-            DB::table('report_documents')
-                ->where('product_id', '=', $value->id)->update(
-                    [
-                        'qty_product_out' => $value->qty_product,
-                        'unit_product_out' => $getUnit,
-                        'product_pabean_out' => $value->product_pabean,
-                        'updated_at' => now(),
-                    ]
-                );
+            $value->unit = HistoryProduct::where('type_history', '>', 0)->latest('updated_at')->value('unit_product');
+            app('App\Http\Controllers\CalculateController')->reportKeluar($value);
         }
         $data = DB::table('report_documents')
             ->join('master_products', 'master_products.id', '=', 'report_documents.product_id')
@@ -536,7 +494,7 @@ class ReportDocumentController extends Controller
     public function dataMasuk($sumMasuk)
     {
         foreach ($sumMasuk as $value) {
-            $getUnit = HistoryProduct::where('product_id', $value->product_id)->value('unit_product');
+            $value->unit = HistoryProduct::where('product_id', $value->product_id)->value('unit_product');
             // dd($getUnit);
             DB::table('stock_products')->upsert(
                 [
@@ -544,7 +502,7 @@ class ReportDocumentController extends Controller
                     'product_id' => $value->product_id,
                     'code_stock' => "1" . $value->product_id,
                     'qty_product' => $value->qty_product,
-                    'unit_product' => $getUnit,
+                    'unit_product' =>  $value->unit,
                     'product_pabean' => $value->product_pabean,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -573,7 +531,7 @@ class ReportDocumentController extends Controller
                 [
                     'product_id' => $value->id,
                     'qty_product_in' => $value->qty_product,
-                    'unit_product_in' => $getUnit,
+                    'unit_product_in' =>  $value->unit,
                     'product_pabean_in' => $value->product_pabean,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -587,7 +545,7 @@ class ReportDocumentController extends Controller
     public function dataKeluar($sumKeluar)
     {
         foreach ($sumKeluar as $value) {
-            $getUnit = HistoryProduct::where('product_id', $value->product_id)->value('unit_product');
+            $value->unit = HistoryProduct::where('product_id', $value->product_id)->value('unit_product');
             // dd($getUnit);
             DB::table('stock_products')->upsert(
                 [
@@ -595,7 +553,7 @@ class ReportDocumentController extends Controller
                     'product_id' => $value->product_id,
                     'code_stock' => "0" . $value->product_id,
                     'qty_product' => $value->qty_product,
-                    'unit_product' => $getUnit,
+                    'unit_product' =>  $value->unit,
                     'product_pabean' => $value->product_pabean,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -623,7 +581,7 @@ class ReportDocumentController extends Controller
                 ->where('product_id', '=', $value->id)->update(
                     [
                         'qty_product_out' => $value->qty_product,
-                        'unit_product_out' => $getUnit,
+                        'unit_product_out' =>  $value->unit,
                         'product_pabean_out' => $value->product_pabean,
                         'updated_at' => now(),
                     ]

@@ -16,7 +16,6 @@ class CreatePibLoadsTable extends Migration
         Schema::create('pib_loads', function (Blueprint $table) {
             $table->id();
             $table->string('code_pib');
-            $table->string('no_approval');
             $table->string('no_register')->nullable();
             $table->date('date_register')->nullable();
             $table->string('way_transport');

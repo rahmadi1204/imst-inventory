@@ -79,8 +79,69 @@ class PibController extends Controller
 
     public function store(StorePibRequest $request)
     {
-        $validate = $request->validated();
-        // dd($request);
+        $request->validate([
+            'type_document_pabean' => 'required',
+            'office_pabean' => 'required',
+            'no_approval' => 'required|unique:pibs,no_approval',
+            'code_po' => 'required',
+            'type_pib' => 'required',
+            'type_import' => 'required',
+            'payment_method' => 'required',
+            'name_seller' => 'required',
+            'name_shipper' => 'required',
+            'nik_importir' => 'required',
+            'name_owner' => 'required',
+            'name_ppjk' => 'required',
+            'npwp_ppjk' => 'required',
+            'np_ppjk' => 'required',
+            //form2
+            'no_register' => 'nullable',
+            'date_register' => 'nullable',
+            'way_transport' => 'required',
+            'name_transport' => 'required',
+            'date_estimate' => 'required',
+            'load_place' => 'required',
+            'load_transit' => 'nullable',
+            'load_destination' => 'required',
+            //form3
+            'invoice' => 'required',
+            'date_invoice' => 'required',
+            'transaction' => 'nullable',
+            'date_transaction' => 'nullable',
+            'house_bl' => 'nullable',
+            'date_house_bl' => 'nullable',
+            'master_bl' => 'nullable',
+            'date_master_bl' => 'nullable',
+            'bc11' => 'nullable',
+            'date_bc11' => 'nullable',
+            'pos' => 'nullable',
+            'sub' => 'nullable',
+            'facility' => 'nullable',
+            'dump' => 'nullable',
+            'valuta' => 'required',
+            'ndpbm' => 'required',
+            'value' => 'required',
+            'insurance' => 'required',
+            'freight' => 'required',
+            'pabean_value' => 'required',
+            //form4
+            'no_container' => 'required',
+            'size_container' => 'required',
+            'type_container' => 'required',
+            //form5
+            'date_product' => 'required',
+            'pos_product' => 'required',
+            'code_product' => 'required',
+            'country_product' => 'required',
+            'qty_product' => 'required',
+            'unit_product' => 'required',
+            'netto_product' => 'required',
+            'qty_pack' => 'required',
+            'type_pack' => 'required',
+            'value_pabean' => 'required',
+            'type_pabean' => 'required',
+        ]);
+
         $request->code_pib = date('ymdhis');
         $request->no_approval = str_replace('-', '', $request->no_approval);
         $request->invoice = str_replace('-', '', $request->invoice);

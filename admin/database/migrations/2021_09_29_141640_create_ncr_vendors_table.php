@@ -21,7 +21,6 @@ class CreateNcrVendorsTable extends Migration
             $table->string('no_ref');
             $table->date('date_ncrv');
             $table->string('supplier_id');
-            // $table->string('name_supplier');
             $table->string('warehouse_id');
             $table->string('way_transport');
             $table->timestamps();

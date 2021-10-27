@@ -19,11 +19,11 @@ class CreatePoProductsTable extends Migration
             $table->string('code_po_product');
             $table->string('product_id');
             $table->string('description')->nullable();
-            $table->date('latest');
-            $table->bigInteger('qty_product');
-            $table->bigInteger('qty_recived');
-            $table->double('unit_price');
-            $table->double('total_amount');
+            $table->date('latest')->nullable();
+            $table->bigInteger('qty_product')->default(0);
+            $table->bigInteger('qty_recived')->default(0);
+            $table->double('unit_price')->default(0);
+            $table->double('total_amount')->default(0);
             $table->timestamps();
         });
     }

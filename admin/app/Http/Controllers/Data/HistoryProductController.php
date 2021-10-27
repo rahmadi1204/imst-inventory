@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Data;
 
 use App\Models\TypeProduct;
-use Illuminate\Http\Request;
-use App\Models\HistoryProduct;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class HistoryProductController extends Controller
 {
+
     function index()
     {
+        app('App\Http\Controllers\CalculateController')->calculating();
         $typeProduct = TypeProduct::all();
         $data = DB::table('history_products')
             ->LeftJoin('master_products', 'master_products.id', '=', 'history_products.product_id')

@@ -32,11 +32,11 @@ class CreatePibInvoicesTable extends Migration
             $table->string('facility')->nullable();
             $table->string('dump')->nullable();
             $table->string('valuta')->nullable();
-            $table->double('ndpbm');
-            $table->double('value');
-            $table->double('insurance');
-            $table->double('freight');
-            $table->double('pabean_value');
+            $table->double('ndpbm')->default(0);
+            $table->double('value')->default(0);
+            $table->double('insurance')->default(0);
+            $table->double('freight')->default(0);
+            $table->double('pabean_value')->default(0);
             $table->timestamps();
         });
     }

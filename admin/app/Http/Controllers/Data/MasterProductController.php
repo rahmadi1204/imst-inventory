@@ -17,21 +17,7 @@ class MasterProductController extends Controller
 
     function index()
     {
-        DB::table('master_products')->update([
-            'qty_product' => 0,
-            'status_product' => "KOSONG",
-        ]);
-        $cek = DB::table('history_products')
-            ->selectRaw('history_products.product_id, sum(qty_product) as qty_product')
-            ->groupBy('product_id')
-            ->pluck('qty_product', 'product_id');
-        foreach ($cek as $key => $value) {
-            DB::table('master_products')->where('id', '=', $key)
-                ->update([
-                    'qty_product' => $value,
-                    'status_product' => "OK",
-                ]);
-        }
+        app('App\Http\Controllers\CalculateController')->calculating();
         $data = DB::table('master_products')->get();
         // dd($data);
         $typeProduct = TypeProduct::all();

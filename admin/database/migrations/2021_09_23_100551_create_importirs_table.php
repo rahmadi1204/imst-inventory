@@ -18,7 +18,7 @@ class CreateImportirsTable extends Migration
             $table->string('nik_importir');
             $table->string('name_importir');
             $table->string('address_importir');
-            $table->string('status_importir');
+            $table->string('status_importir')->default(0);
             $table->string('apiu');
             $table->timestamps();
         });

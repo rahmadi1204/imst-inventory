@@ -4,24 +4,24 @@
         <div class="form-group col">
             <label for="type_document_pabean">Tipe Dokumen Pabean</label>
             <input name="type_document_pabean" type="text" class="form-control" id="type_document_pabean"
-                value="{{ $pib->type_document_pabean ?? old('type_document_pabean') }}">
+                value="{{ $pib->type_document_pabean ?? old('type_document_pabean') }}" required>
         </div>
         <div class="form-group col">
             <label for="office_pabean">Kantor Pabean</label>
             <input name="office_pabean" type="text" class="form-control" id="office_pabean"
-                value="{{ $pib->office_pabean ?? old('office_pabean') }}">
+                value="{{ $pib->office_pabean ?? old('office_pabean') }}" required>
         </div>
         <div class="form-group col">
             <label for="no_approval">Nomor Pengajuan</label>
             <input name="no_approval" type="text" class="form-control"
                 data-inputmask='"mask": "999999-999999-99999999-999999"' data-mask id="no_approval"
-                value="{{ $pib->no_approval ?? (old('no_approval') ?? '000000000000' . date('Ymdhis')) }}">
+                value="{{ $pib->no_approval ?? (old('no_approval') ?? '000000000000' . date('Ymdhis')) }}" required>
         </div>
     </div>
     <div class="row">
         <div class="form-group col">
             <label for="no_po">Nomor Pre Order</label>
-            <select name="no_po" id="no_po" class="form-control">
+            <select name="no_po" id="no_po" class="form-control" required>
                 <option selected>Pilih</option>
                 @foreach ($po as $item)
                     @if (isset($pib))
@@ -59,7 +59,7 @@
         </div>
         <div class="form-group col">
             <label for="type_pib">Jenis PIB</label>
-            <select name="type_pib" id="type_pib" class="form-control">
+            <select name="type_pib" id="type_pib" class="form-control" required>
                 <option selected>Pilih</option>
                 @if (isset($pib->type_pib))
                     <option value="Biasa" {{ $pib->type_pib == 'Biasa' ? 'selected' : '' }}>1. Biasa</option>
@@ -72,7 +72,7 @@
         </div>
         <div class="form-group col">
             <label for="type_import">Jenis Import</label>
-            <select name="type_import" id="type_import" class="form-control ">
+            <select name="type_import" id="type_import" class="form-control" required>
                 <option selected>Pilih</option>
                 @if (isset($pib->type_pib))
                     <option value="Untuk Dipakai" {{ $pib->type_import == 'Untuk Dipakai' ? 'selected' : '' }}>1.
@@ -104,7 +104,7 @@
         </div>
         <div class="form-group col">
             <label for="payment_method">Cara Pembayaran</label>
-            <select name="payment_method" id="payment_method" class="form-control ">
+            <select name="payment_method" id="payment_method" class="form-control" required>
                 <option selected>Pilih</option>
                 @if (isset($pib->type_pib))
                     <option value="Biasa/Tunai" {{ $pib->payment_method == 'Biasa/Tunai' ? 'selected' : '' }}>1.
@@ -134,7 +134,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="name_shipper">Pengirim</label>
-            <select name="name_shipper" id="name_shipper" class="form-control ">
+            <select name="name_shipper" id="name_shipper" class="form-control" required>
                 <option selected>Pilih</option>
                 @foreach ($seller as $item)
                     @if (isset($pib))
@@ -168,7 +168,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="name_seller">Penjual</label>
-            <select name="name_seller" id="name_seller" class="form-control ">
+            <select name="name_seller" id="name_seller" class="form-control" required>
                 <option selected>Pilih</option>
                 @foreach ($seller as $item)
                     @if (isset($pib))
@@ -202,7 +202,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="name_importir">Importir</label>
-            <select name="name_importir" id="name_importir" class="form-control ">
+            <select name="name_importir" id="name_importir" class="form-control" required>
                 <option selected>Pilih</option>
                 @foreach ($importir as $item)
                     @if (isset($pib))
@@ -260,7 +260,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="name_owner">Pemilik</label>
-            <select name="name_owner" id="name_owner" class="form-control">
+            <select name="name_owner" id="name_owner" class="form-control" required>
                 <option selected>Pilih</option>
                 @foreach ($importir as $item)
                     @if (isset($pib))
@@ -305,7 +305,7 @@
         <div class="form-group col-md-4">
             <label for="name_ppjk">PPJK</label>
             <input type="text" name="name_ppjk" id="name_ppjk" class="form-control"
-                value="{{ $pib->name_ppjk ?? old('name_ppjk') }}">
+                value="{{ $pib->name_ppjk ?? old('name_ppjk') }}" required>
         </div>
         <div class="form-group col">
             <label for="npwp_ppjk">NPWP PPJK</label>

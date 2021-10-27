@@ -19,10 +19,9 @@ class CreatePibProductsTable extends Migration
             $table->string('code_po');
             $table->string('code_po_product');
             $table->string('code_pib_product');
-            $table->string('no_approval');
             $table->string('no_po');
             $table->date('date_product');
-            $table->bigInteger('pos_product');
+            $table->bigInteger('pos_product')->nullable();
             $table->string('product_id');
             $table->string('country_product');
             $table->bigInteger('qty_product');

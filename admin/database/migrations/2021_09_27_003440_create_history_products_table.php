@@ -27,8 +27,8 @@ class CreateHistoryProductsTable extends Migration
             $table->string('date_product');
             $table->double('product_pabean')->nullable();
             $table->bigInteger('type_history');
-            $table->bigInteger('qty_product');
-            $table->string('unit_product');
+            $table->bigInteger('qty_product')->default(0);
+            $table->string('unit_product')->default("Pcs");
             $table->string('from');
             $table->string('to');
             $table->timestamps();
